@@ -1,0 +1,10 @@
+import com.couchbase.client.core.message.binary.GetRequest;
+import com.couchbase.client.core.message.binary.GetResponse;
+import com.couchbase.client.core.message.binary.UpsertRequest;
+import com.couchbase.client.core.message.binary.UpsertResponse;
+import com.couchbase.client.core.message.cluster.OpenBucketRequest;
+import com.couchbase.client.core.message.cluster.OpenBucketResponse;
+import com.couchbase.client.core.message.cluster.SeedNodesRequest;
+import com.couchbase.client.core.message.cluster.SeedNodesResponse;
+import io.netty.buffer.Unpooled;
+import io.netty.util.CharsetUtil;

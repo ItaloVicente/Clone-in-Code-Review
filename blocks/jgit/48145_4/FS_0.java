@@ -1,0 +1,18 @@
+	protected File discoverGitSystemConfig() {
+		File gitExe = discoverGitExe();
+		if (gitExe == null)
+			return null;
+
+		Map<String
+		env.put("GIT_EDITOR"
+
+		String w = readPipe(gitExe.getParentFile()
+				new String[]{"git"
+				Charset.defaultCharset().name()
+				env);
+		if (StringUtils.isEmptyOrNull(w))
+			return null;
+
+		return new File(w);
+	}
+

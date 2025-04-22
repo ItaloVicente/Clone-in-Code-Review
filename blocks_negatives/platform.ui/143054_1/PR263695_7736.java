@@ -1,0 +1,107 @@
+        public static void main(String[] args) {
+                final Display display = new Display();
+
+                Listener listener = new Listener() {
+                        @Override
+						public void handleEvent(Event event) {
+                                switch (event.type) {
+                                case SWT.MouseDown:
+                                        System.out.println("down");
+                                        break;
+                                case SWT.MouseUp:
+                                        System.out.println("up");
+                                        break;
+                                case SWT.MouseMove:
+                                        System.out.println("move");
+                                        break;
+                                }
+                        }
+                };
+                display.addFilter(SWT.MouseMove, listener);
+                display.addFilter(SWT.MouseDown, listener);
+                display.addFilter(SWT.MouseUp, listener);
+
+                final Shell shell = new Shell(display);
+                shell.setLayout(new FillLayout());
+                final Label label1 = new Label(shell, SWT.BORDER);
+                label1.setText("TEXT");
+                final Label label2 = new Label(shell, SWT.BORDER);
+                setDragDrop(label1);
+                setDragDrop(label2);
+                shell.setSize(200, 200);
+                shell.open();
+
+                Rectangle bounds = label1.getBounds();
+                bounds = display.map(label1.getParent(), null, bounds);
+                final int downX = bounds.x + (bounds.width / 2);
+                final int downY = bounds.y + (bounds.height / 2);
+
+                bounds = label2.getBounds();
+                bounds = display.map(label2.getParent(), null, bounds);
+                final int upX = bounds.x + (bounds.width / 2);
+                final int upY = bounds.y + (bounds.height / 2);
+
+                display.setCursorLocation(downX, downY);
+
+                Thread t = new Thread(new Runnable(){
+                        @Override
+						public void run() {
+                                try { Thread.sleep(2000); } catch
+(InterruptedException e) {}
+                                int sleep = 50;
+                                Event event = new Event();
+                                event.type = SWT.MouseDown;
+                                event.button = 1;
+                                display.post(event);
+
+                                try { Thread.sleep(sleep); } catch
+(InterruptedException e) {}
+                                event = new Event();
+                                event.type = SWT.MouseMove;
+                                event.x = downX;
+                                event.y = downY+20;
+                                display.post(event);
+
+                                try { Thread.sleep(sleep); } catch
+(InterruptedException e) {}
+                                System.out.println("move to target");
+                                event = new Event();
+                                event.type = SWT.MouseMove;
+                                event.x = upX;
+                                event.y = upY;
+                                display.post(event);
+
+                                try { Thread.sleep(sleep); } catch
+(InterruptedException e) {}
+                                System.out.println("move inside target");
+                                event = new Event();
+                                event.type = SWT.MouseMove;
+                                event.x = upX;
+                                event.y = upY + 20;
+                                display.post(event);
+
+                                try { Thread.sleep(sleep); } catch
+(InterruptedException e) {}
+                                System.out.println("release");
+                                event = new Event();
+                                event.type = SWT.MouseUp;
+                                event.button = 1;
+                                display.post(event);
+                        }
+                });
+                t.start();
+
+
+
+
+
+                while (!shell.isDisposed()) {
+                        if (!display.readAndDispatch())
+                                display.sleep();
+                }
+                display.dispose();
+        }
+
+        public static void setDragDrop(final Label label) {
+
+                Transfer[] types = new Transfer[] { TextTransfer.getInstance()

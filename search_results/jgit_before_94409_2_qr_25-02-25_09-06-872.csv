@@ -1,0 +1,4 @@
+block1.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/jgit/before_94409_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/merge/SimpleMergeTest.java_testOurs#66#72
+block3.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/jgit/before_94409_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/merge/SimpleMergeTest.java_testTrivialTwoWay_ok#98#104
+block0.java_method#1#29,/home/gesad/PycharmProjects/Diff/befores/jgit/before_94409_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/merge/ResolveMergerTest.java_checkMergeEqualTreesInCore#416#442
+block2.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/jgit/before_94409_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/merge/SimpleMergeTest.java_testTheirs#74#80,/home/gesad/PycharmProjects/Diff/befores/jgit/before_94409_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/merge/SimpleMergeTest.java_testOurs#66#72

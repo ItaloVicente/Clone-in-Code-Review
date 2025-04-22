@@ -1,0 +1,3 @@
+block5.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/jgit/before_61841_1/org.eclipse.jgit/src/org/eclipse/jgit/internal/storage/dfs/InMemoryRepository.java_compareAndPut#257#303
+block3.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/jgit/before_61841_1/org.eclipse.jgit/src/org/eclipse/jgit/internal/storage/dfs/InMemoryRepository.java_scanAllRefs#243#255
+block6.java_method#1#11,/home/gesad/PycharmProjects/Diff/befores/jgit/before_61841_1/org.eclipse.jgit/src/org/eclipse/jgit/internal/storage/dfs/InMemoryRepository.java_compareAndRemove#305#313

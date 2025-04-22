@@ -1,0 +1,11 @@
+type_clone,reviews,blocks
+unique_ini,14,15
+unique_mei,5,5
+unique_final,2,3
+ini_mei,4,7
+mei,5,7
+mei_final,24,34
+ini_mei_final,71,108
+apa_des_apa,1,2
+total_reviews_with_clone,105,
+total_blocks_with_clone,,181

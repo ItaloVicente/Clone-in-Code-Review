@@ -1,0 +1,38 @@
+		Object singleSelection = null;
+		if (HandlerUtil
+				.getActivePartChecked(event) instanceof RepositoriesView) {
+			List<?> selected = getSelectedNodes(event);
+			if (selected.size() == 1
+					&& selected.get(0) instanceof RepositoryTreeNode) {
+				singleSelection = selected.get(0);
+			}
+		} else {
+			RepositoriesView view = getRepositoriesView();
+			if (view != null) {
+				StructuredSelection selection = (StructuredSelection) view
+						.getCommonViewer().getSelection();
+				if (selection != null && selection.size() == 1) {
+					singleSelection = selection.getFirstElement();
+				}
+			}
+		}
+		if (singleSelection instanceof RepositoryGroupNode) {
+			return ((RepositoryGroupNode) singleSelection).getObject();
+		} else {
+			return null;
+		}
+	}
+
+	protected void expandRepositoryGroup(ExecutionEvent event,
+			RepositoryGroup group) throws ExecutionException {
+		if (group != null) {
+			RepositoriesView view = null;
+			IWorkbenchPart part = HandlerUtil.getActivePartChecked(event);
+			if (part instanceof RepositoriesView) {
+				view = ((RepositoriesView) part);
+			} else {
+				view = getRepositoriesView();
+			}
+			if (view != null) {
+				view.expandNodeForGroup(group);
+			}

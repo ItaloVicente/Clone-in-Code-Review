@@ -1,0 +1,15 @@
+
+		int newParentCount = 0;
+		for (int i = 0; i < newParents.length; i++) {
+			for (int j = 0; j < newParentCount; j++)
+				if (parentIds[j].equals(newParents[i]))
+					throw new IllegalArgumentException(MessageFormat.format(
+							JGitText.get().duplicateParents
+							parentIds[j].getName()));
+			parentIds[newParentCount++] = newParents[i].copy();
+		}
+		if (newParentCount == parentIds.length)
+			return;
+		ObjectId[] tmpIds = new ObjectId[newParentCount];
+		System.arraycopy(parentIds
+		parentIds = tmpIds;

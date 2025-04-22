@@ -1,0 +1,10 @@
+		advertisedCapabilities = new HashSet<String>();
+		advertisedCapabilities.add(OPTION_INCLUDE_TAG);
+		advertisedCapabilities.add(OPTION_MULTI_ACK_DETAILED);
+		advertisedCapabilities.add(OPTION_MULTI_ACK);
+		advertisedCapabilities.add(OPTION_OFS_DELTA);
+		advertisedCapabilities.add(OPTION_SIDE_BAND);
+		advertisedCapabilities.add(OPTION_SIDE_BAND_64K);
+		advertisedCapabilities.add(OPTION_THIN_PACK);
+		advertisedCapabilities.add(OPTION_NO_PROGRESS);
+		advertisedCapabilities.add(OPTION_SHALLOW);

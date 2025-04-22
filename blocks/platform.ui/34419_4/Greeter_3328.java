@@ -1,0 +1,56 @@
+
+package org.eclipse.ui.examples.adapterservice.snippets.adapter;
+
+import javax.inject.Inject;
+
+import org.eclipse.core.runtime.IAdapterManager;
+import org.eclipse.e4.core.services.adapter.Adapter;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.ui.examples.adapterservice.snippets.SnippetSetup;
+
+public class AdapterSnippet implements IApplication{
+	@Inject
+	Adapter adapter;
+
+	@Inject
+	IAdapterManager adapterManager;
+
+	public AdapterSnippet() {
+	}
+
+	void tryAdapters(Object someObject) {
+		System.out.println("The object to be adapted is " + someObject);
+		
+		MultiFacetedObject object = adapter.adapt(someObject, MultiFacetedObject.class);
+		if (object != null) {
+			System.out.println(object.identify());
+		}
+
+		Greeter greeter = adapter.adapt(someObject, Greeter.class);
+		if (greeter != null) {
+			System.out.println("This object can greet.");
+			greeter.greet();
+		}
+
+		ThingWithId thingWithId = adapter.adapt(someObject, ThingWithId.class);
+		if (thingWithId != null) {
+			System.out.println("This object has an id, which is "
+					+ thingWithId.getUniqueId());
+		}
+
+	}
+
+	@Override
+	public Object start(IApplicationContext context) throws Exception {
+		SnippetSetup.setup(this);
+		
+		tryAdapters(new MultiFacetedObject("Fred"));
+		return IApplication.EXIT_OK;
+	}
+
+	@Override
+	public void stop() {
+		
+	}
+}

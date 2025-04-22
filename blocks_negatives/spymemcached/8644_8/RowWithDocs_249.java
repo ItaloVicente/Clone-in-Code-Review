@@ -1,0 +1,8 @@
+	public RowWithDocs(String id, String key, String value, Object doc) {
+		super(id, key, value);
+		if (doc != null && doc.equals("null")) {
+			this.doc = null;
+		} else {
+			this.doc = doc;
+		}
+	}

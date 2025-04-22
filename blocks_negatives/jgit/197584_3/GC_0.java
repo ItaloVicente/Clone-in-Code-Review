@@ -1,0 +1,6 @@
+			fileNames = files.map(path -> path.getFileName().toString())
+					.filter(name -> (name.endsWith(PACK_EXT)
+							|| name.endsWith(BITMAP_EXT)
+							|| name.endsWith(INDEX_EXT)
+							|| name.endsWith(KEEP_EXT)))
+					.sorted(Collections.reverseOrder())

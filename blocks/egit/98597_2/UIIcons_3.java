@@ -1,0 +1,13 @@
+		BRANCHES = map("obj16/branches_obj.png"); //$NON-NLS-1$
+		TAGS = map("obj16/tags.png"); //$NON-NLS-1$
+		TAG = map("obj16/version_rep.png"); //$NON-NLS-1$
+		CREATE_TAG = map("obj16/new_tag_obj.png"); //$NON-NLS-1$
+		BRANCH = map("obj16/branch_obj.png"); //$NON-NLS-1$
+		CREATE_BRANCH = map("obj16/new_branch_obj.png"); //$NON-NLS-1$
+		COLLAPSEALL = map("elcl16/collapseall.png"); //$NON-NLS-1$
+		CLONEGIT = map("obj16/cloneGit.png"); //$NON-NLS-1$
+		RESET = map("obj16/reset.png"); //$NON-NLS-1$
+		CHANGESET = map("obj16/changelog_obj.png"); //$NON-NLS-1$
+		GERRIT = map("obj16/gerrit_obj.png"); //$NON-NLS-1$
+		EXPAND_ALL = map("elcl16/expandall.png"); //$NON-NLS-1$
+		CHECKOUT = map("obj16/checkout.png"); //$NON-NLS-1$

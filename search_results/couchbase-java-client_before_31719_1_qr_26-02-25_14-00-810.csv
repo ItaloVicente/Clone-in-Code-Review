@@ -1,0 +1,3 @@
+block0.java_method#1#24,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_31719_1/src/main/java/com/couchbase/client/http/HttpResponseCallback.java_shouldRetry#146#174
+block1.java_method#1#14,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_31719_1/src/main/java/com/couchbase/client/vbucket/config/DefaultConfigFactory.java_populateVBuckets#304#360
+block2.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_31719_1/src/main/java/com/couchbase/client/vbucket/config/VBucket.java_getReplica#62#71

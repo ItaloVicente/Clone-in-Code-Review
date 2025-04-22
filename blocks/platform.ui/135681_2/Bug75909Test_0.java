@@ -1,0 +1,24 @@
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	AnimationEngineTest.class,
+	ActionSetExpressionTest.class,
+	PopupMenuExpressionTest.class,
+	Bug78470Test.class,
+	DeclarativeFilterActivityTest.class,
+	DeclarativeFilterDeclarationTest.class,
+	MarkerSupportRegistryTests.class,
+	MarkerSortUtilTest.class,
+	MarkerViewTests.class,
+	MarkerViewUtilTest.class,
+	Bug99858Test.class,
+	WorkbenchWindowSubordinateSourcesTests.class,
+	ReopenMenuTest.class,
+	UtilTest.class,
+	MarkerTesterTest.class,
+	TextHandlerTest.class,
+	PerspectiveSwitcherTest.class,
+	WorkbenchSiteProgressServiceModelTagsTest.class,
+	SaveablesListTest.class,
+	Bug540297WorkbenchPageFindViewTest.class
+})
+public class InternalTestSuite {}

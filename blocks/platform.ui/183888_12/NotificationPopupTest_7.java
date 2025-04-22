@@ -1,0 +1,168 @@
+package org.eclipse.jface.tests.notifications;
+
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.eclipse.jface.notifications.NotificationPopup;
+import org.eclipse.jface.notifications.NotificationPopup.Builder;
+import org.eclipse.jface.notifications.internal.CommonImages;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.events.IHyperlinkListener;
+import org.eclipse.ui.forms.widgets.FormText;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class NotificationPopupTest {
+
+	private Display display;
+	private Builder builder;
+
+	@Before
+	public void setUp() {
+		this.display = Display.getDefault();
+		this.builder = NotificationPopup.forDisplay(this.display);
+	}
+
+	@After
+	public void tearDown() {
+		this.display.dispose();
+	}
+
+	@Test
+	public void createsWithTextAndTitle() {
+		this.builder.text("This is a test").title("Hello World", false).delay(1).open();
+
+		List<Control> controls = getShellControls(this.display.getShells()[0]);
+
+		assertThat(controls, hasItem(aLabelWith("Hello World")));
+		assertThat(controls, hasItem(aLabelWith("This is a test")));
+	}
+
+	@SuppressWarnings("restriction")
+	@Test
+	public void createsWithCloseButton() {
+		this.builder.text("This is a test").title("Hello World", true).delay(1).open();
+
+		List<Control> controls = getShellControls(this.display.getShells()[0]);
+
+		assertThat(controls, hasItem(aLabelWith(CommonImages.getImage(CommonImages.NOTIFICATION_CLOSE))));
+	}
+
+	@Test
+	public void createsWithTextContent() {
+		Text[] text = new Text[1];
+		this.builder.title("Hello World", false).content(new Function<Composite, Control>() {
+
+			@Override
+			public Control apply(Composite parent) {
+				text[0] = new Text(parent, SWT.NONE);
+				text[0].setText("My custom Text");
+				return text[0];
+			}
+		}).delay(1).open();
+
+		List<Control> controls = getShellControls(this.display.getShells()[0]);
+
+		assertThat(controls, hasItem(is(text[0])));
+	}
+
+	@Test
+	public void createsWithFormText() {
+		String formText = "<form><p>This is a <a href=\"https://fridaysforfuture.org\">test.</a></p></form>";
+		IHyperlinkListener listener = IHyperlinkListener.linkActivatedAdapter(e -> e.getHref());
+		this.builder.title("Hello World", false).formText(formText, listener).delay(1).open();
+
+		List<Control> controls = getShellControls(this.display.getShells()[0]);
+
+		assertThat(controls, hasItem(isA(FormText.class)));
+	}
+
+	@Test
+	public void createsWithTitleContent() {
+		Text[] text = new Text[1];
+		this.builder.title(new Function<Composite, Control>() {
+
+			@Override
+			public Control apply(Composite parent) {
+				text[0] = new Text(parent, SWT.NONE);
+				text[0].setText("My custom Title");
+				return text[0];
+			}
+		}, false).delay(1).open();
+
+		List<Control> controls = getShellControls(this.display.getShells()[0]);
+
+		assertThat(controls, hasItem(is(text[0])));
+	}
+
+	private List<Control> getShellControls(Shell shell) {
+		return getChildrenStream(shell).collect(Collectors.toList());
+	}
+
+	private Stream<Control> getChildrenStream(Control c) {
+		if (c.getClass() == Composite.class || c.getClass() == Shell.class) {
+			Composite composite = (Composite) c;
+			return Arrays.stream(composite.getChildren()).flatMap(this::getChildrenStream);
+		} else {
+			return Stream.of(c);
+		}
+	}
+
+	private Matcher<? extends Control> aLabelWith(String expectedText) {
+		return allOf(isA(Label.class), new LabelMatcher(expectedText));
+	}
+
+	private Matcher<? extends Control> aLabelWith(Image expectedImage) {
+		return allOf(isA(Label.class), new LabelMatcher(expectedImage));
+	}
+
+	private class LabelMatcher extends BaseMatcher<Label> {
+
+		String expectedText;
+		private Image expectedImage;
+
+		public LabelMatcher(String expectedText) {
+			this.expectedText = expectedText;
+		}
+
+		public LabelMatcher(Image expectedImage) {
+			this.expectedImage = expectedImage;
+		}
+
+		@Override
+		public boolean matches(Object item) {
+			if (this.expectedImage != null)
+				return ((Label) item).getImage() == this.expectedImage;
+			else
+				return ((Label) item).getText().equals(this.expectedText);
+		}
+
+		@Override
+		public void describeTo(Description description) {
+			if (this.expectedImage != null)
+				description.appendText("a Label with image ").appendText(this.expectedText);
+			else
+				description.appendText("a Label with text ").appendText(this.expectedText);
+		}
+	}
+}

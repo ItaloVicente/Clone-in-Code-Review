@@ -1,0 +1,14 @@
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.egit.core.op.CherryPickOperation;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.JobFamilies;
+import org.eclipse.egit.ui.internal.UIRepositoryUtils;
+import org.eclipse.egit.ui.internal.UIText;
+import org.eclipse.egit.ui.internal.branch.LaunchFinder;
+import org.eclipse.egit.ui.internal.commit.RepositoryCommit;
+import org.eclipse.egit.ui.internal.dialogs.CommitSelectDialog;

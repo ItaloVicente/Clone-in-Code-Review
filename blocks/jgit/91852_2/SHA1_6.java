@@ -1,0 +1,67 @@
+		 e += s2(a
+		 d += s2(e
+		 c += s2(d
+		 b += s2(c
+		 a += s2(b
+		 e += s2(a
+		 d += s2(e
+		 c += s2(d
+		 b += s2(c
+		 a += s2(b
+		 e += s2(a
+		 d += s2(e
+		 c += s2(d
+		 b += s2(c
+		 a += s2(b
+		 e += s2(a
+		 d += s2(e
+		 c += s2(d
+		 b += s2(c
+		 a += s2(b
+
+		 e += s3(a
+		 d += s3(e
+		 c += s3(d
+		 b += s3(c
+		 a += s3(b
+		 e += s3(a
+		 d += s3(e
+		 c += s3(d
+		 b += s3(c
+		 a += s3(b
+		 e += s3(a
+		 d += s3(e
+		 c += s3(d
+		 b += s3(c
+		 a += s3(b
+		 e += s3(a
+		 d += s3(e
+		 c += s3(d
+		state58.save(a
+		 b += s3(c
+		 a += s3(b
+
+		 e += s4(a
+		 d += s4(e
+		 c += s4(d
+		 b += s4(c
+		 a += s4(b
+		state65.save(a
+		 e += s4(a
+		 d += s4(e
+		 c += s4(d
+		 b += s4(c
+		 a += s4(b
+		 e += s4(a
+		 d += s4(e
+		 c += s4(d
+		 b += s4(c
+		 a += s4(b
+		 e += s4(a
+		 d += s4(e
+		 c += s4(d
+		 b += s4(c
+		 a += s4(b
+
+		h.save(h.a + a
+	}

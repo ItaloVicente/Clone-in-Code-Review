@@ -1,0 +1,25 @@
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_CORE_SECTION;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_BIGFILE_THRESHOLD;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_BITMAP_CONTIGUOUS_COMMIT_COUNT;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_BITMAP_DISTANT_COMMIT_SPAN;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_BITMAP_EXCESSIVE_BRANCH_COUNT;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_BITMAP_INACTIVE_BRANCH_AGE_INDAYS;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_BITMAP_RECENT_COMMIT_COUNT;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_BUILD_BITMAPS;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_COMPRESSION;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_CUT_DELTACHAINS;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_DELTA_CACHE_LIMIT;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_DELTA_CACHE_SIZE;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_DELTA_COMPRESSION;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_DEPTH;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_INDEXVERSION;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_MIN_SIZE_PREVENT_RACYPACK;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_REUSE_DELTAS;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_REUSE_OBJECTS;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_SINGLE_PACK;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_THREADS;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_WAIT_PREVENT_RACYPACK;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_WINDOW;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_KEY_WINDOW_MEMORY;
+import static org.eclipse.jgit.lib.ConfigConstants.CONFIG_PACK_SECTION;
+

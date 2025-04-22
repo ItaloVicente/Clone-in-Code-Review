@@ -1,0 +1,21 @@
+	@Test
+	public void reflogSeekPrefix() throws IOException {
+		PersonIdent who = new PersonIdent("Log"
+
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		ReftableWriter writer = new ReftableWriter()
+			.setMinUpdateIndex(1)
+			.setMaxUpdateIndex(1)
+			.begin(buffer);
+
+		writer.writeLog("branchname"
+
+		writer.finish();
+		byte[] table = buffer.toByteArray();
+
+		ReftableReader t = read(table);
+		try (LogCursor c = t.seekLog("branch"
+			assertFalse(c.next());
+		}
+	}
+

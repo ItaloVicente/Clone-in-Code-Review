@@ -1,0 +1,12 @@
+package com.couchbase.client.java.query.core;
+
+public enum Operator {
+    EQUALS,
+    GREATER_THAN, LESSER_THAN,
+    GREATER_THAN_EQUALS, LESSER_THAN_EQUALS,
+    LIKE, CONTAINS,
+    IS_NULL, IS_MISSING, IS_VALUED,
+
+    NOT_EQUALS, NOT_LIKE, NOT_CONTAINS,
+    IS_NOT_NULL, IS_NOT_MISSING, BETWEEN, NOT_BETWEEN, IS_NOT_VALUED;
+}

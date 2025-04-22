@@ -1,0 +1,8 @@
+		assertMatch("a\\"
+		assertMatch("a/\\"
+		assertMatch("a/b\\"
+		assertMatch("\\a\\b\\c\\"
+		assertMatch("/\\a/\\b/\\c\\"
+		assertMatch("a\\"
+		assertMatch("a\\\\\\"
+		assertMatch("a\\\\\\"

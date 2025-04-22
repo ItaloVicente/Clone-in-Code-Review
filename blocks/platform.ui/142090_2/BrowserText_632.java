@@ -1,0 +1,14 @@
+		link.setBackground(bg);
+		sep = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+		sep.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		exTitle = new Label(parent, SWT.NULL);
+		exTitle.setBackground(bg);
+		exTitle.setFont(JFaceResources.getBannerFont());
+		exTitle.setText(Messages.BrowserText_dtitle);
+		exTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text = new Label(parent, SWT.WRAP);
+		text.setText(Messages.BrowserText_text);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text.setBackground(bg);
+		button = new Button(parent, SWT.PUSH);
+		updateButtonText();

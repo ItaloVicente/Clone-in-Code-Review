@@ -1,0 +1,6 @@
+            queryErrorObservable,
+            queryRowObservable,
+            querySignatureObservable,
+            queryStatusObservable,
+            queryInfoObservable,
+            queryProfileInfoObservable,

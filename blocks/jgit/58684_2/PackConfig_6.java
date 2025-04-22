@@ -1,0 +1,12 @@
+		b.append("
+				.append(getBitmapContiguousCommitCount());
+		b.append("
+				.append(getBitmapRecentCommitCount());
+		b.append("
+				.append(getBitmapRecentCommitSpan());
+		b.append("
+				.append(getBitmapDistantCommitSpan());
+		b.append("
+				.append(getBitmapExcessiveBranchCount());
+		b.append("
+				.append(getBitmapInactiveBranchAgeInDays());

@@ -1,0 +1,7 @@
+		final IResource[] inResources = input.getItems();
+		final File[] inFiles = input.getFileList();
+		if (inResources != null && inResources.length == 0) {
+			this.name = ""; //$NON-NLS-1$
+			setErrorMessage(UIText.GitHistoryPage_NoInputMessage);
+			return false;
+		}

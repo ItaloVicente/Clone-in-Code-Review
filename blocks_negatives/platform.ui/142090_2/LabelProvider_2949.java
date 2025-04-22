@@ -1,0 +1,20 @@
+    /**
+     * Determine there are objects in the structured selection of different
+     * types.
+     *
+     * @param structuredSelection
+     *            the structured selection.
+     * @return true if there are objects of different types in the selection.
+     */
+    private boolean areDifferentTypes(IStructuredSelection structuredSelection) {
+        if (structuredSelection.size() == 1) {
+            return false;
+        }
+        Iterator i = structuredSelection.iterator();
+        Element element = (Element) ((TreeNode) i.next()).getValue();
+        for (; i.hasNext();) {
+            Element next = (Element) ((TreeNode) i.next()).getValue();
+            if (next.getClass() != element.getClass()) {
+                return true;
+            }
+        }

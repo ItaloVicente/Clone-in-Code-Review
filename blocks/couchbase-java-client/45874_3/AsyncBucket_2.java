@@ -1,0 +1,14 @@
+import com.couchbase.client.java.document.BinaryDocument;
+import com.couchbase.client.java.document.Document;
+import com.couchbase.client.java.document.JsonDocument;
+import com.couchbase.client.java.document.JsonLongDocument;
+import com.couchbase.client.java.document.LegacyDocument;
+import com.couchbase.client.java.document.StringDocument;
+import com.couchbase.client.java.error.CASMismatchException;
+import com.couchbase.client.java.error.CouchbaseOutOfMemoryException;
+import com.couchbase.client.java.error.DocumentAlreadyExistsException;
+import com.couchbase.client.java.error.DocumentDoesNotExistException;
+import com.couchbase.client.java.error.DurabilityException;
+import com.couchbase.client.java.error.RequestTooBigException;
+import com.couchbase.client.java.error.TemporaryFailureException;
+import com.couchbase.client.java.error.ViewDoesNotExistException;

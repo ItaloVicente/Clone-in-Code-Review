@@ -1,0 +1,16 @@
+import com.couchbase.client.core.message.kv.CounterRequest;
+import com.couchbase.client.core.message.kv.CounterResponse;
+import com.couchbase.client.core.message.kv.GetRequest;
+import com.couchbase.client.core.message.kv.GetResponse;
+import com.couchbase.client.core.message.kv.InsertRequest;
+import com.couchbase.client.core.message.kv.InsertResponse;
+import com.couchbase.client.core.message.kv.RemoveRequest;
+import com.couchbase.client.core.message.kv.RemoveResponse;
+import com.couchbase.client.core.message.kv.ReplaceRequest;
+import com.couchbase.client.core.message.kv.ReplaceResponse;
+import com.couchbase.client.core.message.kv.TouchRequest;
+import com.couchbase.client.core.message.kv.TouchResponse;
+import com.couchbase.client.core.message.kv.UnlockRequest;
+import com.couchbase.client.core.message.kv.UnlockResponse;
+import com.couchbase.client.core.message.kv.UpsertRequest;
+import com.couchbase.client.core.message.kv.UpsertResponse;

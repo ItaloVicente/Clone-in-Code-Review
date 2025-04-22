@@ -1,0 +1,264 @@
+package org.eclipse.ui.internal;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Optional;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.dialogs.DialogSettings;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.window.Window;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorDescriptor;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.dialogs.EditorSelectionDialog;
+import org.eclipse.ui.internal.progress.ProgressManagerUtil;
+import org.eclipse.ui.internal.util.PrefUtil;
+
+public class LargeFileLimitsPreferenceHandler {
+
+	public static final String PROMPT_EDITOR_PREFERENCE_VALUE = IPreferenceConstants.LARGE_FILE_LIMITS + "_prompt"; //$NON-NLS-1$
+
+	private static final String DISABLED_EXTENSIONS_PREFERENCE = IPreferenceConstants.LARGE_FILE_LIMITS + "_disabled"; //$NON-NLS-1$
+	private static final String CONFIGURED_EXTENSIONS_PREFERENCE = IPreferenceConstants.LARGE_FILE_LIMITS + "_types"; //$NON-NLS-1$
+	private static final String DEFAULT_PREFERENCE_NAME = IPreferenceConstants.LARGE_FILE_LIMITS + "_DEFAULT"; //$NON-NLS-1$
+
+	private static final IPreferenceStore PREFERENCE_STORE = PrefUtil.getInternalPreferenceStore();
+
+	private static final String EXTENSION_SEPARATOR = "."; //$NON-NLS-1$
+	private static final String PREFERENCE_EXTENSIONS_SEPARATOR = ","; //$NON-NLS-1$
+	private static final String PREFERENCE_VALUE_SEPARATOR = ","; //$NON-NLS-1$
+
+	private static final String EMPTY_VALUES = ""; //$NON-NLS-1$
+
+	private long maxFileSize = 0;
+	private boolean checkDocumentSize;
+
+	LargeFileLimitsPreferenceHandler() {
+		initMaxFileSize();
+	}
+	private void initMaxFileSize() {
+		maxFileSize = getLargeDocumentLegacyPreferenceValue();
+		checkDocumentSize = maxFileSize != 0;
+	}
+
+	public static boolean isLargeDocumentLegacyPreferenceSet() {
+		long legacyPreferenceValue = getLargeDocumentLegacyPreferenceValue();
+		return legacyPreferenceValue > 0;
+	}
+
+	public static String getDefaultPreferenceValues() {
+		String fileSize = PREFERENCE_STORE.getString(DEFAULT_PREFERENCE_NAME);
+		return fileSize;
+	}
+
+	public static void removeDefaultPreference() {
+		setDefaultPreferenceValue(EMPTY_VALUES);
+	}
+
+	public static void setDefaultPreferenceValue(String fileSize) {
+		PREFERENCE_STORE.setValue(DEFAULT_PREFERENCE_NAME, fileSize);
+	}
+
+	public static String[] getConfiguredExtensionTypes() {
+		String[] extensions = getExtensionsPreferenceValue(CONFIGURED_EXTENSIONS_PREFERENCE);
+		return extensions;
+	}
+
+
+	public static void setConfiguredExtensionTypes(String[] extensionTypes) {
+		setExtensionsPreferenceValue(CONFIGURED_EXTENSIONS_PREFERENCE, extensionTypes);
+	}
+
+	public static String[] getDisabledExtensionTypes() {
+		String[] extensions = getExtensionsPreferenceValue(DISABLED_EXTENSIONS_PREFERENCE);
+		return extensions;
+	}
+
+	public static void setDisabledExtensionTypes(String[] extensionTypes) {
+		setExtensionsPreferenceValue(DISABLED_EXTENSIONS_PREFERENCE, extensionTypes);
+	}
+
+	public static String[] getExtensionPreferenceValues(String fileExtension) {
+		String preferenceName = getPreferenceNameForExtension(fileExtension);
+		String[] preferenceValues = getPreferenceValues(preferenceName);
+		return preferenceValues;
+	}
+
+	public static void removeExtensionPreference(String fileExtension) {
+		String preferenceName = getPreferenceNameForExtension(fileExtension);
+		PREFERENCE_STORE.setValue(preferenceName, EMPTY_VALUES);
+	}
+
+	public static void setExtensionPreferenceValues(String fileExtension, String[] preferenceValues) {
+		String preferenceName = getPreferenceNameForExtension(fileExtension);
+		setPreferenceValues(preferenceName, preferenceValues);
+	}
+
+	public static boolean isPromptPreferenceValue(String editorId) {
+		boolean isPromptPreferenceValue = PROMPT_EDITOR_PREFERENCE_VALUE.equals(editorId);
+		return isPromptPreferenceValue;
+	}
+
+	Optional<String> getEditorForInput(IEditorInput editorInput) {
+		if (editorInput instanceof IPathEditorInput) {
+			IPathEditorInput pathEditorInput = (IPathEditorInput) editorInput;
+			String editorId = null;
+			boolean largeFile = isLargeDocumentFromLegacy(pathEditorInput);
+			boolean promptUser = largeFile;
+			if (!largeFile) {
+				editorId = getEditorIdForLargeFile(pathEditorInput);
+				boolean isPromptPreferenceValue = isPromptPreferenceValue(editorId);
+				if (isPromptPreferenceValue) {
+					promptUser = true;
+				}
+			}
+			if (promptUser) {
+				IEditorDescriptor editor = getAlternateEditor();
+				if (editor == null) {
+					return null;
+				}
+				editorId = editor.getId();
+			}
+			if (editorId != null && !editorId.isEmpty()) {
+				return Optional.of(editorId);
+			}
+		}
+		return Optional.empty();
+	}
+
+	private static IEditorDescriptor getAlternateEditor() {
+		Shell shell = ProgressManagerUtil.getDefaultParent();
+		EditorSelectionDialog dialog = new EditorSelectionDialog(shell) {
+			@Override
+			protected IDialogSettings getDialogSettings() {
+				IDialogSettings result = new DialogSettings("EditorSelectionDialog"); //$NON-NLS-1$
+				result.put(EditorSelectionDialog.STORE_ID_INTERNAL_EXTERNAL, true);
+				return result;
+			}
+		};
+		dialog.setMessage(WorkbenchMessages.EditorManager_largeDocumentWarning);
+
+		if (dialog.open() == Window.OK)
+			return dialog.getSelectedEditor();
+		return null;
+	}
+
+	boolean isLargeDocumentFromLegacy(IPathEditorInput editorInput) {
+		if (!checkDocumentSize)
+			return false;
+
+		try {
+			IPath path = editorInput.getPath();
+			File file = new File(path.toOSString());
+			return file.length() > maxFileSize;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	String getEditorIdForLargeFile(IPathEditorInput editorInput) {
+		String editorId = null;
+
+		try {
+			IPath path = editorInput.getPath();
+			String[] preferenceValues = getLargeFilePreferenceValues(path);
+
+			if (preferenceValues.length > 0) {
+				File file = new File(path.toOSString());
+				long fileSize = file.length();
+
+				long maxBound = 0;
+				for (int i = 0; i < preferenceValues.length; i = i + 2) {
+					String boundString = preferenceValues[i + 0];
+					String editorIdString = preferenceValues[i + 1];
+					long bound = Long.valueOf(boundString);
+					if (fileSize >= bound && bound >= maxBound) {
+						maxBound = bound;
+						editorId = editorIdString;
+					}
+				}
+			}
+		} catch (Exception e) {
+			WorkbenchPlugin.log("Exception occurred while checking for large file editor", e); //$NON-NLS-1$
+		}
+		return editorId;
+	}
+
+	private String[] getLargeFilePreferenceValues(IPath path) {
+
+		String[] preferenceValues = {};
+
+		String fileExtension = path.getFileExtension();
+
+		String[] disabled = getDisabledExtensionTypes();
+		boolean isDisabled = Arrays.asList(disabled).contains(fileExtension);
+		if (!isDisabled) {
+			String largeFilePreference = null;
+
+			String preferenceName = getPreferenceNameForExtension(fileExtension);
+			if (fileExtension != null && !fileExtension.isEmpty()) {
+				largeFilePreference = PREFERENCE_STORE.getString(preferenceName);
+			}
+
+			if (largeFilePreference == null || largeFilePreference.isEmpty()) {
+				preferenceName = DEFAULT_PREFERENCE_NAME;
+			}
+
+			preferenceValues = getPreferenceValues(preferenceName);
+		}
+
+		return preferenceValues;
+	}
+
+	private static long getLargeDocumentLegacyPreferenceValue() {
+		return PREFERENCE_STORE.getLong(IPreferenceConstants.LARGE_DOC_SIZE_FOR_EDITORS);
+	}
+
+	private static String[] getExtensionsPreferenceValue(String preferenceName) {
+		String[] extensions = new String[0];
+		String extensionTypes = PREFERENCE_STORE.getString(preferenceName);
+		if (extensionTypes != null && !extensionTypes.isEmpty()) {
+			extensions = extensionTypes.split(PREFERENCE_EXTENSIONS_SEPARATOR);
+		}
+		return extensions;
+	}
+
+	private static void setExtensionsPreferenceValue(String preferenceName, String[] extensionTypes) {
+		String preferenceValue = null;
+		if (extensionTypes.length > 0) {
+			preferenceValue = String.join(PREFERENCE_EXTENSIONS_SEPARATOR, extensionTypes);
+		}
+		PREFERENCE_STORE.setValue(preferenceName, preferenceValue);
+	}
+
+	private static String[] getPreferenceValues(String preferenceName) {
+		String largeFilePreference;
+		largeFilePreference = PREFERENCE_STORE.getString(preferenceName);
+		String[] preferenceValues = new String[0];
+		if (largeFilePreference != null && !largeFilePreference.isEmpty()) {
+			preferenceValues = largeFilePreference.split(PREFERENCE_VALUE_SEPARATOR);
+			if (preferenceValues.length % 2 != 0) {
+				String errorMessage = NLS.bind(
+						"Expected pairs of values separated by \"{0}\" for preference \"{1}\" with value \"{2}\"", //$NON-NLS-1$
+						new String[] { PREFERENCE_VALUE_SEPARATOR, preferenceName,
+								Arrays.toString(preferenceValues) });
+				WorkbenchPlugin.log(new IllegalArgumentException(errorMessage));
+				preferenceValues = new String[0];
+			}
+		}
+		return preferenceValues;
+	}
+
+	private static void setPreferenceValues(String preferenceName, String[] preferenceValues) {
+		String preferenceValue = String.join(PREFERENCE_VALUE_SEPARATOR, preferenceValues);
+		PREFERENCE_STORE.setValue(preferenceName, preferenceValue);
+	}
+
+	private static String getPreferenceNameForExtension(String fileExtension) {
+		String preferenceName = IPreferenceConstants.LARGE_FILE_LIMITS + EXTENSION_SEPARATOR + fileExtension;
+		return preferenceName;
+	}
+}

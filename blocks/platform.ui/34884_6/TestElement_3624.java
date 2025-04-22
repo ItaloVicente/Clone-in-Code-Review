@@ -1,0 +1,83 @@
+package org.eclipse.e4.ui.tests.css.core.util;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.e4.ui.css.core.dom.ElementAdapter;
+import org.eclipse.e4.ui.css.core.engine.CSSEngine;
+import org.eclipse.e4.ui.css.swt.engine.CSSSWTEngineImpl;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+public class TestElement extends ElementAdapter {
+
+	private final String typeName;
+	private String className;
+	private String id;
+	private Map<String, String> attrs = new HashMap<String, String>();
+	private Node parentNode = null;
+
+	public TestElement(String type, CSSEngine engine) {
+		super(null, engine);
+		this.typeName = type;
+	}
+
+	public TestElement(String type, TestElement parent, CSSSWTEngineImpl engine) {
+		this(type, engine);
+		this.parentNode = parent;
+	}
+
+	public void setClass(String className) {
+		this.className = className;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	@Override
+	public void setAttribute(String name, String value) {
+		attrs.put(name, value);
+	}
+
+	@Override
+	public String getAttribute(String name) {
+		String value = attrs.get(name);
+		return value == null ? "" : value;
+	}
+
+	@Override
+	public String getLocalName() {
+		return typeName;
+	}
+
+	@Override
+	public NodeList getChildNodes() {
+		return null;
+	}
+
+	@Override
+	public String getNamespaceURI() {
+		return null;
+	}
+
+	@Override
+	public Node getParentNode() {
+		return parentNode;
+	}
+
+	@Override
+	public String getCSSClass() {
+		return className;
+	}
+
+	@Override
+	public String getCSSId() {
+		return id;
+	}
+
+	@Override
+	public String getCSSStyle() {
+		return null;
+	}
+}

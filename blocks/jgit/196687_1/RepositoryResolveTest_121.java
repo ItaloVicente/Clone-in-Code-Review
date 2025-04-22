@@ -1,0 +1,11 @@
+	void testDistance() throws IOException {
+		assertEquals("49322bb17d3acc9146f98c97d078513228bbf3c0"
+		assertEquals("6e1475206e57110fcef4b92320436c1e9872a322"
+		assertEquals("1203b03dc816ccbb67773f28b3c19318654b0bc8"
+		assertEquals("bab66b48f836ed950c99134ef666436fb07a09a0"
+		assertEquals("bab66b48f836ed950c99134ef666436fb07a09a0"
+		assertEquals("6e1475206e57110fcef4b92320436c1e9872a322"
+		assertEquals("1203b03dc816ccbb67773f28b3c19318654b0bc8"
+		assertEquals("bab66b48f836ed950c99134ef666436fb07a09a0"
+		assertEquals("1203b03dc816ccbb67773f28b3c19318654b0bc8"
+		assertEquals("1203b03dc816ccbb67773f28b3c19318654b0bc8"

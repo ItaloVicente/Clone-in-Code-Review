@@ -1,0 +1,17 @@
+        if (adapter == IPropertySource.class) {
+            return (T)this;
+        }
+        if (adapter == IWorkbenchAdapter.class) {
+            return (T)this;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the descriptors
+     */
+    static ArrayList<PropertyDescriptor> getDescriptors() {
+        return descriptors;
+    }
+
+    @Override

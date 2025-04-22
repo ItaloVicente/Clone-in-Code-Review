@@ -1,0 +1,12 @@
+			if (result == null) result = caseDialog(wizardDialog);
+			if (result == null) result = caseWindow(wizardDialog);
+			if (result == null) result = caseElementContainer(wizardDialog);
+			if (result == null) result = caseUILabel(wizardDialog);
+			if (result == null) result = caseContext(wizardDialog);
+			if (result == null) result = caseHandlerContainer(wizardDialog);
+			if (result == null) result = caseBindings(wizardDialog);
+			if (result == null) result = caseSnippetContainer(wizardDialog);
+			if (result == null) result = caseUIElement(wizardDialog);
+			if (result == null) result = caseApplicationElement(wizardDialog);
+			if (result == null) result = caseLocalizable(wizardDialog);
+			if (result == null) result = defaultCase(theEObject);

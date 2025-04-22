@@ -1,0 +1,15 @@
+		init();
+	}
+
+	public SHA1 reset() {
+		init();
+		length = 0;
+		return this;
+	}
+
+	private void init() {
+		h0 = 0x67452301;
+		h1 = 0xEFCDAB89;
+		h2 = 0x98BADCFE;
+		h3 = 0x10325476;
+		h4 = 0xC3D2E1F0;

@@ -1,0 +1,7 @@
+	PropertyShowInContextTest.class,
+	MultiInstancePropertySheetTest.class,
+	ShowInPropertySheetTest.class,
+	NewPropertySheetHandlerTest.class,
+	PropertySheetAuto.class,
+	ComboBoxPropertyDescriptorTest.class,
+	DirtyStatePropertySheetTest.class,

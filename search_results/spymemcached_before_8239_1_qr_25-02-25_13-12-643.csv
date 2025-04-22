@@ -1,0 +1,4 @@
+block0.java_method#1#113,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_8239_1/src/main/java/net/spy/memcached/ConnectionFactoryBuilder.java_build#253#367
+block7.java_method#1#13,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_8239_1/src/test/java/net/spy/memcached/ProtocolBaseCase.java_testSyncGetTimeouts#585#638
+block4.java_method#1#11,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_8239_1/src/main/java/net/spy/memcached/TapConnectionProvider.java_run#201#219,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_8239_1/src/main/java/net/spy/memcached/MemcachedClient.java_run#2025#2043
+block5.java_method#1#15,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_8239_1/src/test/java/net/spy/memcached/ProtocolBaseCase.java_testSyncGetTimeouts#585#638

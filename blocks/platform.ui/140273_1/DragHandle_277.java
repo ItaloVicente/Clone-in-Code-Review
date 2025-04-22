@@ -1,0 +1,13 @@
+		handleImage = new Image(parent.getDisplay(), 4, 4);
+		GC context = new GC(handleImage);
+		context.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+		context.drawPoint(0, 0);
+		context.drawPoint(2, 0);
+		context.drawPoint(3, 0);
+		context.drawPoint(3, 1);
+		context.drawPoint(0, 2);
+		context.drawPoint(3, 2);
+		context.drawPoint(0, 3);
+		context.drawPoint(1, 3);
+		context.drawPoint(2, 3);
+		context.drawPoint(3, 3);

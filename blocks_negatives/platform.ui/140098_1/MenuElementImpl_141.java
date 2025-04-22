@@ -1,0 +1,12 @@
+			case MenuPackageImpl.MENU_ELEMENT__LABEL:
+				return getLabel();
+			case MenuPackageImpl.MENU_ELEMENT__ICON_URI:
+				return getIconURI();
+			case MenuPackageImpl.MENU_ELEMENT__TOOLTIP:
+				return getTooltip();
+			case MenuPackageImpl.MENU_ELEMENT__LOCALIZED_LABEL:
+				return getLocalizedLabel();
+			case MenuPackageImpl.MENU_ELEMENT__LOCALIZED_TOOLTIP:
+				return getLocalizedTooltip();
+			case MenuPackageImpl.MENU_ELEMENT__MNEMONICS:
+				return getMnemonics();

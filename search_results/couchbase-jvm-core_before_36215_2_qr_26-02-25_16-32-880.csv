@@ -1,0 +1,2 @@
+block1.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_36215_2/src/integration/java/com/couchbase/client/core/cluster/BinaryMessageTest.java_shouldReplaceWithCAS#124#146
+block5.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_36215_2/src/main/java/com/couchbase/client/core/endpoint/binary/BinaryCodec.java_handleGetRequest#135#143,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_36215_2/src/main/java/com/couchbase/client/core/endpoint/binary/BinaryCodec.java_handleReplaceRequest#174#188

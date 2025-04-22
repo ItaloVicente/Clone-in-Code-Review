@@ -1,0 +1,39 @@
+package org.eclipse.ui.internal.wizards.datatransfer.expressions;
+
+import java.io.File;
+
+import org.eclipse.core.expressions.EvaluationResult;
+import org.eclipse.core.expressions.Expression;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.runtime.Adapters;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Path;
+
+public class HasFolderExpression extends Expression {
+
+	public static final String TAG = "hasFolder"; //$NON-NLS-1$
+
+	String path;
+
+	public HasFolderExpression(String path) {
+		this.path = path;
+	}
+
+	public HasFolderExpression(IConfigurationElement element) {
+		this(element.getAttribute("path")); //$NON-NLS-1$
+	}
+
+	@Override
+	public EvaluationResult evaluate(IEvaluationContext context) throws CoreException {
+		Object root = context.getDefaultVariable();
+		if (root instanceof File) {
+			return EvaluationResult.valueOf( new File((File)root, this.path).isDirectory() );
+		} else {
+			IContainer container = Adapters.adapt(root, IContainer.class);
+			return EvaluationResult.valueOf( container.getFolder(new Path(this.path)).exists() );
+		}
+	}
+
+}

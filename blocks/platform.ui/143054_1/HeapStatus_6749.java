@@ -1,0 +1,10 @@
+		addListener(SWT.Dispose, listener);
+		addListener(SWT.MouseDown, listener);
+		addListener(SWT.Paint, listener);
+		addListener(SWT.Resize, listener);
+		addListener(SWT.MouseEnter, listener);
+		addListener(SWT.MouseExit, listener);
+		canvas.addListener(SWT.MouseDown, listener);
+		canvas.addListener(SWT.MouseExit, listener);
+		canvas.addListener(SWT.MouseUp, listener);
+		canvas.addListener(SWT.Paint, listener);

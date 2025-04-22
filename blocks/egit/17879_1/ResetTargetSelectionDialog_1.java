@@ -1,0 +1,10 @@
+		createResetButton(g,
+				UIText.ResetTargetSelectionDialog_ResetTypeSoftButton,
+				ResetType.SOFT);
+		createResetButton(g,
+				UIText.ResetTargetSelectionDialog_ResetTypeMixedButton,
+				ResetType.MIXED);
+		createResetButton(g,
+				UIText.ResetTargetSelectionDialog_ResetTypeHardButton,
+				ResetType.HARD);
+	}

@@ -1,0 +1,9 @@
+import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.env.CouchbaseEnvironment;
+import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
+import com.couchbase.client.java.query.AsyncQueryResult;
+import com.couchbase.client.java.query.AsyncQueryRow;
+import com.couchbase.client.java.query.PrepareStatement;
+import com.couchbase.client.java.query.PreparedPayload;
+import com.couchbase.client.java.query.Query;
+import com.couchbase.client.java.query.Statement;

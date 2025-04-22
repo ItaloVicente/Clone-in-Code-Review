@@ -1,0 +1,325 @@
+package org.eclipse.egit.core.test;
+
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.team.core.RepositoryProvider;
+import org.eclipse.team.core.history.IFileHistory;
+import org.eclipse.team.core.history.IFileHistoryProvider;
+import org.eclipse.team.core.history.IFileRevision;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class HistoryTest extends GitTestCase {
+	private static final String MASTER = Constants.R_HEADS + Constants.MASTER;
+
+	private static final String BRANCH = Constants.R_HEADS + "branch";
+
+	private TestRepository testRepository;
+
+	private IFile iFile1;
+
+	private IFile iFile2;
+
+	private final List<RevCommit> commits = new ArrayList<RevCommit>();
+
+	private RevCommit masterCommit1;
+
+	private RevCommit masterCommit2;
+
+	private RevCommit masterCommit3;
+
+	private RevCommit branchCommit1;
+
+	private IFileHistoryProvider historyProvider;
+
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		testRepository = new TestRepository(gitDir);
+		testRepository.connect(project.getProject());
+
+		File file1 = testRepository.createFile(project.getProject(), "file1");
+		File file2 = testRepository.createFile(project.getProject(), "file2");
+
+		iFile1 = testRepository.getIFile(project.getProject(), file1);
+		iFile2 = testRepository.getIFile(project.getProject(), file2);
+
+		masterCommit1 = testRepository.addAndCommit(project.getProject(),
+				file1, "master-commit-1");
+		masterCommit2 = testRepository.addAndCommit(project.getProject(),
+				file2, "master-commit-2");
+		testRepository.createBranch(MASTER, BRANCH);
+
+		testRepository.appendFileContent(file1, "master-commit-3");
+		testRepository.appendFileContent(file2, "master-commit-3");
+		testRepository.track(file1);
+		testRepository.track(file2);
+		testRepository.addToIndex(project.getProject(), file1);
+		testRepository.addToIndex(project.getProject(), file2);
+		masterCommit3 = testRepository.commit("master-commit-3");
+
+		testRepository.checkoutBranch(BRANCH);
+		branchCommit1 = testRepository.appendContentAndCommit(
+				project.getProject(), file1, "branch-commit-1",
+				"branch-commit-1");
+
+		commits.add(masterCommit1);
+		commits.add(masterCommit2);
+		commits.add(masterCommit3);
+		commits.add(branchCommit1);
+
+		historyProvider = RepositoryProvider.getProvider(project.getProject()).getFileHistoryProvider();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		testRepository.dispose();
+		super.tearDown();
+	}
+
+	@Test
+	public void queryFile1FullHistory() throws CoreException {
+		final List<RevCommit> expectedHistory = Arrays.asList(masterCommit1,
+				masterCommit3, branchCommit1);
+		for (RevCommit ref : commits) {
+			testRepository.checkoutBranch(ref.getName());
+			final IFileHistory history = historyProvider.getFileHistoryFor(
+					iFile1, IFileHistoryProvider.NONE,
+					new NullProgressMonitor());
+			assertNotNull(history);
+
+			final IFileRevision[] revisions = history.getFileRevisions();
+			assertEquals(3, revisions.length);
+			final List<RevCommit> commitList = new ArrayList<RevCommit>(
+					expectedHistory);
+			assertMatchingRevisions(Arrays.asList(revisions), commitList);
+		}
+	}
+
+	@Test
+	public void queryFile2FullHistory() throws CoreException {
+		final List<RevCommit> expectedHistory = Arrays.asList(masterCommit2,
+				masterCommit3);
+		for (RevCommit ref : commits) {
+			testRepository.checkoutBranch(ref.getName());
+			final IFileHistory history = historyProvider.getFileHistoryFor(
+					iFile2, IFileHistoryProvider.NONE,
+					new NullProgressMonitor());
+			assertNotNull(history);
+
+			final IFileRevision[] revisions = history.getFileRevisions();
+			assertEquals(2, revisions.length);
+			final List<RevCommit> commitList = new ArrayList<RevCommit>(
+					expectedHistory);
+			assertMatchingRevisions(Arrays.asList(revisions), commitList);
+		}
+	}
+
+	@Test
+	public void queryFile1SingleRevision() throws CoreException {
+		for (RevCommit ref : commits) {
+			testRepository.checkoutBranch(ref.getName());
+			final IFileHistory history = historyProvider.getFileHistoryFor(
+					iFile1, IFileHistoryProvider.SINGLE_REVISION,
+					new NullProgressMonitor());
+			assertNotNull(history);
+
+			final IFileRevision[] revisions = history.getFileRevisions();
+			assertEquals(1, revisions.length);
+			assertRevisionMatchCommit(revisions[0], ref);
+		}
+	}
+
+	@Test
+	public void queryFile2SingleRevision() throws CoreException {
+		for (RevCommit ref : commits) {
+			testRepository.checkoutBranch(ref.getName());
+			final IFileHistory history = historyProvider.getFileHistoryFor(
+					iFile2, IFileHistoryProvider.SINGLE_REVISION,
+					new NullProgressMonitor());
+			assertNotNull(history);
+
+			final IFileRevision[] revisions = history.getFileRevisions();
+			assertEquals(1, revisions.length);
+			assertRevisionMatchCommit(revisions[0], ref);
+		}
+	}
+
+	@Test
+	public void queryFile1Contributors() {
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile1, IFileHistoryProvider.NONE, new NullProgressMonitor());
+		assertNotNull(history);
+
+		final IFileRevision[] revisions = history.getFileRevisions();
+		IFileRevision branchFileRevision1 = null;
+		IFileRevision masterFileRevision3 = null;
+		IFileRevision masterFileRevision1 = null;
+		for (IFileRevision revision : revisions) {
+			final String revisionId = revision.getContentIdentifier();
+			if (branchCommit1.getName().equals(revisionId)) {
+				branchFileRevision1 = revision;
+			} else if (masterCommit3.getName().equals(revisionId)) {
+				masterFileRevision3 = revision;
+			} else if (masterCommit1.getName().equals(revisionId)) {
+				masterFileRevision1 = revision;
+			}
+		}
+		assertNotNull(branchFileRevision1);
+		assertNotNull(masterFileRevision3);
+		assertNotNull(masterFileRevision1);
+
+		final IFileRevision[] branchCommit1Parents = history.getContributors(branchFileRevision1);
+		assertEquals(1,  branchCommit1Parents.length);
+		assertRevisionMatchCommit(branchCommit1Parents[0], masterCommit1);
+
+		final IFileRevision[] masterCommit3Parents = history
+				.getContributors(masterFileRevision3);
+		assertEquals(1, masterCommit3Parents.length);
+		assertRevisionMatchCommit(masterCommit3Parents[0], masterCommit1);
+
+		final IFileRevision[] masterCommit1Parents = history
+				.getContributors(masterFileRevision1);
+		assertEquals(0, masterCommit1Parents.length);
+	}
+
+	@Test
+	public void queryFile2Contributors() {
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile2,
+				IFileHistoryProvider.NONE, new NullProgressMonitor());
+		assertNotNull(history);
+
+		final IFileRevision[] revisions = history.getFileRevisions();
+		IFileRevision masterFileRevision3 = null;
+		IFileRevision masterFileRevision2 = null;
+		for (IFileRevision revision : revisions) {
+			final String revisionId = revision.getContentIdentifier();
+			if (masterCommit3.getName().equals(revisionId)) {
+				masterFileRevision3 = revision;
+			} else if (masterCommit2.getName().equals(revisionId)) {
+				masterFileRevision2 = revision;
+			}
+		}
+		assertNotNull(masterFileRevision3);
+		assertNotNull(masterFileRevision2);
+
+		final IFileRevision[] masterCommit3Parents = history
+				.getContributors(masterFileRevision3);
+		assertEquals(1, masterCommit3Parents.length);
+		assertRevisionMatchCommit(masterCommit3Parents[0], masterCommit2);
+
+		final IFileRevision[] masterCommit2Parents = history
+				.getContributors(masterFileRevision2);
+		assertEquals(0, masterCommit2Parents.length);
+	}
+
+	@Test
+	public void queryFile1Targets() {
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile1,
+				IFileHistoryProvider.NONE, new NullProgressMonitor());
+		assertNotNull(history);
+
+		final IFileRevision[] revisions = history.getFileRevisions();
+		IFileRevision branchFileRevision1 = null;
+		IFileRevision masterFileRevision3 = null;
+		IFileRevision masterFileRevision1 = null;
+		for (IFileRevision revision : revisions) {
+			final String revisionId = revision.getContentIdentifier();
+			if (branchCommit1.getName().equals(revisionId)) {
+				branchFileRevision1 = revision;
+			} else if (masterCommit3.getName().equals(revisionId)) {
+				masterFileRevision3 = revision;
+			} else if (masterCommit1.getName().equals(revisionId)) {
+				masterFileRevision1 = revision;
+			}
+		}
+		assertNotNull(branchFileRevision1);
+		assertNotNull(masterFileRevision3);
+		assertNotNull(masterFileRevision1);
+
+		final IFileRevision[] masterCommit1Children = history
+				.getTargets(masterFileRevision1);
+		assertEquals(2, masterCommit1Children.length);
+		final List<RevCommit> expected = new ArrayList<RevCommit>(
+				Arrays.asList(masterCommit3, branchCommit1));
+		assertMatchingRevisions(Arrays.asList(masterCommit1Children), expected);
+
+		final IFileRevision[] masterCommit3Children = history
+				.getTargets(masterFileRevision3);
+		assertEquals(0, masterCommit3Children.length);
+
+		final IFileRevision[] branchCommit1Children = history
+				.getTargets(branchFileRevision1);
+		assertEquals(0, branchCommit1Children.length);
+	}
+
+	@Test
+	public void queryFile2Targets() {
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile2,
+				IFileHistoryProvider.NONE, new NullProgressMonitor());
+		assertNotNull(history);
+
+		final IFileRevision[] revisions = history.getFileRevisions();
+		IFileRevision masterFileRevision3 = null;
+		IFileRevision masterFileRevision2 = null;
+		for (IFileRevision revision : revisions) {
+			final String revisionId = revision.getContentIdentifier();
+			if (masterCommit3.getName().equals(revisionId)) {
+				masterFileRevision3 = revision;
+			} else if (masterCommit2.getName().equals(revisionId)) {
+				masterFileRevision2 = revision;
+			}
+		}
+		assertNotNull(masterFileRevision3);
+		assertNotNull(masterFileRevision2);
+
+		final IFileRevision[] masterCommit2Children = history
+				.getTargets(masterFileRevision2);
+		assertEquals(1, masterCommit2Children.length);
+		assertRevisionMatchCommit(masterCommit2Children[0], masterCommit3);
+
+		final IFileRevision[] masterCommit3Children = history
+				.getTargets(masterFileRevision3);
+		assertEquals(0, masterCommit3Children.length);
+	}
+
+	private static void assertRevisionMatchCommit(IFileRevision revision,
+			RevCommit commit) {
+		assertEquals(commit.getAuthorIdent().getName(), revision.getAuthor());
+		assertEquals(commit.getFullMessage(), revision.getComment());
+		assertEquals(commit.getName(), revision.getContentIdentifier());
+		assertEquals(commit.getCommitTime(), revision.getTimestamp() / 1000);
+	}
+
+	private static void assertMatchingRevisions(List<IFileRevision> revisions,
+			List<RevCommit> commits) {
+		assertEquals(commits.size(), revisions.size());
+		for (IFileRevision revision : revisions) {
+			boolean foundMatch = false;
+			final Iterator<RevCommit> commitIterator = commits.iterator();
+			while (commitIterator.hasNext() && !foundMatch) {
+				final RevCommit commit = commitIterator.next();
+				if (revision.getContentIdentifier().equals(commit.getName())) {
+					assertRevisionMatchCommit(revision, commit);
+					foundMatch = true;
+					commitIterator.remove();
+				}
+			}
+			assertTrue(foundMatch);
+		}
+		assertTrue(commits.isEmpty());
+	}
+}

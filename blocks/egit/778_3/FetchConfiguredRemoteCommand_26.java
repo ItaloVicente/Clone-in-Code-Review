@@ -1,0 +1,25 @@
+package org.eclipse.egit.ui.internal.repository.tree.command;
+
+import java.net.URISyntaxException;
+
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.internal.fetch.FetchWizard;
+import org.eclipse.egit.ui.internal.repository.tree.RepositoryNode;
+import org.eclipse.jface.wizard.WizardDialog;
+
+public class FetchCommand extends
+		RepositoriesViewCommandHandler<RepositoryNode> {
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		RepositoryNode node = getSelectedNodes(event).get(0);
+
+		try {
+			new WizardDialog(getView(event).getSite().getShell(),
+					new FetchWizard(node.getRepository())).open();
+		} catch (URISyntaxException e1) {
+			Activator.handleError(e1.getMessage(), e1, true);
+		}
+		return null;
+	}
+}

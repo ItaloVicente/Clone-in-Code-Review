@@ -1,0 +1,10 @@
+		EDITCONFIG = map("obj16/editconfig.png"); //$NON-NLS-1$
+		ELCL16_COMMIT = map("elcl16/commit.png"); //$NON-NLS-1$
+		ELCL16_COMMENTS = map("elcl16/comment.png"); //$NON-NLS-1$
+		ELCL16_AUTHOR = map("elcl16/author.png"); //$NON-NLS-1$
+		ELCL16_COMMITTER = map("elcl16/committer.png"); //$NON-NLS-1$
+		ELCL16_DELETE = map("elcl16/delete.png"); //$NON-NLS-1$
+		ELCL16_ADD = map("elcl16/add.png"); //$NON-NLS-1$
+		ELCL16_TRASH = map("elcl16/trash.png"); //$NON-NLS-1$
+		ELCL16_CLEAR = map("elcl16/clear_co.png"); //$NON-NLS-1$
+		ELCL16_REFRESH = map("elcl16/refresh.png"); //$NON-NLS-1$

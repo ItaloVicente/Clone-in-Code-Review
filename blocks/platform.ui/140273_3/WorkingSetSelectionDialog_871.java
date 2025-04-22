@@ -1,0 +1,7 @@
+	}
+
+	void handleSelectionChanged() {
+		updateButtonAvailability();
+	}
+
+	@Override

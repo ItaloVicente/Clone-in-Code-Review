@@ -62,4 +62,9 @@ In addition to the core scripts, the following supplementary scripts generate fu
 - **`count_reviews_multiplas`**: Counts the number of reviews classified as uniquely multiple.
 - **`made_box_plot`**: Generates box plots for duration and distance metrics.
 
+##Results from final dataset
+
+1. The `type_clones/` directory contains all code blocks identified as clones by the Siamese tool, along with their respective classifications.
+2. The `new categoration/` directory provides information about the lifecycle of clones within both multiple and unique code reviews.
+3. The `classification/` directory contains the classification of each review as either multiple or unique and indicates whether a relevant clone was found.
 

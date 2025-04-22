@@ -1,0 +1,25 @@
+    AsyncClusterManager async();
+
+    ClusterInfo info();
+
+    ClusterInfo info(long timeout, TimeUnit timeUnit);
+
+    List<BucketSettings> getBuckets();
+
+    List<BucketSettings> getBuckets(long timeout, TimeUnit timeUnit);
+
+    BucketSettings getBucket(String name);
+
+    BucketSettings getBucket(String name, long timeout, TimeUnit timeUnit);
+
+    Boolean hasBucket(String name);
+
+    Boolean hasBucket(String name, long timeout, TimeUnit timeUnit);
+
+    BucketSettings insertBucket(BucketSettings settings);
+
+    BucketSettings insertBucket(BucketSettings settings, long timeout, TimeUnit timeUnit);
+
+    BucketSettings updateBucket(BucketSettings settings);
+
+    BucketSettings updateBucket(BucketSettings settings, long timeout, TimeUnit timeUnit);

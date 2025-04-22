@@ -1,0 +1,19 @@
+package org.eclipse.e4.core.macros;
+
+public interface EMacroContextService {
+
+	boolean isRecording();
+
+	boolean isPlayingBack();
+
+	void addMacroCommand(IMacroCommand macroCommand);
+
+	void toggleMacroRecord();
+
+	void playbackLastMacro();
+
+	void addMacroContextListener(IMacroContextListener listener);
+
+	void removeMacroContextListener(IMacroContextListener listener);
+
+}

@@ -1,0 +1,43 @@
+package org.eclipse.urischeme.registration.impl;
+
+import java.util.Objects;
+
+import org.eclipse.urischeme.IScheme;
+
+public class Scheme implements IScheme {
+
+	private String uriScheme;
+	private String uriSchemeDescription;
+
+	@SuppressWarnings("javadoc")
+	public Scheme(String uriScheme, String uriSchemeDescription) {
+		super();
+		this.uriScheme = uriScheme;
+		this.uriSchemeDescription = uriSchemeDescription;
+	}
+
+	@Override
+	public String getName() {
+		return uriScheme;
+	}
+
+	@Override
+	public String getDescription() {
+		return uriSchemeDescription;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o.getClass() != this.getClass()) {
+			return false;
+		}
+		Scheme other = (Scheme) o;
+		return Objects.equals(this.uriScheme, other.uriScheme)
+				&& Objects.equals(this.uriSchemeDescription, other.uriSchemeDescription);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(uriScheme, uriSchemeDescription);
+	}
+}

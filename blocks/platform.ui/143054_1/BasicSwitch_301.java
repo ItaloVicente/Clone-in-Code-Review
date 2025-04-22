@@ -1,0 +1,26 @@
+			if (result == null)
+				result = casePartSashContainerElement(part);
+			if (result == null)
+				result = caseStackElement(part);
+			if (result == null)
+				result = caseContribution(part);
+			if (result == null)
+				result = caseContext(part);
+			if (result == null)
+				result = caseUILabel(part);
+			if (result == null)
+				result = caseHandlerContainer(part);
+			if (result == null)
+				result = caseDirtyable(part);
+			if (result == null)
+				result = caseBindings(part);
+			if (result == null)
+				result = caseWindowElement(part);
+			if (result == null)
+				result = caseUIElement(part);
+			if (result == null)
+				result = caseApplicationElement(part);
+			if (result == null)
+				result = caseLocalizable(part);
+			if (result == null)
+				result = defaultCase(theEObject);

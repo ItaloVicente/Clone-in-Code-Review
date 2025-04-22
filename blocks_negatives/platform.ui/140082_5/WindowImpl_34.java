@@ -1,0 +1,37 @@
+			case BasicPackageImpl.WINDOW__LABEL:
+				return getLabel();
+			case BasicPackageImpl.WINDOW__ICON_URI:
+				return getIconURI();
+			case BasicPackageImpl.WINDOW__TOOLTIP:
+				return getTooltip();
+			case BasicPackageImpl.WINDOW__LOCALIZED_LABEL:
+				return getLocalizedLabel();
+			case BasicPackageImpl.WINDOW__LOCALIZED_TOOLTIP:
+				return getLocalizedTooltip();
+			case BasicPackageImpl.WINDOW__CONTEXT:
+				return getContext();
+			case BasicPackageImpl.WINDOW__VARIABLES:
+				return getVariables();
+			case BasicPackageImpl.WINDOW__PROPERTIES:
+				if (coreType) return ((EMap.InternalMapView<String, String>)getProperties()).eMap();
+				else return getProperties();
+			case BasicPackageImpl.WINDOW__HANDLERS:
+				return getHandlers();
+			case BasicPackageImpl.WINDOW__BINDING_CONTEXTS:
+				return getBindingContexts();
+			case BasicPackageImpl.WINDOW__SNIPPETS:
+				return getSnippets();
+			case BasicPackageImpl.WINDOW__MAIN_MENU:
+				return getMainMenu();
+			case BasicPackageImpl.WINDOW__X:
+				return getX();
+			case BasicPackageImpl.WINDOW__Y:
+				return getY();
+			case BasicPackageImpl.WINDOW__WIDTH:
+				return getWidth();
+			case BasicPackageImpl.WINDOW__HEIGHT:
+				return getHeight();
+			case BasicPackageImpl.WINDOW__WINDOWS:
+				return getWindows();
+			case BasicPackageImpl.WINDOW__SHARED_ELEMENTS:
+				return getSharedElements();

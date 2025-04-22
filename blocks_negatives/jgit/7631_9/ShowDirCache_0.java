@@ -1,0 +1,11 @@
+			out.print(mode);
+			out.format(" %6d", len);
+			out.print(' ');
+			out.print(fmt.format(mtime));
+			out.print(' ');
+			out.print(ent.getObjectId().name());
+			out.print(' ');
+			out.print(stage);
+			out.print('\t');
+			out.print(ent.getPathString());
+			out.println();

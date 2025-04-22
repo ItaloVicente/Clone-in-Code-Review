@@ -1,0 +1,17 @@
+import org.eclipse.egit.ui.internal.repository.tree.BranchesNode;
+import org.eclipse.egit.ui.internal.repository.tree.ErrorNode;
+import org.eclipse.egit.ui.internal.repository.tree.FetchNode;
+import org.eclipse.egit.ui.internal.repository.tree.FileNode;
+import org.eclipse.egit.ui.internal.repository.tree.FolderNode;
+import org.eclipse.egit.ui.internal.repository.tree.LocalBranchesNode;
+import org.eclipse.egit.ui.internal.repository.tree.PushNode;
+import org.eclipse.egit.ui.internal.repository.tree.RefNode;
+import org.eclipse.egit.ui.internal.repository.tree.RemoteBranchesNode;
+import org.eclipse.egit.ui.internal.repository.tree.RemoteNode;
+import org.eclipse.egit.ui.internal.repository.tree.RemotesNode;
+import org.eclipse.egit.ui.internal.repository.tree.RepositoryTreeNode;
+import org.eclipse.egit.ui.internal.repository.tree.SymbolicRefNode;
+import org.eclipse.egit.ui.internal.repository.tree.SymbolicRefsNode;
+import org.eclipse.egit.ui.internal.repository.tree.TagNode;
+import org.eclipse.egit.ui.internal.repository.tree.TagsNode;
+import org.eclipse.egit.ui.internal.repository.tree.WorkingDirNode;

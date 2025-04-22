@@ -1,0 +1,46 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2015 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *     Lars Vogel <Lars.Vogel@gmail.com> - Bug 440810
+ *******************************************************************************/
+
+package org.eclipse.ui.internal.services;
+
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.ui.services.AbstractServiceFactory;
+import org.eclipse.ui.services.IDisposable;
+import org.eclipse.ui.services.IServiceLocator;
+
+/**
+ * A simple service locator creator.
+ *
+ * @since 3.4
+ */
+public class ServiceLocatorCreator implements IServiceLocatorCreator {
+
+	@Override
+	public IServiceLocator createServiceLocator(IServiceLocator parent,
+			AbstractServiceFactory factory, IDisposable owner) {
+		ServiceLocator serviceLocator = new ServiceLocator(parent, factory, owner);
+		if (parent != null) {
+			IEclipseContext ctx = parent.getService(IEclipseContext.class);
+			if (ctx != null) {
+				serviceLocator.setContext(ctx.createChild());
+			}
+		}
+		return serviceLocator;
+	}
+
+	@Override
+	public IServiceLocator createServiceLocator(IServiceLocator parent,
+			AbstractServiceFactory factory, IDisposable owner, IEclipseContext context) {
+		ServiceLocator serviceLocator = new ServiceLocator(parent, factory, owner);
+		serviceLocator.setContext(context);
+		return serviceLocator;
+	}
+}

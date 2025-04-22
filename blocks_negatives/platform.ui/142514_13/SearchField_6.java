@@ -1,0 +1,10 @@
+import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.internal.WorkbenchPlugin;
+import org.eclipse.ui.internal.quickaccess.providers.ActionProvider;
+import org.eclipse.ui.internal.quickaccess.providers.CommandProvider;
+import org.eclipse.ui.internal.quickaccess.providers.EditorProvider;
+import org.eclipse.ui.internal.quickaccess.providers.PerspectiveProvider;
+import org.eclipse.ui.internal.quickaccess.providers.PreferenceProvider;
+import org.eclipse.ui.internal.quickaccess.providers.PropertiesProvider;
+import org.eclipse.ui.internal.quickaccess.providers.ViewProvider;
+import org.eclipse.ui.internal.quickaccess.providers.WizardProvider;

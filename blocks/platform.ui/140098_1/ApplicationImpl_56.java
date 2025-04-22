@@ -1,0 +1,35 @@
+		case ApplicationPackageImpl.APPLICATION__CONTEXT:
+			return getContext();
+		case ApplicationPackageImpl.APPLICATION__VARIABLES:
+			return getVariables();
+		case ApplicationPackageImpl.APPLICATION__PROPERTIES:
+			if (coreType)
+				return ((EMap.InternalMapView<String, String>) getProperties()).eMap();
+			else
+				return getProperties();
+		case ApplicationPackageImpl.APPLICATION__HANDLERS:
+			return getHandlers();
+		case ApplicationPackageImpl.APPLICATION__BINDING_TABLES:
+			return getBindingTables();
+		case ApplicationPackageImpl.APPLICATION__ROOT_CONTEXT:
+			return getRootContext();
+		case ApplicationPackageImpl.APPLICATION__DESCRIPTORS:
+			return getDescriptors();
+		case ApplicationPackageImpl.APPLICATION__BINDING_CONTEXTS:
+			return getBindingContexts();
+		case ApplicationPackageImpl.APPLICATION__MENU_CONTRIBUTIONS:
+			return getMenuContributions();
+		case ApplicationPackageImpl.APPLICATION__TOOL_BAR_CONTRIBUTIONS:
+			return getToolBarContributions();
+		case ApplicationPackageImpl.APPLICATION__TRIM_CONTRIBUTIONS:
+			return getTrimContributions();
+		case ApplicationPackageImpl.APPLICATION__SNIPPETS:
+			return getSnippets();
+		case ApplicationPackageImpl.APPLICATION__COMMANDS:
+			return getCommands();
+		case ApplicationPackageImpl.APPLICATION__ADDONS:
+			return getAddons();
+		case ApplicationPackageImpl.APPLICATION__CATEGORIES:
+			return getCategories();
+		case ApplicationPackageImpl.APPLICATION__DIALOGS:
+			return getDialogs();

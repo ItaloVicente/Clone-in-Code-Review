@@ -1,0 +1,26 @@
+package com.couchbase.client.java.datastructures.collections;
+
+import com.couchbase.client.java.document.json.JsonArray;
+import com.couchbase.client.java.document.json.JsonObject;
+import com.google.common.collect.testing.SampleElements;
+
+public abstract class GuavaTestUtils {
+
+	private GuavaTestUtils() { }
+
+	protected static SampleElements<Object> samples = new SampleElements<Object>(
+			123,
+			"aString",
+			true,
+			JsonObject.create().put("sub", "value"),
+			JsonArray.from("A" ,"B", "C")
+	);
+
+	protected static SampleElements<Object> samplesWithoutJsonValues = new SampleElements<Object>(
+			123,
+			"aString",
+			true,
+			4.56,
+			"foo"
+	);
+}

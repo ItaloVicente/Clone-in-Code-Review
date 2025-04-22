@@ -1,0 +1,99 @@
+	class IndexedRepos implements RepoCommand.RemoteReader {
+		Map<String
+		IndexedRepos() {
+			uriRepoMap = new HashMap<>();
+		}
+
+		void put(String u
+			uriRepoMap.put(u
+		}
+
+		@Override
+		public ObjectId sha1(String uri
+			if (!uriRepoMap.containsKey(uri)) {
+				return null;
+			}
+
+			Repository r = uriRepoMap.get(uri);
+			try {
+				Ref ref = r.findRef(refname);
+				if (ref == null) return null;
+
+				ref = r.peel(ref);
+				ObjectId id = ref.getObjectId();
+				return id;
+			} catch (IOException e) {
+				throw new InvalidRemoteException(""
+			}
+		}
+
+		@Override
+		public byte[] readFile(String uri
+			throws GitAPIException
+			Repository repo = uriRepoMap.get(uri);
+
+			String idStr = refName + ":" + path;
+			ObjectId id = repo.resolve(idStr);
+			if (id == null) {
+				throw new RefNotFoundException(
+					String.format("repo %s does not have %s"
+			}
+			try (ObjectReader reader = repo.newObjectReader()) {
+				return reader.open(id).getCachedBytes(Integer.MAX_VALUE);
+			}
+		}
+	}
+
+	@Test
+	public void absoluteRemoteURL() throws Exception {
+		Repository child =
+			Git.cloneRepository().setURI(groupADb.getDirectory().toURI().toString())
+				.setDirectory(createUniqueTestGitDir(true))
+				.setBare(true).call().getRepository();
+		Repository dest = Git.cloneRepository()
+			.setURI(db.getDirectory().toURI().toString()).setDirectory(createUniqueTestGitDir(true))
+			.setBare(true).call().getRepository();
+		boolean fetchSlash = false;
+		boolean baseSlash = false;
+		do {
+			do {
+				String fetchUrl = fetchSlash ? abs + "/" : abs;
+				String baseUrl = baseSlash ? abs + "/" : abs;
+
+				StringBuilder xmlContent = new StringBuilder();
+				xmlContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+					.append("<manifest>")
+					.append("<remote name=\"origin\" fetch=\"" + fetchUrl + "\" />")
+					.append("<default revision=\"master\" remote=\"origin\" />")
+					.append("<project path=\"src\" name=\"chromium/src\" />")
+					.append("</manifest>");
+				RepoCommand cmd = new RepoCommand(dest);
+
+				IndexedRepos repos = new IndexedRepos();
+				repos.put(repoUrl
+
+				RevCommit commit = cmd
+					.setInputStream(new ByteArrayInputStream(xmlContent.toString().getBytes(StandardCharsets.UTF_8)))
+					.setRemoteReader(repos)
+					.setURI(baseUrl)
+					.setRecordRemoteBranch(true)
+					.setRecordSubmoduleLabels(true)
+					.call();
+
+				String idStr = commit.getId().name() + ":" + ".gitmodules";
+				ObjectId modId = dest.resolve(idStr);
+
+				try (ObjectReader reader = dest.newObjectReader()) {
+					byte[] bytes = reader.open(modId).getCachedBytes(Integer.MAX_VALUE);
+					Config base = new Config();
+					BlobBasedConfig cfg = new BlobBasedConfig(base
+					String subUrl = cfg.getString("submodule"
+				}
+				fetchSlash = !fetchSlash;
+			} while (fetchSlash);
+			baseSlash = !baseSlash;
+		} while (baseSlash);
+		child.close();
+		dest.close();
+	}
+

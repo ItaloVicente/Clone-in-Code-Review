@@ -1,0 +1,29 @@
+package org.eclipse.egit.ui.internal.preferences;
+
+public enum MergeMode implements DiffMergeMode {
+
+	PROMPT(0),
+	WORKSPACE(1),
+
+	LAST_HEAD(2);
+
+	private int value;
+
+	MergeMode(int i) {
+		this.value = i;
+	}
+
+	@Override
+	public int getValue() {
+		return value;
+	}
+
+	public MergeMode fromInt(int i) {
+		for (MergeMode b : MergeMode.values()) {
+			if (b.getValue() == i) {
+				return b;
+			}
+		}
+		return null;
+	}
+}

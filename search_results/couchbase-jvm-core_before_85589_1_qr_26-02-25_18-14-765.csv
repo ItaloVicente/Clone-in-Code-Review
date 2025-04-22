@@ -1,0 +1,2 @@
+block1.java_method#1#13,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_85589_1/src/test/java/com/couchbase/client/core/config/DefaultCouchbaseBucketConfigTest.java_shouldLoadConfigWithSameNodesButDifferentPorts#87#99
+block2.java_method#1#15,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_85589_1/src/test/java/com/couchbase/client/core/config/DefaultMemcachedBucketConfigTest.java_shouldOnlyUseDataNodesForKetama#41#54

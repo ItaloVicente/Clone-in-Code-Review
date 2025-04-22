@@ -1,0 +1,9 @@
+		assertEquals(
+				"some-domain1\tTRUE\t/some/path1\tFALSE\t1893499200\tkey1\tvalueFromSimple2"
+				lines.get(0));
+		assertEquals(
+				"some-domain1\tTRUE\t/some/path1\tFALSE\t1893499200\tkey3\tvalueFromSimple2"
+				lines.get(1));
+		assertEquals(
+				"some-domain1\tTRUE\t/some/path1\tFALSE\t1893499200\tkey2\tvalueFromSimple1"
+				lines.get(2));

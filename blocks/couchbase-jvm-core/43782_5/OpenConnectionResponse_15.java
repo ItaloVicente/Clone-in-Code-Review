@@ -1,0 +1,44 @@
+
+package com.couchbase.client.core.message.dcp;
+
+public class OpenConnectionRequest extends AbstractDCPRequest {
+    private final ConnectionType type;
+    private final int sequenceNumber;
+    private final String connectionName;
+
+    public OpenConnectionRequest(String connectionName, String bucket) {
+        this(connectionName, ConnectionType.PRODUCER, 0, bucket, null);
+    }
+
+    public OpenConnectionRequest(String connectionName, String bucket, String password) {
+        this(connectionName, ConnectionType.PRODUCER, 0, bucket, password);
+    }
+
+    public OpenConnectionRequest(String connectionName, ConnectionType type, String bucket) {
+        this(connectionName, type, 0, bucket, null);
+    }
+
+    public OpenConnectionRequest(String connectionName, ConnectionType type, String bucket, String password) {
+        this(connectionName, type, 0, bucket, password);
+    }
+
+    public OpenConnectionRequest(String connectionName, ConnectionType type, int sequenceNumber, String bucket, String password) {
+        super(bucket, password);
+        this.type = type;
+        this.sequenceNumber = sequenceNumber;
+        this.connectionName = connectionName;
+    }
+
+    public int sequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public String connectionName() {
+        return connectionName;
+    }
+
+    public ConnectionType type() {
+        return type;
+    }
+
+}

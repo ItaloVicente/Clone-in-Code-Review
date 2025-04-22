@@ -1,0 +1,9 @@
+    CITY_DOCS.add(new City("amsterdam", "netherlands", "europe", 820654));
+    CITY_DOCS.add(new City("rome", "italy", "europe", 2777979));
+    CITY_DOCS.add(new City("paris", "france", "europe", 2234105));
+    CITY_DOCS.add(new City("vienna", "austria", "europe", 1731236));
+    CITY_DOCS.add(new City("new_york", "usa", "north_america", 8244910));
+    CITY_DOCS.add(new City("san_francisco", "usa", "north_america", 812826));
+    CITY_DOCS.add(new City("shanghai", "china", "asia", 23019148));
+    CITY_DOCS.add(new City("tokyo", "japan", "asia", 13222760));
+    CITY_DOCS.add(new City("moscow", "russia", "asia", 11979529));

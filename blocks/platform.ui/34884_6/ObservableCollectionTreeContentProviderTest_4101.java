@@ -1,0 +1,59 @@
+
+package org.eclipse.jface.tests.internal.databinding.viewers;
+
+import java.util.Collections;
+
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.set.IObservableSet;
+import org.eclipse.jface.databinding.conformance.util.ChangeEventTracker;
+import org.eclipse.jface.databinding.conformance.util.DisposeEventTracker;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
+import org.eclipse.jface.tests.databinding.AbstractDefaultRealmTestCase;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.widgets.Shell;
+
+public class ObservableCollectionContentProviderTest extends
+		AbstractDefaultRealmTestCase {
+	private Shell shell;
+	private TableViewer viewer;
+	ObservableListContentProvider contentProvider;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		shell = new Shell();
+		viewer = new TableViewer(shell);
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		shell.dispose();
+		shell = null;
+		viewer = null;
+		super.tearDown();
+	}
+
+	public void testGetKnownElements_DisposedWithoutModificationOnContentProviderDispose() {
+		final IObservableList input = new WritableList(Collections
+				.singletonList("element"), null);
+		contentProvider = new ObservableListContentProvider();
+		contentProvider.inputChanged(viewer, null, input);
+
+		IObservableSet knownElements = contentProvider.getKnownElements();
+
+		contentProvider.getElements(input);
+		assertEquals(1, knownElements.size());
+
+		DisposeEventTracker disposeTracker = DisposeEventTracker
+				.observe(knownElements);
+		ChangeEventTracker changeTracker = ChangeEventTracker
+				.observe(knownElements);
+
+		contentProvider.dispose();
+
+		assertEquals(0, changeTracker.count);
+		assertEquals(1, disposeTracker.count);
+		assertTrue(knownElements.isDisposed());
+	}
+}

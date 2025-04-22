@@ -1,0 +1,33 @@
+	private void calculateKind(String ancestorSha1, String baseSha1,
+			String remoteSha1) {
+		if (ancestorSha1.equals(baseSha1))
+			kind = INCOMING;
+		else if (ancestorSha1.equals(baseSha1))
+			kind = OUTGOING;
+		else
+			kind = CONFLICTING;
+
+		if (baseSha1.equals(zeroId().getName()))
+			kind = kind | ADDITION;
+		else if (remoteSha1.equals(zeroId().getName()))
+			kind = kind | DELETION;
+		else
+			kind = kind | CHANGE;
+	}
+
+	public SaveableComparison getSaveable() {
+		return null;
+	}
+
+	public void prepareInput(CompareConfiguration configuration,
+			IProgressMonitor monitor) throws CoreException {
+	}
+
+	public String getFullPath() {
+		return null;
+	}
+
+	public boolean isCompareInputFor(Object object) {
+		return false;
+	}
+

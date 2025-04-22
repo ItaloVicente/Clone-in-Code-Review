@@ -1,0 +1,107 @@
+package org.eclipse.jface.snippets.viewers;
+
+import java.text.MessageFormat;
+
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.viewers.DialogCellEditor;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
+
+public class TextAndDialogCellEditor extends DialogCellEditor {
+
+	private Text textField;
+	private String dialogMessage;
+	private String dialogTitle;
+
+	public TextAndDialogCellEditor(Composite parent) {
+		super(parent);
+	}
+
+	public void setDialogMessage(String dialogMessage) {
+		this.dialogMessage = dialogMessage;
+	}
+
+	public void setDialogTitle(String dialogTitle) {
+		this.dialogTitle = dialogTitle;
+	}
+
+	@Override
+	protected Control createContents(Composite cell) {
+		textField = new Text(cell, SWT.NONE);
+		textField.setFont(cell.getFont());
+		textField.setBackground(cell.getBackground());
+		textField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent event) {
+				setValueToModel();
+			}
+		});
+
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent event) {
+				keyReleaseOccured(event);
+			}
+		});
+
+		return textField;
+	}
+
+	@Override
+	protected void keyReleaseOccured(KeyEvent keyEvent) {
+		if (keyEvent.keyCode == SWT.CR || keyEvent.keyCode == SWT.KEYPAD_CR) {
+			setValueToModel();
+		}
+		super.keyReleaseOccured(keyEvent);
+	}
+
+	protected void setValueToModel() {
+		String newValue = textField.getText();
+		boolean newValidState = isCorrect(newValue);
+		if (newValidState) {
+			markDirty();
+			doSetValue(newValue);
+		} else {
+			setErrorMessage(MessageFormat.format(getErrorMessage(),
+					new Object[] { newValue.toString() }));
+		}
+	}
+
+	@Override
+	protected void updateContents(Object value) {
+		if (textField == null) {
+			return;
+		}
+		String text = "";
+		if (value != null) {
+			text = value.toString();
+		}
+		textField.setText(text);
+
+	}
+
+	@Override
+	protected void doSetFocus() {
+		textField.setFocus();
+		textField.selectAll();
+	}
+
+	@Override
+	protected Object openDialogBox(Control cellEditorWindow) {
+		InputDialog dialog = new InputDialog(cellEditorWindow.getShell(),
+				dialogTitle, dialogMessage, getDialogInitialValue(), null);
+		return (dialog.open() == Window.OK ? dialog.getValue() : null);
+	}
+
+	protected String getDialogInitialValue() {
+		Object value = getValue();
+		return (value == null ? null : value.toString());
+	}
+}

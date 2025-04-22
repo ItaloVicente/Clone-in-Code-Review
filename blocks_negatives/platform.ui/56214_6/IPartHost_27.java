@@ -1,0 +1,64 @@
+/*******************************************************************************
+ * Copyright (c) 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ ******************************************************************************/
+
+package org.eclipse.ui.internal.menus;
+
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.menus.IWorkbenchWidget;
+
+/**
+ * @since 3.3
+ *
+ */
+public class AbstractWorkbenchWidget implements IWorkbenchWidget {
+
+	@Override
+	public void init(IWorkbenchWindow workbenchWindow) {
+
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	@Override
+	public void fill(Composite parent) {
+
+	}
+
+	@Override
+	public void fill(Menu parent, int index) {
+
+	}
+
+	@Override
+	public void fill(ToolBar parent, int index) {
+
+	}
+
+	@Override
+	public void fill(CoolBar parent, int index) {
+
+	}
+
+	/**
+	 * @return The preferred size of this item
+	 */
+	public Point getPreferredSize() {
+		return null;
+	}
+
+}

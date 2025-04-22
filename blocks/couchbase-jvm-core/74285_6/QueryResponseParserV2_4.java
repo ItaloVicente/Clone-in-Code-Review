@@ -1,0 +1,163 @@
+
+package com.couchbase.client.core.endpoint.query.parser;
+
+import com.couchbase.client.core.logging.CouchbaseLogger;
+import com.couchbase.client.core.logging.CouchbaseLoggerFactory;
+import com.couchbase.client.core.message.CouchbaseRequest;
+import com.couchbase.client.core.message.ResponseStatus;
+
+import com.couchbase.client.core.message.query.GenericQueryResponse;
+import com.couchbase.client.core.utils.UnicastAutoReleaseSubject;
+import com.couchbase.client.core.utils.yasjl.ByteBufJsonParser;
+import com.couchbase.client.core.utils.yasjl.Callbacks.JsonPointerCB1;
+import com.couchbase.client.core.utils.yasjl.JsonPointer;
+import java.io.EOFException;
+import io.netty.buffer.ByteBuf;
+import rx.Scheduler;
+import rx.subjects.AsyncSubject;
+import java.util.concurrent.TimeUnit;
+
+public class QueryResponseParserV2 extends AbstractQueryResponseParser {
+
+    private static final CouchbaseLogger LOGGER = CouchbaseLoggerFactory.getInstance(QueryResponseParserV2.class);
+
+    final private ByteBufJsonParser parser;
+    private String requestID;
+    private String clientContextID;
+    private boolean sentResponse;
+
+    public QueryResponseParserV2(Scheduler scheduler, long ttl) {
+        super(scheduler, ttl);
+        this.parser = new ByteBufJsonParser();
+    }
+
+    public void initialize(CouchbaseRequest request, ByteBuf responseContent, final ResponseStatus responseStatus) {
+        this.requestID = "";
+        this.clientContextID = ""; //initialize to empty strings instead of null as we may not receive context id sometimes
+        this.sentResponse = false;
+        this.response = null;
+        this.status = responseStatus;
+
+        JsonPointer[] jsonPointers = {
+                new JsonPointer("/requestID", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        requestID = buf.toString(CHARSET);
+                        requestID = requestID.substring(1, requestID.length() - 1);
+                        buf.release();
+
+                        queryRowObservable = UnicastAutoReleaseSubject.create(ttl, TimeUnit.MILLISECONDS, scheduler);
+                        queryErrorObservable = UnicastAutoReleaseSubject.create(ttl, TimeUnit.MILLISECONDS, scheduler);
+                        queryStatusObservable = AsyncSubject.create();
+                        queryInfoObservable = UnicastAutoReleaseSubject.create(ttl, TimeUnit.MILLISECONDS, scheduler);
+                        querySignatureObservable = UnicastAutoReleaseSubject.create(ttl, TimeUnit.MILLISECONDS, scheduler);
+                        queryRowObservable.withTraceIdentifier("queryRow." + requestID);
+                        queryErrorObservable.withTraceIdentifier("queryError." + requestID);
+                        queryInfoObservable.withTraceIdentifier("queryInfo." + requestID);
+                        querySignatureObservable.withTraceIdentifier("querySignature." + requestID);
+                    }
+                }),
+
+                new JsonPointer("/clientContextID", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        clientContextID = buf.toString(CHARSET);
+                        clientContextID = clientContextID.substring(1, clientContextID.length() - 1);
+                        buf.release();
+                    }
+                }),
+                new JsonPointer("/signature", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        if (querySignatureObservable != null) {
+                            querySignatureObservable.onNext(buf);
+                        }
+                    }
+                }),
+                new JsonPointer("/status", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        if (queryStatusObservable != null) {
+                            String statusStr = buf.toString(CHARSET);
+                            buf.release();
+
+                            statusStr = statusStr.substring(1, statusStr.length() - 1);
+                            if (!statusStr.equals("success")) {
+                                status = ResponseStatus.FAILURE;
+                            }
+                            queryStatusObservable.onNext(statusStr);
+
+                            if (!sentResponse) {
+                                createResponse();
+                            }
+                        }
+                    }
+                }),
+                new JsonPointer("/metrics", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        if (queryInfoObservable != null) {
+                            queryInfoObservable.onNext(buf);
+                        }
+                    }
+                }),
+                new JsonPointer("/results/-", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        if (queryRowObservable != null) {
+                            queryRowObservable.onNext(buf);
+                            if (response == null) {
+                                createResponse();
+                            }
+                        }
+                    }
+                }),
+                new JsonPointer("/errors/-", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        if (queryErrorObservable != null) {
+                            queryErrorObservable.onNext(buf);
+                            if (response == null) {
+                                createResponse();
+                            }
+                        }
+                    }
+                }),
+                new JsonPointer("/warnings/-", new JsonPointerCB1() {
+                    public void call(ByteBuf buf) {
+                        if (queryErrorObservable != null) {
+                            queryErrorObservable.onNext(buf);
+                            if (response == null) {
+                                createResponse();
+                            }
+                        }
+                    }
+                }),
+        };
+        this.responseContent = responseContent;
+        try {
+            parser.initialize(responseContent, jsonPointers);
+        } catch (Exception e) {
+
+        }
+        initialized = true;
+    }
+
+    private void createResponse() {
+        response = new GenericQueryResponse(
+                queryErrorObservable.onBackpressureBuffer().observeOn(scheduler),
+                queryRowObservable.onBackpressureBuffer().observeOn(scheduler),
+                querySignatureObservable.onBackpressureBuffer().observeOn(scheduler),
+                queryStatusObservable.onBackpressureBuffer().observeOn(scheduler),
+                queryInfoObservable.onBackpressureBuffer().observeOn(scheduler),
+                currentRequest,
+                status, requestID, clientContextID);
+    }
+
+    public GenericQueryResponse parse(boolean lastChunk) throws Exception {
+        try {
+            parser.parse();
+            responseContent.discardSomeReadBytes();
+        } catch (EOFException ex) {
+        }
+
+        if (!this.sentResponse && this.response != null) {
+            this.sentResponse = true;
+            return this.response;
+        }
+        return null;
+    }
+}

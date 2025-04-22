@@ -1,0 +1,12 @@
+		shell = bot.shell(UIText.ConfigureRemoteWizard_WizardTitle_New);
+		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
+		shell.bot().button(UIText.RefSpecPanel_predefinedAll).click();
+		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
+				+ remoteRepositoryFile.getPath()).toPrivateString();
+		assertEquals(testString, shell.bot().text().getText());
+		shell.bot().button(UIText.ConfigureUriPage_Add_button).click();
+		shell = bot.shell(UIText.SelectUriWiazrd_Title);
+		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		shell = bot.shell(UIText.ConfigureUriPage_DuplicateUriTitle);
+		shell.close();
+		shell = bot.shell(UIText.ConfigureRemoteWizard_WizardTitle_New);

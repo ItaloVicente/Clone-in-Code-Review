@@ -1,0 +1,16 @@
+		final ObjectInserter odi = db.newObjectInserter();
+		final ObjectId aSth = odi.insert(OBJ_BLOB, "a.sth".getBytes());
+		final ObjectId aTxt = odi.insert(OBJ_BLOB, "a.txt".getBytes());
+		final DirCache dc = db.readDirCache();
+		final DirCacheBuilder builder = dc.builder();
+		final DirCacheEntry aSthEntry = new DirCacheEntry("a.sth");
+		aSthEntry.setFileMode(FileMode.REGULAR_FILE);
+		aSthEntry.setObjectId(aSth);
+		final DirCacheEntry aTxtEntry = new DirCacheEntry("a.txt");
+		aTxtEntry.setFileMode(FileMode.REGULAR_FILE);
+		aTxtEntry.setObjectId(aTxt);
+		builder.add(aSthEntry);
+		builder.add(aTxtEntry);
+		builder.finish();
+		final ObjectId treeId = dc.writeTree(odi);
+		odi.flush();

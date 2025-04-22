@@ -1,0 +1,16 @@
+		final DirCacheEntry aSthEntry = new DirCacheEntry("a.sth");
+		aSthEntry.setFileMode(FileMode.REGULAR_FILE);
+		aSthEntry.setObjectId(aSth);
+		final DirCacheEntry aTxtEntry = new DirCacheEntry("a.txt");
+		aTxtEntry.setFileMode(FileMode.REGULAR_FILE);
+		aTxtEntry.setObjectId(aTxt);
+		builder.add(aSthEntry);
+		builder.add(aTxtEntry);
+		final DirCacheEntry bSthEntry = new DirCacheEntry("sub/b.sth");
+		bSthEntry.setFileMode(FileMode.REGULAR_FILE);
+		bSthEntry.setObjectId(bSth);
+		final DirCacheEntry bTxtEntry = new DirCacheEntry("sub/b.txt");
+		bTxtEntry.setFileMode(FileMode.REGULAR_FILE);
+		bTxtEntry.setObjectId(bTxt);
+		builder.add(bSthEntry);
+		builder.add(bTxtEntry);

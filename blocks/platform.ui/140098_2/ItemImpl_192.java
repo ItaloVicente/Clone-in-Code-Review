@@ -1,0 +1,16 @@
+		case MenuPackageImpl.ITEM__LABEL:
+			return getLabel();
+		case MenuPackageImpl.ITEM__ICON_URI:
+			return getIconURI();
+		case MenuPackageImpl.ITEM__TOOLTIP:
+			return getTooltip();
+		case MenuPackageImpl.ITEM__LOCALIZED_LABEL:
+			return getLocalizedLabel();
+		case MenuPackageImpl.ITEM__LOCALIZED_TOOLTIP:
+			return getLocalizedTooltip();
+		case MenuPackageImpl.ITEM__ENABLED:
+			return isEnabled();
+		case MenuPackageImpl.ITEM__SELECTED:
+			return isSelected();
+		case MenuPackageImpl.ITEM__TYPE:
+			return getType();

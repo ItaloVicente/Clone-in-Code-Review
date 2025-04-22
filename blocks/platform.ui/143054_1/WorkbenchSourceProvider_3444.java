@@ -1,0 +1,7 @@
+		currentState.put(ISources.ACTIVE_SITE_NAME, IEvaluationContext.UNDEFINED_VARIABLE);
+		currentState.put(ISources.ACTIVE_PART_NAME, IEvaluationContext.UNDEFINED_VARIABLE);
+		currentState.put(ISources.ACTIVE_PART_ID_NAME, IEvaluationContext.UNDEFINED_VARIABLE);
+		currentState.put(ISources.ACTIVE_EDITOR_NAME, IEvaluationContext.UNDEFINED_VARIABLE);
+		currentState.put(ISources.ACTIVE_EDITOR_ID_NAME, IEvaluationContext.UNDEFINED_VARIABLE);
+		currentState.put(ISources.SHOW_IN_INPUT, IEvaluationContext.UNDEFINED_VARIABLE);
+		currentState.put(ISources.SHOW_IN_SELECTION, IEvaluationContext.UNDEFINED_VARIABLE);

@@ -1,0 +1,10 @@
+            if (id.equals(MODEL_YEAR))
+                return Integer.toString(modelYear);
+            if (id.equals(COLOR))
+                return color;
+            if (id.equals(MANUFACTURER))
+                return manufacturer;
+            if (id.equals(MODEL))
+                return model;
+            if (id.equals(ENGINE_SIZE))
+                return Double.toString(engineSize);

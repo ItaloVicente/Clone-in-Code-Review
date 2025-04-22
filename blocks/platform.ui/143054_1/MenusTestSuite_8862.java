@@ -1,0 +1,15 @@
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		DynamicToolbarTest.class,
+		ObjectContributionTest.class,
+		MenuVisibilityTest.class,
+		MenuBaseTests.class,
+		MenuPopulationTest.class,
+		DynamicMenuTest.class,
+		Bug231304Test.class,
+		ShowViewMenuTest.class,
+		Bug264804Test.class,
+		MenuHelperTest.class,
+		Bug410426Test.class,
+})
+public class MenusTestSuite {

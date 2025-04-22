@@ -1,0 +1,14 @@
+		OVR_CHECKEDOUT = map("ovr/checkedout_ov.png"); //$NON-NLS-1$
+		OVR_STAGED = map("ovr/staged.png"); //$NON-NLS-1$
+		OVR_STAGED_ADD = map("ovr/staged_added.png"); //$NON-NLS-1$
+		OVR_STAGED_REMOVE = map("ovr/staged_removed.png"); //$NON-NLS-1$
+		OVR_STAGED_RENAME = map("ovr/staged_renamed.png"); //$NON-NLS-1$
+		OVR_UNTRACKED = map("ovr/untracked.png"); //$NON-NLS-1$
+		OVR_CONFLICT = map("ovr/conflict.png"); //$NON-NLS-1$
+		OVR_ASSUMEUNCHANGED = map("ovr/assume_unchanged.png"); //$NON-NLS-1$
+		OVR_DIRTY = map("ovr/dirty.png"); //$NON-NLS-1$
+		OVR_SYMLINK = map("ovr/symlink_ovr.png"); //$NON-NLS-1$
+		ELCL16_FIND = map("elcl16/find.png"); //$NON-NLS-1$
+		ELCL16_COMPARE_VIEW = map("elcl16/compare_view.png"); //$NON-NLS-1$
+		ELCL16_NEXT = map("elcl16/next_nav.png"); //$NON-NLS-1$
+		ELCL16_PREVIOUS = map("elcl16/prev_nav.png"); //$NON-NLS-1$

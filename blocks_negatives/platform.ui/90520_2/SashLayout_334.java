@@ -1,0 +1,351 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2015 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *     Ragnar Nevries <r.eclipse@nevri.es> - Bug 443514
+ *     Lars Vogel <Lars.Vogel@vogella.com> - Bug 472654
+ *******************************************************************************/
+package org.eclipse.e4.ui.workbench.renderers.swt;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.css.core.engine.CSSEngine;
+import org.eclipse.e4.ui.css.swt.dom.WidgetElement;
+import org.eclipse.e4.ui.internal.workbench.swt.AbstractPartRenderer;
+import org.eclipse.e4.ui.internal.workbench.swt.CSSConstants;
+import org.eclipse.e4.ui.model.application.descriptor.basic.MPartDescriptor;
+import org.eclipse.e4.ui.model.application.ui.MElementContainer;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
+import org.eclipse.e4.ui.model.application.ui.MUILabel;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.e4.ui.workbench.IPresentationEngine;
+import org.eclipse.e4.ui.workbench.IResourceUtilities;
+import org.eclipse.e4.ui.workbench.swt.util.ISWTResourceUtilities;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.accessibility.AccessibleAdapter;
+import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Widget;
+
+public abstract class SWTPartRenderer extends AbstractPartRenderer {
+
+
+	private Map<String, Image> imageMap = new HashMap<>();
+
+	private Image pinImage;
+
+	private ISWTResourceUtilities resUtils;
+
+	@Override
+	public void processContents(MElementContainer<MUIElement> container) {
+		if (container == null)
+			return;
+
+		List<MUIElement> parts = container.getChildren();
+		if (parts != null) {
+			IPresentationEngine renderer = context.get(IPresentationEngine.class);
+			for (int i = 0; i < parts.size(); i++) {
+				MUIElement childME = parts.get(i);
+				renderer.createGui(childME);
+			}
+		}
+	}
+
+	public void styleElement(MUIElement element, boolean active) {
+		if (!active)
+			element.getTags().remove(CSSConstants.CSS_ACTIVE_CLASS);
+		else
+			element.getTags().add(CSSConstants.CSS_ACTIVE_CLASS);
+
+		if (element.getWidget() != null)
+			setCSSInfo(element, element.getWidget());
+	}
+
+	public void setCSSInfo(MUIElement me, Object widget) {
+		if (widget == null)
+			return;
+
+		IEclipseContext ctxt = getContext(me);
+		if (ctxt == null) {
+			return;
+		}
+
+		final IStylingEngine engine = (IStylingEngine) ctxt
+				.get(IStylingEngine.SERVICE_NAME);
+		if (engine == null)
+			return;
+
+		EObject eObj = (EObject) me;
+		String cssClassStr = 'M' + eObj.eClass().getName();
+		for (String tag : me.getTags())
+			cssClassStr += ' ' + tag;
+
+		String id = me.getElementId();
+		if (id != null) {
+			id = id.replace('.', '-');
+		}
+		engine.setClassnameAndId(widget, cssClassStr, id);
+	}
+
+	@SuppressWarnings("restriction")
+	protected void reapplyStyles(Widget widget) {
+		CSSEngine engine = WidgetElement.getEngine(widget);
+		if (engine != null) {
+			engine.applyStyles(widget, false);
+		}
+	}
+
+	@Override
+	public void bindWidget(MUIElement me, Object widget) {
+		if (widget instanceof Widget) {
+			((Widget) widget).setData(OWNING_ME, me);
+
+			setCSSInfo(me, widget);
+
+			Widget swtWidget = (Widget) widget;
+			swtWidget.addDisposeListener(e -> {
+				MUIElement element = (MUIElement) e.widget
+						.getData(OWNING_ME);
+				if (element != null)
+					unbindWidget(element);
+			});
+		}
+
+		me.setWidget(widget);
+	}
+
+	public Object unbindWidget(MUIElement me) {
+		Widget widget = (Widget) me.getWidget();
+		if (widget != null) {
+			me.setWidget(null);
+			if (!widget.isDisposed())
+				widget.setData(OWNING_ME, null);
+		}
+
+		me.setRenderer(null);
+
+		return widget;
+	}
+
+	@Override
+	protected Widget getParentWidget(MUIElement element) {
+		return (Widget) element.getParent().getWidget();
+	}
+
+	@Override
+	public void disposeWidget(MUIElement element) {
+
+		if (element.getWidget() instanceof Widget) {
+			Widget curWidget = (Widget) element.getWidget();
+
+			if (curWidget != null && !curWidget.isDisposed()) {
+				unbindWidget(element);
+				try {
+					curWidget.dispose();
+				} catch (Exception e) {
+					Logger logService = context.get(Logger.class);
+					if (logService != null) {
+						if (element instanceof MUILabel) {
+							msg += ' ' + ((MUILabel) element)
+									.getLocalizedLabel();
+						}
+						logService.error(e, msg);
+					}
+				}
+			}
+		}
+		element.setWidget(null);
+	}
+
+	@Override
+	public void hookControllerLogic(final MUIElement me) {
+		Object widget = me.getWidget();
+
+		if (widget instanceof Control && me instanceof MUILabel) {
+			((Control) widget).getAccessible().addAccessibleListener(
+					new AccessibleAdapter() {
+						@Override
+						public void getName(AccessibleEvent e) {
+							e.result = ((MUILabel) me).getLocalizedLabel();
+						}
+					});
+		}
+	}
+
+	public String getToolTip(MUILabel element) {
+		String overrideTip = (String) ((MUIElement) element).getTransientData()
+				.get(IPresentationEngine.OVERRIDE_TITLE_TOOL_TIP_KEY);
+		return overrideTip == null ? element.getLocalizedTooltip()
+				: overrideTip;
+	}
+
+	protected Image getImageFromURI(String iconURI) {
+		if (iconURI == null || iconURI.length() == 0)
+			return null;
+
+		Image image = imageMap.get(iconURI);
+		if (image == null) {
+			image = resUtils.imageDescriptorFromURI(URI.createURI(iconURI))
+					.createImage();
+			imageMap.put(iconURI, image);
+		}
+		return image;
+	}
+
+	@Override
+	public Image getImage(MUILabel element) {
+		Image image = (Image) ((MUIElement) element).getTransientData().get(
+				IPresentationEngine.OVERRIDE_ICON_IMAGE_KEY);
+		if (image == null || image.isDisposed()) {
+			image = getImageFromURI(getIconURI(element));
+		}
+
+		if (image != null) {
+			image = adornImage((MUIElement) element, image);
+		}
+
+		return image;
+	}
+
+	private String getIconURI(MUILabel element) {
+		if (element instanceof MPart) {
+			MPart part = (MPart) element;
+			String iconURI = (String) part.getTransientData().get(
+					ICON_URI_FOR_PART);
+			if (iconURI != null) {
+				return iconURI;
+			}
+
+			MPartDescriptor desc = modelService.getPartDescriptor(part
+					.getElementId());
+			iconURI = desc != null && desc.getIconURI() != null ? desc
+					.getIconURI() : element.getIconURI();
+			part.getTransientData().put(ICON_URI_FOR_PART, iconURI);
+
+			return iconURI;
+		}
+		return element.getIconURI();
+	}
+
+	/**
+	 * @param element
+	 * @param image
+	 * @return
+	 */
+	private Image adornImage(MUIElement element, Image image) {
+		Image previouslyAdornedImage = (Image) element.getTransientData().get(
+		if (previouslyAdornedImage != null
+				&& !previouslyAdornedImage.isDisposed())
+			previouslyAdornedImage.dispose();
+		element.getTransientData().remove(IPresentationEngine.ADORNMENT_PIN);
+
+		Image adornedImage = image;
+		if (element.getTags().contains(IPresentationEngine.ADORNMENT_PIN)) {
+			adornedImage = resUtils.adornImage(image, pinImage);
+			if (adornedImage != image)
+				element.getTransientData().put(
+						"previouslyAdorned", adornedImage); //$NON-NLS-1$
+		}
+
+		return adornedImage;
+	}
+
+	/**
+	 * Calculates the index of the element in terms of the other <b>rendered</b>
+	 * elements. This is useful when 'inserting' elements in the middle of
+	 * existing, rendered parents.
+	 *
+	 * @param element
+	 *            The element to get the index for
+	 * @return The visible index or -1 if the element is not a child of the
+	 *         parent
+	 */
+	protected int calcVisibleIndex(MUIElement element) {
+		MElementContainer<MUIElement> parent = element.getParent();
+
+		int curIndex = 0;
+		for (MUIElement child : parent.getChildren()) {
+			if (child == element) {
+				return curIndex;
+			}
+
+			if (child.getWidget() != null)
+				curIndex++;
+		}
+		return -1;
+	}
+
+	protected int calcIndex(MUIElement element) {
+		MElementContainer<MUIElement> parent = element.getParent();
+		return parent.getChildren().indexOf(element);
+	}
+
+	@Override
+	public void childRendered(MElementContainer<MUIElement> parentElement, MUIElement element) {
+	}
+
+	@Override
+	public void init(IEclipseContext context) {
+		super.init(context);
+
+		resUtils = (ISWTResourceUtilities) context.get(IResourceUtilities.class
+				.getName());
+		pinImage = getImageFromURI(pinURI);
+
+		Display.getCurrent().disposeExec(() -> {
+			for (Image image : imageMap.values()) {
+				image.dispose();
+			}
+		});
+	}
+
+	@Override
+	protected boolean requiresFocus(MPart element) {
+		MUIElement focussed = getModelElement(Display.getDefault()
+				.getFocusControl());
+		if (focussed == null) {
+			return true;
+		}
+		do {
+			if (focussed == element || focussed == element.getToolbar()) {
+				return false;
+			}
+			focussed = focussed.getParent();
+		} while (focussed != null);
+		return true;
+	}
+
+	static protected MUIElement getModelElement(Control ctrl) {
+		if (ctrl == null)
+			return null;
+
+		MUIElement element = (MUIElement) ctrl
+				.getData(AbstractPartRenderer.OWNING_ME);
+		if (element != null) {
+			return element;
+		}
+
+		return getModelElement(ctrl.getParent());
+	}
+
+	@Override
+	public void forceFocus(MUIElement element) {
+		if (element.getWidget() instanceof Control) {
+			Control ctrl = (Control) element.getWidget();
+			if (!ctrl.isDisposed())
+				ctrl.forceFocus();
+		}
+	}
+
+}

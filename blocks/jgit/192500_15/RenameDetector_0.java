@@ -1,0 +1,1734 @@
+package org.eclipse.jgit.merge;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.assertj.core.util.Strings;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.MergeResult;
+import org.eclipse.jgit.api.MergeResult.MergeStatus;
+import org.eclipse.jgit.dircache.DirCacheEntry;
+import org.eclipse.jgit.errors.ConfigInvalidException;
+import org.eclipse.jgit.junit.RepositoryTestCase;
+import org.eclipse.jgit.lib.ConfigConstants;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.StoredConfig;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.junit.Before;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.FromDataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
+
+@RunWith(Theories.class)
+public class MergerRenameTest extends RepositoryTestCase {
+
+  @DataPoints
+  public static MergeStrategy[] strategiesUnderTest = new MergeStrategy[] {
+      MergeStrategy.RECURSIVE};
+
+  @Before
+  public void enableRename() throws IOException
+    StoredConfig config = db.getConfig();
+    config.setString(ConfigConstants.CONFIG_DIFF_SECTION
+    config.save();
+  }
+
+
+  private AbstractTreeIterator getTreeIterator(String name) throws IOException {
+    final ObjectId id = db.resolve(name);
+    if (id == null)
+      throw new IllegalArgumentException(name);
+    final CanonicalTreeParser p = new CanonicalTreeParser();
+    try (ObjectReader or = db.newObjectReader(); RevWalk rw = new RevWalk(db)) {
+      p.reset(or
+      return p;
+    }
+  }
+
+  public void testRename_merged(MergeStrategy strategy
+    Map<String
+    originalFiles.put(originalName
+    Map<String
+    oursFiles.put(oursName
+    Map<String
+    theirsFiles.put(theirsName
+    testRename_merged(strategy
+  }
+
+  public void testRename_merged(MergeStrategy strategy
+    if (!strategy.equals(MergeStrategy.RECURSIVE)) {
+      return;
+    }
+    MergeResult mergeResult = mergeRename(strategy
+    assertEquals(mergeResult.getMergeStatus()
+    Set<String> expectedIndexContent = new HashSet<>();
+    for (Entry<String
+      if(expectedFile.getValue() != null) {
+        assertEquals(expectedFile.getValue()
+        expectedIndexContent.add(String.format("%s
+            expectedFile.getValue()));
+      } else {
+        assertFalse(check(expectedFile.getKey()));
+      }
+    }
+    Set<String> stagedFiles = Arrays.asList(indexState(CONTENT).split("\\[|\\]")).stream()
+        .filter(s ->
+            !Strings.isNullOrEmpty(s)).collect(Collectors.toSet());
+    assertEquals(stagedFiles
+  }
+
+  public void testRename_withConflict(MergeStrategy strategy
+    if (!strategy.equals(MergeStrategy.RECURSIVE)) {
+      return;
+    }
+    MergeResult mergeResult = mergeRename(strategy
+    assertEquals(mergeResult.getMergeStatus()
+    assertTrue(mergeResult.getFailingPaths() == null);
+    assertEquals(mergeResult.getConflicts().keySet()
+    for (Entry<String
+      if (expectedFile.getValue() == null) {
+        assertFalse(check(expectedFile.getKey()));
+      } else if (expectedFile.getValue().startsWith("<<<<<<<")) {
+        assertTrue(read(expectedFile.getKey()).contains(expectedFile.getValue()));
+      } else {
+        assertEquals(expectedFile.getValue()
+      }
+    }
+  }
+
+  public void testRename_withConflict(MergeStrategy strategy
+
+    testRename_withConflict(strategy
+        theirsFilesToContents
+
+    Set<String> stagedFiles = Arrays.asList(indexState(CONTENT).split("\\[|\\]")).stream()
+        .filter(s ->
+            !Strings.isNullOrEmpty(s)).collect(Collectors.toSet());
+    assertEquals(stagedFiles
+  }
+
+  private MergeResult mergeRename(MergeStrategy strategy
+    Git git = Git.wrap(db);
+    for (Entry<String
+      writeTrashFile(originalFile.getKey()
+      git.add().addFilepattern(originalFile.getKey()).call();
+    }
+    RevCommit commitI = git.commit().setMessage("Initial commit").call();
+
+    git.checkout().setCreateBranch(true).setStartPoint(commitI).setName("second-branch").call();
+    for (Entry<String
+      git.rm().addFilepattern(originalFile.getKey()).call();
+    }
+    for (Entry<String
+      writeTrashFile(theirsFile.getKey()
+      git.add().addFilepattern(theirsFile.getKey()).call();
+    }
+    RevCommit mergeCommit = git.commit().setMessage("Commit on second-branch").call();
+
+    git.checkout().setName("master").call();
+
+    for (Entry<String
+      git.rm().addFilepattern(originalFile.getKey()).call();
+    }
+    for (Entry<String
+      writeTrashFile(oursFile.getKey()
+      git.add().addFilepattern(oursFile.getKey()).call();
+    }
+
+    RevCommit headCommit = git.commit().setMessage("Commit on master")
+        .call();
+
+    return git.merge().include(mergeCommit).setStrategy(strategy).call();
+  }
+
+
+  @DataPoints("renameLists")
+  public static final List<List<Entry<String
+      List.of(Map.entry("test/file2"
+      List.of(Map.entry("test/file1"
+      List.of(Map.entry("test/a/file1"
+      List.of(Map.entry("test/z/file1"
+      List.of(Map.entry("test/file1"
+      List.of(Map.entry("test/file1"
+      List.of(Map.entry("test/file1"
+      List.of(Map.entry("test/file1"
+      List.of(Map.entry("test/w/file1"
+      List.of(Map.entry("test/a/file1"
+      List.of(Map.entry("test/w/file1"
+      List.of(Map.entry("test/a/file1"
+  );
+
+
+  public void testRenameModify_merged(MergeStrategy strategy
+
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    Map<String
+    for (Entry<String
+      originalFiles.put(renamePair.getKey()
+    }
+    Map<String
+    for (Entry<String
+      noRenameFiles.put(renamePair.getKey()
+    }
+    Map<String
+    for (Entry<String
+      renameFiles.put(renamePair.getValue()
+    }
+    Map<String
+
+    for (Entry<String
+      expectedFiles.put(renamePair.getValue()
+    }
+    testRename_merged(strategy
+        isRenameInOurs ? noRenameFiles : renameFiles
+  }
+
+  @Theory
+  public void checkRenameModifyFile_merged(MergeStrategy strategy
+    testRenameModify_merged(strategy
+
+  }
+
+  @DataPoints("renameListsSplit")
+  public static final List<List<Entry<String
+      List.of(Map.entry("test/a/file1"
+          Map.entry("test/a/file2"
+      List.of(Map.entry("test/a/file1"
+          Map.entry("test/a/file2"
+      List.of(Map.entry("test/a/file1"
+          Map.entry("test/a/file2"
+
+      List.of(Map.entry("test/a/file1"
+          Map.entry("test/a/file2"
+      List.of(Map.entry("test/a/file1"
+          Map.entry("test/a/file2"
+  );
+
+  @Theory
+  public void checkRenameSplitDir_merged(MergeStrategy strategy
+    testRenameModify_merged(strategy
+
+  }
+
+
+  @Theory
+  public void checkRenameModify_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent1 = "z\na\nb\nc";
+
+    String slightlyModifiedContent2 = "a\nb\nc\nd";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    renameFiles.put(renameFilename
+    Map<String
+    otherFiles.put(originalFilename
+
+    String expectedRenameContent = modifyInRename && modifyInOther ? "z\na\nb\nc\nd"
+        : modifyInRename ? slightlyModifiedContent1
+            : modifyInOther ? slightlyModifiedContent2 : originalContent;
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+
+    testRename_merged(strategy
+        isRenameInOurs ? otherFiles : renameFiles
+  }
+
+  @Theory
+  public void checkRenameModify_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String oursContent = "a\nb\nc\nx";
+
+    String theirsContent = "a\nb\nc\nd";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    renameFiles.put(renameFilename
+    Map<String
+    otherFiles.put(originalFilename
+
+    Map<String
+    expectedFiles.put(renameFilename
+        + "x\n"
+        + "=======\n"
+        + "d\n");
+    expectedFiles.put(originalFilename
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(String.format("%s
+        renameFilename
+    expectedIndex.add(String.format("%s
+        renameFilename
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? otherFiles : renameFiles
+  }
+
+  @Theory
+  public void checkRenameBothModify_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent1 = "z\na\nb\nc";
+
+    String slightlyModifiedContent2 = "a\nb\nc\nd";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    renameFiles.put(renameFilename
+    Map<String
+    otherFiles.put(renameFilename
+
+    String expectedRenameContent = modifyInRename && modifyInOther ? "z\na\nb\nc\nd"
+        : modifyInRename ? slightlyModifiedContent1
+            : modifyInOther ? slightlyModifiedContent2 : originalContent;
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+
+    testRename_merged(strategy
+        isRenameInOurs ? otherFiles : renameFiles
+  }
+
+
+
+  @Theory
+  public void checkRenameBothModify_conflict(MergeStrategy strategy) throws Exception {
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String oursContent = "a\nb\nc\nx";
+
+    String theirsContent = "a\nb\nc\nd";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    oursFiles.put(renameFilename
+    Map<String
+    theirsFiles.put(renameFilename
+
+    Map<String
+    expectedFiles.put(renameFilename
+        + "x\n"
+        + "=======\n"
+        + "d\n");
+    expectedFiles.put(originalFilename
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(String.format("%s
+        renameFilename
+    expectedIndex.add(String.format("%s
+        renameFilename
+
+    testRename_withConflict(strategy
+        theirsFiles
+  }
+
+  @Theory
+  public void checkCrossSidesRename_notDetected_merged(MergeStrategy strategy) throws Exception {
+    String originalFilename = "test/file1";
+    String originalContent = "Unrelated base file";
+    String renameFileContent = "Identical merge-side-file";
+    String oursFilename = "test/file2";
+    String theirsFilename = "test/file3";
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    oursFiles.put(oursFilename
+    Map<String
+    theirsFiles.put(theirsFilename
+
+    Map<String
+    expectedFiles.put(oursFilename
+    expectedFiles.put(theirsFilename
+    expectedFiles.put(originalFilename
+
+    testRename_merged(strategy
+  }
+
+
+  @Theory
+  public void checkRenameWithReplace_merged(MergeStrategy strategy
+
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithModify.put(originalFilename
+    Map<String
+    filesWithRename.put(renameFilename
+
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+  }
+
+  @Theory
+  public void checkRenameWithReplace_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithModify.put(originalFilename
+    Map<String
+    filesWithRename.put(renameFilename
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int modifyStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent));
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated content"));
+
+    Map<String
+    expectedFiles.put(renameFilename
+            + "=======" +
+            "\n%s\n>>>>>>>"
+        isRenameInOurs ? "Unrelated content" : slightlyModifiedContent));
+    expectedFiles.put(originalFilename
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+        expectedIndex);
+  }
+
+
+  @Theory
+  public void checkRenameRename_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String oursFilename = "test/file2";
+    String oursContent = modifyInOurs ? slightlyModifiedContent : originalContent;
+    String theirsFilename = "test/file3";
+    String theirsContent = modifyInTheirs ? slightlyModifiedContent : originalContent;
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    oursFiles.put(oursFilename
+    Map<String
+    theirsFiles.put(theirsFilename
+
+    Map<String
+    expectedFiles.put(originalFilename
+    expectedFiles.put(oursFilename
+    expectedFiles.put(theirsFilename
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(originalFilename);
+    expectedConflicts.add(oursFilename);
+    expectedConflicts.add(theirsFilename);
+
+    Set<String> expectedIndex = new HashSet<>();
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+    testRename_withConflict(strategy
+        expectedConflicts
+  }
+
+  @Theory
+  public void checkRenameDelete_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    Map<String
+    filesWithRename.put(renameFilename
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int deleteStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+            shouldModify ? slightlyModifiedContent : originalContent));
+
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithDelete
+        isRenameInOurs ? filesWithDelete : filesWithRename
+        expectedIndex);
+  }
+
+  @Theory
+  public void checkDelete_conflict(MergeStrategy strategy
+
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    Map<String
+    filesWithRename.put(originalFilename
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(originalFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int deleteStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+
+    Map<String
+    expectedFiles.put(originalFilename
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithDelete
+        isRenameInOurs ? filesWithDelete : filesWithRename
+        expectedIndex);
+  }
+
+  @Theory
+  public void checkRenameAddCollision_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithModify.put(renameFilename
+    filesWithModify.put(originalFilename
+        shouldModifyOriginal ? slightlyModifiedContent : originalContent);
+    Map<String
+    filesWithRename.put(renameFilename
+        shouldModifyRename ? slightlyModifiedContent : originalContent);
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    if (shouldModifyOriginal) {
+      expectedConflicts.add(originalFilename);
+    }
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int modifyStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    if (shouldModifyOriginal) {
+      expectedIndex.add(
+          String.format("%s
+      expectedIndex.add(
+          String.format("%s
+              filesWithModify.get(originalFilename)));
+    }
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            filesWithRename.get(renameFilename)));
+
+    Map<String
+    String oursContent = isRenameInOurs ? filesWithRename.get(renameFilename) : "Unrelated file";
+    String theirsContent =
+        isRenameInOurs ? "Unrelated file" : filesWithRename.get(renameFilename);
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+    if(shouldModifyOriginal) {
+      expectedFiles.put(originalFilename
+          shouldModifyOriginal ? slightlyModifiedContent : originalContent);
+    }
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+        expectedIndex);
+  }
+
+  @Theory
+  public void checkRenameModifyCollision_collisionUnchanged_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename
+    Map<String
+    filesWithModify.put(originalFilename
+        shouldModifyOriginal ? slightlyModifiedContent : originalContent);
+    filesWithModify.put(renameFilename
+    Map<String
+    filesWithRename.put(renameFilename
+        shouldModifyRename ? slightlyModifiedContent : originalContent);
+    Map<String
+    expectedFiles.put(renameFilename
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+  }
+
+  @Theory
+  public void checkRenameModifyCollision_collisionUnchanged_conflicting(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename
+    Map<String
+    filesWithModify.put(renameFilename
+    filesWithModify.put(originalFilename
+        shouldModifyOriginal ? slightlyModifiedContent : originalContent);
+    Map<String
+    filesWithRename.put(renameFilename
+        shouldModifyRename ? slightlyModifiedContent : originalContent);
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    if (shouldModifyOriginal) {
+      expectedConflicts.add(originalFilename);
+    }
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int modifyStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    if (shouldModifyOriginal) {
+      expectedIndex.add(
+          String.format("%s
+      expectedIndex.add(
+          String.format("%s
+              filesWithModify.get(originalFilename)));
+    }
+    expectedIndex.add(
+        String.format("%s
+            "Original unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            filesWithRename.get(renameFilename)));
+
+    Map<String
+    String oursContent = isRenameInOurs ? filesWithRename.get(renameFilename) : "Unrelated file";
+    String theirsContent =
+        isRenameInOurs ? "Unrelated file" : filesWithRename.get(renameFilename);
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+    if(shouldModifyOriginal) {
+      expectedFiles.put(originalFilename
+          shouldModifyOriginal ? slightlyModifiedContent : originalContent);
+    }
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+        expectedIndex);
+  }
+
+
+  @Theory
+  public void checkRenameAddCollision_withRenameDelete_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithModify.put(renameFilename
+    Map<String
+    filesWithRename.put(renameFilename
+        shouldModifyRename ? slightlyModifiedContent : originalContent);
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int modifyStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            shouldModifyRename ? slightlyModifiedContent : originalContent));
+
+    Map<String
+
+    String oursContent = isRenameInOurs? filesWithRename.get(renameFilename): filesWithModify.get(renameFilename);
+    String theirsContent = isRenameInOurs? filesWithModify.get(renameFilename): filesWithRename.get(renameFilename);
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+    expectedFiles.put(originalFilename
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+        expectedIndex);
+  }
+
+
+  @Theory
+  public void checkFilesNamesSwappedOnSides_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename
+    Map<String
+    filesWithModify.put(originalFilename
+        shouldModifyOriginal ? slightlyModifiedContent : originalContent);
+    filesWithModify.put(renameFilename
+    Map<String
+    filesWithRename.put(renameFilename
+        shouldModifyRename ? slightlyModifiedContent : originalContent);
+    filesWithRename.put(originalFilename
+
+    Map<String
+    Map<String
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    if (shouldModifyOriginal) {
+      expectedConflicts.add(originalFilename);
+    }
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int modifyStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    if (shouldModifyOriginal) {
+      expectedIndex.add(
+          String.format("%s
+      expectedIndex.add(
+          String.format("%s
+              shouldModifyOriginal ? slightlyModifiedContent : originalContent));
+      expectedIndex.add(
+          String.format("%s
+              "Unrelated file"));
+    } else {
+      expectedIndex.add(
+          String.format("%s
+    }
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            shouldModifyRename? slightlyModifiedContent: originalContent));
+
+    Map<String
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+            theirsFiles.get(renameFilename)));
+    if(shouldModifyOriginal) {
+      expectedFiles.put(originalFilename
+          String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+              theirsFiles.get(originalFilename)));
+    } else {
+      expectedFiles.put(originalFilename
+    }
+
+    testRename_withConflict(strategy
+        expectedConflicts
+  }
+
+
+  @Theory
+  public void checkRenameSameTarget_differentSource_conflict(MergeStrategy strategy
+    String originalFilename1 = "test/file1";
+    String originalFilename2 = "test/file2";
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\ny\ny";
+    String renameFilename = "test/file3";
+
+    Map<String
+    originalFiles.put(originalFilename1
+    originalFiles.put(originalFilename2
+    Map<String
+    oursFiles.put(renameFilename
+        keepOriginalContent ? originalContent1 : slightlyModifiedContent1);
+    Map<String
+    theirsFiles.put(renameFilename
+        keepOriginalContent ? originalContent2 : slightlyModifiedContent2);
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    expectedIndex.add(String.format("%s
+        oursFiles.get(renameFilename)));
+    expectedIndex.add(String.format("%s
+        theirsFiles.get(renameFilename)));
+    Map<String
+    expectedFiles.put(originalFilename1
+    expectedFiles.put(originalFilename2
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s\n>>>>>>>"
+            theirsFiles.get(renameFilename)));
+
+    testRename_withConflict(strategy
+        expectedConflicts
+  }
+
+
+  @Theory
+  public void checkSourceAddedOnRenameSide_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent1 = "z\na\nb\nc";
+
+    String slightlyModifiedContent2 = "a\nb\nc\nd";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithModify.put(originalFilename
+        modifyInRename ? slightlyModifiedContent1 : originalContent);
+    Map<String
+    filesWithRename.put(renameFilename
+    filesWithRename.put(originalFilename
+
+    String expectedRenameContent = modifyInRename && modifyInOther ? "z\na\nb\nc\nd"
+        : modifyInRename ? slightlyModifiedContent1
+            : modifyInOther ? slightlyModifiedContent2 : originalContent;
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithModify : filesWithRename
+  }
+
+  @Theory
+  public void checkSourceAdded_renameOnBothSides_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithAdd.put(renameFilename
+    filesWithAdd.put(originalFilename
+    Map<String
+    filesWithRename.put(renameFilename
+
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+    testRename_merged(strategy
+        isAddInOurs ? filesWithRename : filesWithAdd
+  }
+
+  @Theory
+  public void checkSourceAddedOnBothSides_renameOnBothSides_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String mergeContent1 = "Content 1";
+
+    String mergeContent2 = "Content 2";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    oursFiles.put(renameFilename
+    oursFiles.put(originalFilename
+    Map<String
+    theirsFiles.put(renameFilename
+    theirsFiles.put(originalFilename
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(originalFilename);
+    testRename_withConflict(strategy
+  }
+
+  @Theory
+  public void checkSourceAddedOnBothSides_withModification_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithModify.put(originalFilename
+    Map<String
+    filesWithRename.put(renameFilename
+    filesWithRename.put(originalFilename
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int modifyStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent));
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated file"));
+
+    String oursContent = isRenameInOurs ? filesWithRename.get(renameFilename) : "Unrelated file";
+    String theirsContent =
+        isRenameInOurs ? "Unrelated file" : filesWithRename.get(renameFilename);
+    Map<String
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+    expectedFiles.put(originalFilename
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+        expectedIndex);
+  }
+
+  @Theory
+  public void checkSourceAddedOnBothSides_noModification_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithModify.put(originalFilename
+    Map<String
+    filesWithRename.put(renameFilename
+    filesWithRename.put(originalFilename
+
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithRename : filesWithModify
+        isRenameInOurs ? filesWithModify : filesWithRename
+  }
+
+  @Theory
+  public void checkRenameModify_withRenameExistedInBase_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename
+    Map<String
+    filesWithModify.put(originalFilename
+        shouldModifyOurs ? slightlyModifiedContent : originalContent);
+    Map<String
+    filesWithRename.put(renameFilename
+        shouldModifyTheirs ? slightlyModifiedContent : originalContent);
+
+    Map<String
+    expectedFiles.put(renameFilename
+
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithModify : filesWithRename
+  }
+
+  @Theory
+  public void checkRenameBoth_withRenameExistedInBase_merged(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename
+    Map<String
+    oursFiles.put(renameFilename
+        shouldModifyOurs ? slightlyModifiedContent : originalContent);
+    Map<String
+    theirsFiles.put(renameFilename
+        shouldModifyTheirs ? slightlyModifiedContent : originalContent);
+
+    Map<String
+    expectedFiles.put(renameFilename
+
+    testRename_merged(strategy
+        theirsFiles
+  }
+
+
+  @Theory
+  public void checkSourceAddedOnRenameSide_withRenameDeleteConflict_conflicting(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    Map<String
+    filesWithRename.put(renameFilename
+    filesWithRename.put(originalFilename
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    int renameStage = isRenameInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int deleteStage = isRenameInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+            shouldModify ? slightlyModifiedContent : originalContent));
+
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+
+    testRename_withConflict(strategy
+        isRenameInOurs ? filesWithRename : filesWithDelete
+        isRenameInOurs ? filesWithDelete : filesWithRename
+        expectedIndex);
+  }
+
+  @Theory
+  public void checkMultipleRenames_correlationOnSource_renameModify_renameDelete_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename = "test/file2";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename
+    Map<String
+    filesWithRenameSwap.put(renameFilename
+    filesWithRenameSwap.put(originalFilename
+    Map<String
+    filesWithRenameDelete.put(shouldRenameBothSides? renameFilename :originalFilename
+
+    Map<String
+    expectedFiles.put(renameFilename
+    expectedFiles.put(originalFilename
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(originalFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    int renameSwapStage = isSwapInOurs? DirCacheEntry.STAGE_2: DirCacheEntry.STAGE_3;
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(String.format("%s
+        originalFilename
+
+    testRename_withConflict(strategy
+        isSwapInOurs ? filesWithRenameDelete : filesWithRenameSwap
+  }
+
+  @Theory
+  public void checkMultipleRenames_swapRename_merged(MergeStrategy strategy
+    String renameFilename1 = "test/file1";
+    String originalContent1 = "a\nb\nc";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String renameFilename2 = "test/file2";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent2 = "x\ny\ny";
+
+    Map<String
+    originalFiles.put(renameFilename1
+    originalFiles.put(renameFilename2
+    Map<String
+    oursFilesWithRename.put(renameFilename2
+        shouldModifyRename1 ? slightlyModifiedContent1 : originalContent1);
+    oursFilesWithRename.put(renameFilename1
+        shouldModifyRename2 ? slightlyModifiedContent2 : originalContent2);
+    Map<String
+    theirsFilesWithRename.put(renameFilename2
+        shouldModifyRename1 ? slightlyModifiedContent1 : originalContent1);
+    theirsFilesWithRename.put(renameFilename1
+        shouldModifyRename2 ? slightlyModifiedContent2 : originalContent2);
+
+    Map<String
+    expectedFiles.put(renameFilename2
+        shouldModifyRename1 ? slightlyModifiedContent1 : originalContent1);
+    expectedFiles.put(renameFilename1
+        shouldModifyRename2 ? slightlyModifiedContent2 : originalContent2);
+    testRename_merged(strategy
+        expectedFiles);
+  }
+
+  @Theory
+  public void  checkRenameSameTarget_differentSource_wihSourcePresentOnSides_conflict(MergeStrategy strategy
+    String originalFilename1 = "test/file1";
+    String originalFilename2 = "test/file2";
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\ny\ny";
+    String renameFilename = "test/file3";
+
+    Map<String
+    originalFiles.put(originalFilename1
+    originalFiles.put(originalFilename2
+    Map<String
+    oursFiles.put(renameFilename
+        keepOriginalContent ? originalContent1 : slightlyModifiedContent1);
+    oursFiles.put(originalFilename2
+        keepOriginalContent ? originalContent2 : slightlyModifiedContent2);
+    Map<String
+    theirsFiles.put(renameFilename
+        keepOriginalContent ? originalContent2 : slightlyModifiedContent2);
+    theirsFiles.put(originalFilename1
+        keepOriginalContent ? originalContent1 : slightlyModifiedContent1);
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    if(!keepOriginalContent) {
+      expectedConflicts.add(originalFilename1);
+      expectedConflicts.add(originalFilename2);
+    }
+    Set<String> expectedIndex = new HashSet<>();
+    expectedIndex.add(String.format("%s
+        oursFiles.get(renameFilename)));
+    expectedIndex.add(String.format("%s
+        theirsFiles.get(renameFilename)));
+    if(!keepOriginalContent) {
+      expectedIndex.add(
+          String.format("%s
+              originalContent1));
+      expectedIndex.add(
+          String.format("%s
+              originalContent2));
+      expectedIndex.add(String.format("%s
+          oursFiles.get(originalFilename2)));
+      expectedIndex.add(String.format("%s
+          theirsFiles.get(originalFilename1)));
+    }
+
+    Map<String
+    if(!keepOriginalContent) {
+      expectedFiles.put(originalFilename1
+      expectedFiles.put(originalFilename2
+    } else {
+      expectedFiles.put(originalFilename1
+      expectedFiles.put(originalFilename2
+    }
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s\n>>>>>>>"
+            theirsFiles.get(renameFilename)));
+
+    testRename_withConflict(strategy
+        expectedConflicts
+  }
+
+  @Theory
+  public void  checkMultipleRenames_renameSameTarget_differentSource_conflict(MergeStrategy strategy
+    String originalFilename1 = "test/file1";
+    String originalFilename2 = "test/file2";
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\ny\ny";
+    String renameFilename = "test/file3";
+    String correlatingRenameContent = "Correlating rename";
+    Map<String
+    originalFiles.put(originalFilename1
+    originalFiles.put(originalFilename2
+    originalFiles.put(renameFilename
+    Map<String
+    oursFiles.put(renameFilename
+        keepOriginalContent ? originalContent1 : slightlyModifiedContent1);
+    oursFiles.put(originalFilename1
+    Map<String
+
+    theirsFiles.put(renameFilename
+        keepOriginalContent ? originalContent2 : slightlyModifiedContent2);
+    theirsFiles.put(originalFilename1
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename);
+    Set<String> expectedIndex = new HashSet<>();
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(String.format("%s
+        oursFiles.get(renameFilename)));
+    expectedIndex.add(String.format("%s
+        theirsFiles.get(renameFilename)));
+
+    Map<String
+    expectedFiles.put(renameFilename
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s\n>>>>>>>"
+            theirsFiles.get(renameFilename)));
+    expectedFiles.put(originalFilename1
+
+    testRename_withConflict(strategy
+        expectedConflicts
+  }
+
+  @Theory
+  public void checkRenameRename_withSourceAdded_conflict(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    String renameFilename1 = "test/file2";
+    String renameFilename2 = "test/file3";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithAdd.put(renameFilename1
+    filesWithAdd.put(originalFilename
+    Map<String
+    filesWithRename.put(renameFilename2
+
+    Map<String
+    expectedFiles.put(originalFilename
+    expectedFiles.put(renameFilename1
+    expectedFiles.put(renameFilename2
+    testRename_merged(strategy
+  }
+
+  @Theory
+  public void checkRenameRename_withSourceAddedOnBothSides_merged(MergeStrategy strategy) throws Exception {
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "a\nb\nc\nd";
+    String renameFilename1 = "test/file2";
+    String renameFilename2 = "test/file3";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    oursFiles.put(originalFilename
+    oursFiles.put(renameFilename1
+    Map<String
+    theirsFile.put(originalFilename
+    theirsFile.put(renameFilename2
+
+    Map<String
+    expectedFiles.put(originalFilename
+    expectedFiles.put(renameFilename1
+    expectedFiles.put(renameFilename2
+    testRename_merged(strategy
+  }
+
+  @Theory
+  public void checkRenameRename_withRenameAddCollision_conflicting(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "a\nb\nc\nd";
+    String renameFilename1 = "test/file2";
+    String renameFilename2 = "test/file3";
+
+    Map<String
+    originalFiles.put(originalFilename
+    Map<String
+    filesWithAdd.put(renameFilename1
+    filesWithAdd.put(renameFilename2
+    Map<String
+    filesWithRename.put(renameFilename2
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename2);
+    Set<String> expectedIndex = new HashSet<>();
+    int modifyStage = isAddInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int renameStage = isAddInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent1));
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent2));
+
+    Map<String
+    expectedFiles.put(originalFilename
+    expectedFiles.put(renameFilename1
+    String oursContent = isAddInOurs ? "Unrelated file": slightlyModifiedContent2;
+    String theirsContent =
+        isAddInOurs ? slightlyModifiedContent2 : "Unrelated file";
+    expectedFiles.put(renameFilename2
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+    testRename_withConflict(strategy
+        isAddInOurs ? filesWithRename : filesWithAdd
+        expectedIndex);
+  }
+
+  @Theory
+  public void checkRenameRename_withRenameModifyCollision_conflicting(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "a\nb\nc\nd";
+    String renameFilename1 = "test/file2";
+    String renameFilename2 = "test/file3";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename2
+
+    Map<String
+    filesWithAdd.put(renameFilename1
+    filesWithAdd.put(renameFilename2
+    Map<String
+    filesWithRename.put(renameFilename2
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(renameFilename2);
+    Set<String> expectedIndex = new HashSet<>();
+    int modifyStage = isAddInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int renameStage = isAddInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent1));
+    expectedIndex.add(
+        String.format("%s
+            "Base unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            "Unrelated file"));
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent2));
+
+    Map<String
+    expectedFiles.put(originalFilename
+    expectedFiles.put(renameFilename1
+    String oursContent = isAddInOurs ? "Unrelated file": slightlyModifiedContent2;
+    String theirsContent =
+        isAddInOurs ? slightlyModifiedContent2 : "Unrelated file";
+    expectedFiles.put(renameFilename2
+        String.format("<<<<<<< HEAD\n%s\n=======\n%s"
+    testRename_withConflict(strategy
+        isAddInOurs ? filesWithRename : filesWithAdd
+        expectedIndex);
+  }
+
+  @Theory
+  public void checkRenameRename_withRenameCollision_conflicting(MergeStrategy strategy
+    String originalFilename = "test/file1";
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "a\nb\nc\nd";
+    String renameFilename1 = "test/file2";
+    String renameFilename2 = "test/file3";
+
+    Map<String
+    originalFiles.put(originalFilename
+    originalFiles.put(renameFilename2
+
+    Map<String
+    filesWithAdd.put(renameFilename1
+    filesWithAdd.put(renameFilename2
+    Map<String
+    filesWithRename.put(renameFilename2
+
+    Set<String> expectedConflicts = new HashSet<>();
+    expectedConflicts.add(originalFilename);
+    expectedConflicts.add(renameFilename1);
+    expectedConflicts.add(renameFilename2);
+    Set<String> expectedIndex = new HashSet<>();
+    int modifyStage = isAddInOurs ? DirCacheEntry.STAGE_2 : DirCacheEntry.STAGE_3;
+    int renameStage = isAddInOurs ? DirCacheEntry.STAGE_3 : DirCacheEntry.STAGE_2;
+    expectedIndex.add(
+        String.format("%s
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent1));
+    expectedIndex.add(
+        String.format("%s
+            slightlyModifiedContent2));
+
+    Map<String
+    expectedFiles.put(originalFilename
+    expectedFiles.put(renameFilename1
+    expectedFiles.put(renameFilename2
+    testRename_withConflict(strategy
+        isAddInOurs ? filesWithRename : filesWithAdd
+        expectedIndex);
+  }
+
+
+
+
+  @DataPoints("fileAdditions")
+  public static final List<String> fileAdditionsData = List.of("file1.1"
+
+  @DataPoints("singleRenamePairs")
+  public static final List<Entry<String
+      Map.entry("test/file2"
+      Map.entry("test/file1"
+      Map.entry("test/a/file1"
+      Map.entry("test/z/file1"
+      Map.entry("test/file1"
+      Map.entry("test/file1"
+      Map.entry("test/file1"
+      Map.entry("test/file1"
+      Map.entry("test/w/file1"
+      Map.entry("test/a/file1"
+      Map.entry("test/w/file1"
+      Map.entry("test/a/file1"
+
+  @Theory
+  public void checkRenameModify_withFilesInSameDir_merged(MergeStrategy strategy
+    String originalContent = "a\nb\nc";
+    Map<String
+    originalFiles.put(renamePair.getKey()
+    Map<String
+    nonRenameFiles.put(renamePair.getKey()
+    String addedFile = getDir(renamePair.getKey()) + "/" + fileAddition;
+    nonRenameFiles.put(addedFile
+    Map<String
+    filesWithRename.put(renamePair.getValue()
+    Map<String
+
+    expectedFiles.put(renamePair.getValue()
+    expectedFiles.put(addedFile
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithRename : nonRenameFiles
+        isRenameInOurs ? nonRenameFiles : filesWithRename
+  }
+
+  @Theory
+  public void checkRenameMoveToParent_withFilesInSameDir_merged(MergeStrategy strategy
+    String originalContent = "a\nb\nc";
+    Map<String
+    originalFiles.put("test/a/file1"
+    Map<String
+    nonRenameFiles.put("test/a/file1"
+    nonRenameFiles.put("test/a/file1.1"
+    Map<String
+    filesWithRename.put("test/file1"
+    Map<String
+    expectedFiles.put("test/file1"
+    expectedFiles.put("test/a/file1.1"
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithRename : nonRenameFiles
+        isRenameInOurs ? nonRenameFiles : filesWithRename
+  }
+
+  @Theory
+  public void checkRenameToSubDir_withFilesInSameDir_merged(MergeStrategy strategy
+    String originalContent = "a\nb\nc";
+    Map<String
+    originalFiles.put("test/file1"
+    Map<String
+    nonRenameFiles.put("test/file1"
+    nonRenameFiles.put("test/file1.1"
+    Map<String
+    filesWithRename.put("test/a/file1"
+    Map<String
+    expectedFiles.put("test/a/file1"
+    expectedFiles.put("test/file1.1"
+    testRename_merged(strategy
+        isRenameInOurs ? filesWithRename : nonRenameFiles
+        isRenameInOurs ? nonRenameFiles : filesWithRename
+
+  }
+
+  @Theory
+  public void checkRenameDir_AllFilesMoved_modifyConflict(MergeStrategy strategy) throws Exception {
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\nz\nz";
+    Map<String
+    originalFiles.put("test/a/file1"
+    originalFiles.put("test/a/file2"
+    Map<String
+    oursFiles.put("test/a/file1"
+    oursFiles.put("test/a/file2"
+    Map<String
+    theirsFiles.put("test/sub/file1"
+    theirsFiles.put("test/sub/file2"
+    Map<String
+    expectedFiles.put("test/sub/file1"
+    expectedFiles.put("test/sub/file2"
+    testRename_merged(strategy
+
+  }
+
+  @Theory
+  public void checkRenameSubDir_AllFilesMoved_SomeFilesAddedOnRenameSide_modifyConflict(MergeStrategy strategy
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    Map<String
+    for (Entry<String
+      originalFiles.put(renamePair.getKey()
+    }
+    Map<String
+    for (Entry<String
+      noRenameFiles.put(renamePair.getKey()
+    }
+    Map<String
+    for (Entry<String
+      renameFiles.put(renamePair.getValue()
+    }
+    String renameDir = getDir(renamePairs.get(0).getValue());
+    for (String fileAddition : fileAdditionsData) {
+      renameFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    Map<String
+    for (Entry<String
+      expectedFiles.put(renamePair.getValue()
+    }
+    for (String fileAddition : fileAdditionsData) {
+      expectedFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    testRename_merged(strategy
+        isRenameInOurs ? noRenameFiles : renameFiles
+  }
+
+  @Theory
+  public void checkRenameSubDir_AllFilesMoved_SomeFilesAddedOnModifySide_modifyConflict(MergeStrategy strategy
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    Map<String
+    for (Entry<String
+      originalFiles.put(renamePair.getKey()
+    }
+    Map<String
+    for (Entry<String
+      noRenameFiles.put(renamePair.getKey()
+    }
+    String originalDir = getDir(renamePairs.get(0).getKey());
+    for (String fileAddition : fileAdditionsData) {
+      noRenameFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    Map<String
+    for (Entry<String
+      renameFiles.put(renamePair.getValue()
+    }
+    Map<String
+    for (Entry<String
+      expectedFiles.put(renamePair.getValue()
+    }
+    for (String fileAddition : fileAdditionsData) {
+      expectedFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    testRename_merged(strategy
+        isRenameInOurs ? noRenameFiles : renameFiles
+  }
+
+
+  @Theory
+  public void checkRenameSubDir_AllFilesMoved_SomeFilesAddedOnBothSides_modifyConflict(MergeStrategy strategy
+    String originalContent = "a\nb\nc";
+    String slightlyModifiedContent = "a\nb\nb";
+    Map<String
+    for (Entry<String
+      originalFiles.put(renamePair.getKey()
+    }
+    Map<String
+    for (Entry<String
+      noRenameFiles.put(renamePair.getKey()
+    }
+    String originalDir = getDir(renamePairs.get(0).getKey());
+    for (String fileAddition : fileAdditionsData) {
+      noRenameFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    Map<String
+    for (Entry<String
+      renameFiles.put(renamePair.getValue()
+    }
+    String renameDir = getDir(renamePairs.get(0).getValue());
+    for (String fileAddition : fileAdditionsData) {
+      renameFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    Map<String
+    for (Entry<String
+      expectedFiles.put(renamePair.getValue()
+    }
+    for (String fileAddition : fileAdditionsData) {
+      expectedFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    for (String fileAddition : fileAdditionsData) {
+      expectedFiles.put(String.format("%s/%s"
+          String.format("Another %s file was added in thiers"
+    }
+    testRename_merged(strategy
+        isRenameInOurs ? noRenameFiles : renameFiles
+  }
+
+  @Theory
+  public void checkRenameSubDir_AllFilesMoved_SomeFilesAddedInOurs_modifyConflict(MergeStrategy strategy) throws Exception {
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\nz\nz";
+    Map<String
+    originalFiles.put("test/a/file1"
+    originalFiles.put("test/a/file2"
+    Map<String
+    oursFiles.put("test/a/file1"
+    oursFiles.put("test/a/file2"
+    oursFiles.put("test/a/file3"
+    Map<String
+    theirsFiles.put("test/sub/file1"
+    theirsFiles.put("test/sub/file2"
+    Map<String
+    expectedFiles.put("test/sub/file1"
+    expectedFiles.put("test/sub/file2"
+    expectedFiles.put("test/a/file3"
+    testRename_merged(strategy
+  }
+
+  @Theory
+  public void checkRenameSubDir_AllFilesMoved_SomeFilesAddedInBoth_modifyConflict(MergeStrategy strategy) throws Exception {
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\nz\nz";
+    Map<String
+    originalFiles.put("test/a/file1"
+    originalFiles.put("test/a/file2"
+    Map<String
+    oursFiles.put("test/a/file1"
+    oursFiles.put("test/a/file2"
+    oursFiles.put("test/a/file1.1"
+    Map<String
+    theirsFiles.put("test/sub/file1"
+    theirsFiles.put("test/sub/file2"
+    theirsFiles.put("test/sub/file3"
+    Map<String
+    expectedFiles.put("test/sub/file1"
+    expectedFiles.put("test/sub/file2"
+    expectedFiles.put("test/a/file1.1"
+    expectedFiles.put("test/sub/file3"
+    testRename_merged(strategy
+  }
+
+  @Theory
+  public void checkRename_dirSplit_modifyConflict(MergeStrategy strategy
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\nz\nz";
+    Map<String
+    originalFiles.put("test/a/file1"
+    originalFiles.put("test/a/file2"
+    Map<String
+    noRenameFiles.put("test/a/file1"
+    noRenameFiles.put("test/a/file2"
+    Map<String
+    renameFiles.put("test/a1/file1"
+    renameFiles.put("test/a2/file2"
+    Map<String
+    expectedFiles.put("test/a1/file1"
+    expectedFiles.put("test/a2/file2"
+    testRename_merged(strategy
+        isRenameInOurs ? noRenameFiles : renameFiles
+  }
+
+  @Theory
+  public void checkRename_subDirSplit_modifyConflict(MergeStrategy strategy) throws Exception {
+    String originalContent1 = "a\nb\nc";
+    String originalContent2 = "x\ny\nz";
+    String slightlyModifiedContent1 = "a\nb\nb";
+    String slightlyModifiedContent2 = "x\nz\nz";
+    Map<String
+    originalFiles.put("test/file1"
+    originalFiles.put("test/file2"
+    Map<String
+    oursFiles.put("test/file1"
+    oursFiles.put("test/file2"
+    Map<String
+    theirsFiles.put("test/a1/file1"
+    theirsFiles.put("test/a2/file2"
+    Map<String
+    expectedFiles.put("test/a1/file1"
+    expectedFiles.put("test/a2/file2"
+    testRename_merged(strategy
+
+  }
+
+  private String getDir(String path){
+    int endDir = path.lastIndexOf("/");
+    return path.substring(0
+  }
+
+}

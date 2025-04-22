@@ -1,0 +1,9 @@
+		git.submoduleAdd()
+				.setPath(path)
+				.setURI(uri)
+				.call()
+				.close();
+		git.add()
+				.addFilepattern(path)
+				.addFilepattern(Constants.DOT_GIT_MODULES)
+				.call();

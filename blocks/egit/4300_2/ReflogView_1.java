@@ -1,0 +1,25 @@
+
+		TreeViewerColumn whoColumn = createColumn(layout,
+				UIText.ReflogView_CommitterColumnLabel, 15, SWT.LEFT);
+		whoColumn.setLabelProvider(new ColumnLabelProvider() {
+
+			@Override
+			public String getText(Object element) {
+				final ReflogEntry entry = (ReflogEntry) element;
+				final PersonIdent who = entry.getWho();
+				return who.getName() + " <" + who.getEmailAddress() + ">";  //$NON-NLS-1$//$NON-NLS-2$
+			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				final ReflogEntry entry = (ReflogEntry) element;
+				return entry.getNewId().name();
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				return null;
+			}
+
+		});
+

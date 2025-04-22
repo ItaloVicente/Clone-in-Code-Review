@@ -1,0 +1,9 @@
+import com.couchbase.client.core.message.kv.subdoc.multi.Lookup;
+import com.couchbase.client.core.message.kv.subdoc.multi.LookupCommandBuilder;
+import com.couchbase.client.core.message.kv.subdoc.multi.MultiLookupResponse;
+import com.couchbase.client.core.message.kv.subdoc.multi.MultiMutationResponse;
+import com.couchbase.client.core.message.kv.subdoc.multi.Mutation;
+import com.couchbase.client.core.message.kv.subdoc.multi.MutationCommandBuilder;
+import com.couchbase.client.core.message.kv.subdoc.multi.SubMultiLookupDocOptionsBuilder;
+import com.couchbase.client.core.message.kv.subdoc.multi.SubMultiLookupRequest;
+import com.couchbase.client.core.message.kv.subdoc.multi.SubMultiMutationRequest;

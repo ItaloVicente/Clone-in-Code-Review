@@ -1,0 +1,9 @@
+		ELCL16_FILTER = map("elcl16/filter_ps.png"); //$NON-NLS-1$
+		ELCL16_ID = map("elcl16/sha1.png"); //$NON-NLS-1$
+		CHECKBOX_ENABLED_CHECKED = map("checkboxes/enabled_checked.png"); //$NON-NLS-1$
+		CHECKBOX_ENABLED_UNCHECKED = map("checkboxes/enabled_unchecked.png"); //$NON-NLS-1$
+		CHECKBOX_DISABLED_CHECKED = map("checkboxes/disabled_checked.png"); //$NON-NLS-1$
+		CHECKBOX_DISABLED_UNCHECKED = map("checkboxes/disabled_unchecked.png"); //$NON-NLS-1$
+		FILTERRESOURCE = map("elcl16/filterresource.png"); //$NON-NLS-1$
+		FILTERPROJECT = map("elcl16/filterproject.png"); //$NON-NLS-1$
+		FILTERFOLDER = map("elcl16/filterfolder.png"); //$NON-NLS-1$

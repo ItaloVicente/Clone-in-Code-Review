@@ -1,0 +1,1314 @@
+review_number,clone_exists
+11287,no_clone
+12027,no_clone
+12050,no_clone
+12051,no_clone
+12096,no_clone
+12144,no_clone
+12148,no_clone
+12149,no_clone
+12150,uninteresting_clone
+12151,no_clone
+12159,no_clone
+12160,no_clone
+12285,no_clone
+12384,no_clone
+12554,no_clone
+12557,no_clone
+12561,no_clone
+12576,no_clone
+12577,no_clone
+12578,no_clone
+12580,no_clone
+12582,no_clone
+12583,no_clone
+12674,no_clone
+12687,no_clone
+12688,no_clone
+12689,no_clone
+12690,no_clone
+12841,no_clone
+12907,review with at least one clone
+13046,no_clone
+13082,no_clone
+13083,no_clone
+13085,no_clone
+13372,no_clone
+13373,no_clone
+13374,no_clone
+13375,no_clone
+13394,no_clone
+13688,no_clone
+13846,no_clone
+13847,no_clone
+13848,no_clone
+13849,no_clone
+14157,no_clone
+14178,no_clone
+14485,no_clone
+14513,no_clone
+14527,no_clone
+14562,no_clone
+14574,no_clone
+14586,no_clone
+14959,review with at least one clone
+15435,no_clone
+15436,no_clone
+15462,no_clone
+15953,no_clone
+15954,no_clone
+15955,no_clone
+15956,no_clone
+15957,no_clone
+15958,no_clone
+16337,no_clone
+16338,no_clone
+16702,no_clone
+16703,no_clone
+16765,no_clone
+17742,no_clone
+18094,no_clone
+18194,no_clone
+18197,no_clone
+18654,no_clone
+18655,no_clone
+18755,no_clone
+18757,no_clone
+18758,no_clone
+18807,no_clone
+18808,no_clone
+19008,no_clone
+19012,no_clone
+19017,no_clone
+19018,no_clone
+19051,no_clone
+19067,no_clone
+19068,no_clone
+19373,no_clone
+19584,review with at least one clone
+19602,no_clone
+19603,review with at least one clone
+19604,no_clone
+19605,no_clone
+19606,review with at least one clone
+19673,no_clone
+19674,no_clone
+19675,no_clone
+19676,no_clone
+19677,no_clone
+19690,no_clone
+19691,no_clone
+19692,no_clone
+19693,no_clone
+19694,no_clone
+19758,no_clone
+19778,no_clone
+19838,no_clone
+19839,no_clone
+19840,uninteresting_clone
+19860,no_clone
+19861,no_clone
+19862,no_clone
+19920,no_clone
+19997,no_clone
+19998,no_clone
+20008,no_clone
+20010,no_clone
+20329,no_clone
+20398,no_clone
+20399,no_clone
+20654,no_clone
+20711,no_clone
+20712,no_clone
+20760,no_clone
+20779,no_clone
+20780,no_clone
+20817,no_clone
+20847,no_clone
+20878,uninteresting_clone
+20889,no_clone
+20895,no_clone
+20898,uninteresting_clone
+20902,no_clone
+20903,no_clone
+20906,review with at least one clone
+20917,no_clone
+20918,no_clone
+21130,no_clone
+21156,no_clone
+21157,no_clone
+21197,no_clone
+21202,no_clone
+21217,no_clone
+21219,no_clone
+21261,review with at least one clone
+21292,uninteresting_clone
+21293,no_clone
+21294,no_clone
+21301,no_clone
+21305,uninteresting_clone
+21337,no_clone
+21338,no_clone
+21351,no_clone
+21353,no_clone
+21354,no_clone
+21355,no_clone
+21356,no_clone
+21372,no_clone
+21380,no_clone
+21416,uninteresting_clone
+21417,no_clone
+21421,no_clone
+21423,no_clone
+21444,no_clone
+21445,no_clone
+21446,no_clone
+21477,no_clone
+21500,no_clone
+21738,no_clone
+21743,no_clone
+21805,no_clone
+21826,no_clone
+21827,no_clone
+21852,no_clone
+21867,no_clone
+21872,no_clone
+21912,no_clone
+21915,no_clone
+21924,no_clone
+22015,no_clone
+22048,review with at least one clone
+22057,no_clone
+22058,no_clone
+22109,no_clone
+22206,no_clone
+22308,review with at least one clone
+22352,no_clone
+22353,no_clone
+22445,review with at least one clone
+22505,no_clone
+22513,no_clone
+22563,review with at least one clone
+22586,no_clone
+22589,no_clone
+22692,no_clone
+22710,no_clone
+22713,no_clone
+22737,no_clone
+22755,no_clone
+22845,no_clone
+22872,no_clone
+22874,no_clone
+22877,no_clone
+22878,no_clone
+22902,no_clone
+22923,no_clone
+22933,no_clone
+22936,no_clone
+22973,no_clone
+22975,no_clone
+22998,uninteresting_clone
+23000,no_clone
+23021,uninteresting_clone
+23086,no_clone
+23087,no_clone
+23088,no_clone
+23090,no_clone
+23121,no_clone
+23153,no_clone
+23156,no_clone
+23157,no_clone
+23189,no_clone
+23194,no_clone
+23605,uninteresting_clone
+23648,no_clone
+23658,no_clone
+23801,no_clone
+23850,no_clone
+23942,no_clone
+23977,no_clone
+23986,no_clone
+23989,review with at least one clone
+23990,no_clone
+24011,no_clone
+24019,no_clone
+24046,no_clone
+24048,no_clone
+24092,no_clone
+24151,no_clone
+24156,no_clone
+24182,no_clone
+24261,no_clone
+24299,no_clone
+24322,no_clone
+24342,no_clone
+24343,no_clone
+24406,no_clone
+24407,no_clone
+24520,no_clone
+24652,no_clone
+24658,no_clone
+24661,no_clone
+24689,no_clone
+24750,review with at least one clone
+24767,no_clone
+24770,no_clone
+24817,no_clone
+24818,review with at least one clone
+24867,no_clone
+24886,no_clone
+24888,no_clone
+24935,review with at least one clone
+24989,no_clone
+25027,no_clone
+25077,no_clone
+25083,no_clone
+25101,no_clone
+25107,review with at least one clone
+25153,no_clone
+25171,no_clone
+25201,no_clone
+25229,no_clone
+25360,no_clone
+25415,review with at least one clone
+25448,no_clone
+25482,no_clone
+25563,uninteresting_clone
+25638,no_clone
+25661,no_clone
+25662,no_clone
+25752,no_clone
+25790,no_clone
+26182,no_clone
+26261,no_clone
+26465,no_clone
+26541,no_clone
+26556,review with at least one clone
+26557,review with at least one clone
+26598,no_clone
+26599,no_clone
+26600,no_clone
+26601,no_clone
+26602,no_clone
+26636,no_clone
+26639,no_clone
+26725,no_clone
+26774,no_clone
+26778,no_clone
+26860,no_clone
+26862,no_clone
+27065,review with at least one clone
+27066,no_clone
+27077,no_clone
+27167,no_clone
+27214,no_clone
+27215,no_clone
+27216,no_clone
+27248,no_clone
+27261,no_clone
+27283,no_clone
+27307,no_clone
+27309,review with at least one clone
+27386,no_clone
+27597,no_clone
+27608,no_clone
+27610,no_clone
+27761,no_clone
+27790,no_clone
+27839,no_clone
+27885,no_clone
+27886,no_clone
+27916,no_clone
+28109,no_clone
+28389,no_clone
+28391,no_clone
+28473,no_clone
+28477,no_clone
+28599,uninteresting_clone
+28693,no_clone
+28764,no_clone
+28785,no_clone
+28786,no_clone
+28815,no_clone
+28860,review with at least one clone
+28878,no_clone
+28933,no_clone
+28970,no_clone
+29295,no_clone
+29374,no_clone
+29465,no_clone
+29466,no_clone
+29467,no_clone
+29468,no_clone
+29535,no_clone
+29536,no_clone
+29537,no_clone
+29538,no_clone
+29539,no_clone
+29541,review with at least one clone
+29545,no_clone
+29714,no_clone
+29735,no_clone
+29823,no_clone
+29848,review with at least one clone
+29849,no_clone
+29850,review with at least one clone
+29887,no_clone
+30009,review with at least one clone
+30010,no_clone
+30012,no_clone
+30045,no_clone
+30051,no_clone
+30127,no_clone
+30129,no_clone
+30372,no_clone
+30373,no_clone
+30374,no_clone
+30375,no_clone
+30376,no_clone
+30445,no_clone
+30682,no_clone
+30702,no_clone
+30779,no_clone
+31017,review with at least one clone
+31214,review with at least one clone
+31246,review with at least one clone
+31250,no_clone
+31569,no_clone
+31655,no_clone
+31667,no_clone
+31668,no_clone
+31710,no_clone
+31719,review with at least one clone
+31733,no_clone
+31734,no_clone
+32305,uninteresting_clone
+32306,uninteresting_clone
+32355,no_clone
+32425,no_clone
+32589,no_clone
+32727,no_clone
+32994,no_clone
+33137,no_clone
+33285,no_clone
+33607,no_clone
+33788,no_clone
+33826,no_clone
+33827,no_clone
+33881,no_clone
+33884,review with at least one clone
+33907,no_clone
+33930,no_clone
+34378,no_clone
+34380,no_clone
+34427,no_clone
+34555,no_clone
+34626,no_clone
+34853,no_clone
+34854,no_clone
+34885,no_clone
+34935,no_clone
+35264,no_clone
+35719,no_clone
+35722,uninteresting_clone
+36259,review with at least one clone
+36290,no_clone
+36779,review with at least one clone
+36828,review with at least one clone
+36829,no_clone
+36843,no_clone
+36981,no_clone
+36985,no_clone
+37267,no_clone
+37382,no_clone
+37383,review with at least one clone
+37500,no_clone
+37501,no_clone
+37504,no_clone
+37718,review with at least one clone
+37719,no_clone
+37722,no_clone
+37726,no_clone
+37729,no_clone
+37902,no_clone
+37903,no_clone
+37960,no_clone
+38364,review with at least one clone
+38653,no_clone
+38668,no_clone
+38675,no_clone
+38678,no_clone
+38735,no_clone
+38739,no_clone
+38740,no_clone
+38741,no_clone
+38796,no_clone
+38866,review with at least one clone
+38881,review with at least one clone
+39006,no_clone
+39110,review with at least one clone
+39157,no_clone
+39231,no_clone
+39265,no_clone
+39346,no_clone
+39347,no_clone
+39351,no_clone
+39412,no_clone
+39429,no_clone
+39434,no_clone
+39443,no_clone
+39485,review with at least one clone
+39528,review with at least one clone
+39662,no_clone
+40058,no_clone
+40263,no_clone
+40296,review with at least one clone
+40332,no_clone
+40335,no_clone
+40336,no_clone
+40378,review with at least one clone
+40379,uninteresting_clone
+40380,no_clone
+40496,uninteresting_clone
+40500,review with at least one clone
+40525,no_clone
+40527,no_clone
+40536,no_clone
+40537,no_clone
+40538,no_clone
+40558,no_clone
+40559,no_clone
+40560,no_clone
+40564,no_clone
+40569,no_clone
+40572,no_clone
+40685,no_clone
+40694,no_clone
+40695,no_clone
+40724,no_clone
+40726,no_clone
+40763,no_clone
+40794,no_clone
+40795,no_clone
+40823,no_clone
+40827,no_clone
+40829,no_clone
+40835,review with at least one clone
+40838,no_clone
+40846,no_clone
+40848,no_clone
+40908,no_clone
+40913,no_clone
+41131,no_clone
+41194,no_clone
+41211,no_clone
+41352,uninteresting_clone
+41369,review with at least one clone
+41397,no_clone
+41414,no_clone
+41429,no_clone
+41431,no_clone
+41433,no_clone
+41438,no_clone
+41441,no_clone
+41442,no_clone
+41454,no_clone
+41484,no_clone
+41492,no_clone
+41500,no_clone
+41505,no_clone
+41557,no_clone
+41585,no_clone
+41674,no_clone
+41677,no_clone
+41734,no_clone
+41740,no_clone
+41741,no_clone
+41786,no_clone
+41904,no_clone
+41945,no_clone
+41986,no_clone
+42072,no_clone
+42073,review with at least one clone
+42074,no_clone
+42075,no_clone
+42076,no_clone
+42110,no_clone
+42111,no_clone
+42117,no_clone
+42121,no_clone
+42155,no_clone
+42158,no_clone
+42159,no_clone
+42203,no_clone
+42320,no_clone
+42324,review with at least one clone
+42331,no_clone
+42346,review with at least one clone
+42347,no_clone
+42348,no_clone
+42349,no_clone
+42363,no_clone
+42415,no_clone
+42417,no_clone
+42597,no_clone
+42609,no_clone
+42654,no_clone
+42711,no_clone
+42734,no_clone
+42738,no_clone
+42739,no_clone
+42765,no_clone
+43038,no_clone
+43130,no_clone
+43357,no_clone
+43359,no_clone
+43362,no_clone
+43405,no_clone
+43407,no_clone
+43440,no_clone
+43554,no_clone
+43556,no_clone
+43557,no_clone
+43600,no_clone
+43756,no_clone
+43765,no_clone
+43832,no_clone
+43904,no_clone
+43956,no_clone
+44011,no_clone
+44015,review with at least one clone
+44140,no_clone
+44141,no_clone
+44186,no_clone
+44242,no_clone
+44380,no_clone
+44381,no_clone
+44474,no_clone
+44520,no_clone
+44522,review with at least one clone
+44525,no_clone
+44574,no_clone
+44576,no_clone
+44595,review with at least one clone
+44642,no_clone
+44697,no_clone
+44699,no_clone
+44700,no_clone
+44701,no_clone
+44702,no_clone
+44703,no_clone
+44704,no_clone
+44705,no_clone
+44706,no_clone
+44896,no_clone
+44900,no_clone
+44902,no_clone
+44920,no_clone
+44921,no_clone
+44922,no_clone
+45000,review with at least one clone
+45021,no_clone
+45023,no_clone
+45024,no_clone
+45025,no_clone
+45026,no_clone
+45078,review with at least one clone
+45091,no_clone
+45142,no_clone
+45205,review with at least one clone
+45214,no_clone
+45269,no_clone
+45276,no_clone
+45310,no_clone
+45428,no_clone
+45437,no_clone
+45438,no_clone
+45439,no_clone
+45442,no_clone
+45443,no_clone
+45447,no_clone
+45450,no_clone
+45462,no_clone
+45463,no_clone
+45555,no_clone
+45557,uninteresting_clone
+45569,no_clone
+45572,no_clone
+45796,no_clone
+45860,no_clone
+45868,no_clone
+45874,no_clone
+45926,no_clone
+45928,no_clone
+45929,no_clone
+45932,review with at least one clone
+45963,no_clone
+45983,no_clone
+46030,no_clone
+46031,no_clone
+46037,no_clone
+46039,no_clone
+46075,no_clone
+46138,no_clone
+46140,no_clone
+46224,no_clone
+46310,no_clone
+46324,review with at least one clone
+46377,no_clone
+46576,no_clone
+46580,review with at least one clone
+46582,no_clone
+46593,review with at least one clone
+46624,no_clone
+46679,no_clone
+46682,no_clone
+46690,no_clone
+46692,review with at least one clone
+46740,no_clone
+46873,no_clone
+46934,no_clone
+46935,no_clone
+46950,no_clone
+46951,no_clone
+47230,review with at least one clone
+47399,no_clone
+47543,no_clone
+47939,no_clone
+47946,no_clone
+48006,no_clone
+48010,no_clone
+48108,review with at least one clone
+48165,no_clone
+48172,no_clone
+48311,no_clone
+48373,no_clone
+48694,no_clone
+48985,no_clone
+49020,no_clone
+49023,no_clone
+49157,no_clone
+49163,no_clone
+49164,no_clone
+49299,no_clone
+49307,no_clone
+49377,no_clone
+49427,no_clone
+49430,no_clone
+49440,no_clone
+49449,no_clone
+49606,uninteresting_clone
+49805,uninteresting_clone
+49859,no_clone
+49888,no_clone
+49889,no_clone
+49890,no_clone
+49891,no_clone
+49901,no_clone
+49940,no_clone
+49941,no_clone
+49989,no_clone
+49990,no_clone
+50061,uninteresting_clone
+50190,no_clone
+50194,no_clone
+50274,no_clone
+50314,review with at least one clone
+50318,no_clone
+50323,review with at least one clone
+50327,no_clone
+50385,no_clone
+50411,no_clone
+50544,no_clone
+50705,no_clone
+50839,no_clone
+50841,no_clone
+50842,no_clone
+50963,no_clone
+50964,no_clone
+51096,no_clone
+51153,no_clone
+51210,no_clone
+51211,no_clone
+51366,no_clone
+51438,no_clone
+51563,no_clone
+51950,no_clone
+52100,no_clone
+52101,no_clone
+52108,review with at least one clone
+52231,no_clone
+52276,no_clone
+52278,no_clone
+52421,no_clone
+52422,no_clone
+52590,no_clone
+52702,no_clone
+52705,no_clone
+52781,review with at least one clone
+52828,no_clone
+52905,no_clone
+53012,no_clone
+53036,uninteresting_clone
+53218,no_clone
+53228,review with at least one clone
+53232,review with at least one clone
+53543,review with at least one clone
+53548,no_clone
+53589,review with at least one clone
+53613,no_clone
+53736,no_clone
+53737,no_clone
+53798,no_clone
+53931,no_clone
+54133,no_clone
+54138,no_clone
+54168,no_clone
+54410,no_clone
+54412,no_clone
+54444,no_clone
+54498,no_clone
+54575,no_clone
+54586,no_clone
+54592,no_clone
+54809,review with at least one clone
+54810,review with at least one clone
+54811,no_clone
+54849,no_clone
+54851,no_clone
+54899,no_clone
+54949,no_clone
+54950,no_clone
+54972,no_clone
+54986,no_clone
+55024,no_clone
+55346,no_clone
+55489,no_clone
+55726,no_clone
+55733,no_clone
+55735,no_clone
+55845,review with at least one clone
+55901,no_clone
+55910,no_clone
+55949,no_clone
+55989,no_clone
+55992,no_clone
+55993,no_clone
+56038,no_clone
+56056,no_clone
+56152,no_clone
+56153,no_clone
+56189,review with at least one clone
+56191,no_clone
+56209,no_clone
+56291,no_clone
+56603,no_clone
+56625,no_clone
+56629,no_clone
+56630,no_clone
+56642,no_clone
+56689,no_clone
+56698,no_clone
+56738,no_clone
+56973,no_clone
+56974,no_clone
+57103,no_clone
+57106,no_clone
+57375,no_clone
+57404,no_clone
+57424,no_clone
+57462,no_clone
+57530,no_clone
+57844,no_clone
+57848,no_clone
+57910,no_clone
+58002,no_clone
+58027,no_clone
+58040,no_clone
+58055,no_clone
+58061,no_clone
+58111,no_clone
+58115,no_clone
+58156,no_clone
+58204,no_clone
+58205,no_clone
+58223,no_clone
+58251,no_clone
+58316,no_clone
+58891,no_clone
+58892,no_clone
+58893,review with at least one clone
+59015,no_clone
+59037,no_clone
+59133,no_clone
+59167,no_clone
+59170,no_clone
+59249,review with at least one clone
+59250,review with at least one clone
+59251,no_clone
+59255,no_clone
+59256,no_clone
+59258,no_clone
+59291,no_clone
+59342,no_clone
+59451,no_clone
+59508,no_clone
+59557,no_clone
+60041,no_clone
+60201,no_clone
+60243,no_clone
+60548,no_clone
+60562,uninteresting_clone
+60696,no_clone
+60700,no_clone
+60922,no_clone
+61226,no_clone
+61423,uninteresting_clone
+61426,review with at least one clone
+61569,no_clone
+61570,no_clone
+61582,no_clone
+61651,no_clone
+61712,review with at least one clone
+61921,no_clone
+61924,no_clone
+62119,no_clone
+62183,no_clone
+62239,no_clone
+62278,no_clone
+62293,no_clone
+62350,no_clone
+62357,no_clone
+62358,no_clone
+62359,no_clone
+62360,no_clone
+62442,no_clone
+62535,no_clone
+62538,no_clone
+62648,no_clone
+62772,no_clone
+62849,no_clone
+63526,no_clone
+63529,no_clone
+63530,no_clone
+63533,no_clone
+63621,no_clone
+63628,no_clone
+63785,no_clone
+63849,no_clone
+63851,no_clone
+63854,no_clone
+63860,no_clone
+63925,no_clone
+63971,no_clone
+63972,no_clone
+63974,no_clone
+64062,no_clone
+64210,no_clone
+64278,no_clone
+64289,no_clone
+64293,no_clone
+64323,no_clone
+64389,uninteresting_clone
+64390,no_clone
+64394,no_clone
+64395,no_clone
+64402,no_clone
+64573,no_clone
+64590,review with at least one clone
+64592,no_clone
+64642,no_clone
+64709,no_clone
+64710,review with at least one clone
+64818,no_clone
+64820,no_clone
+64847,no_clone
+64881,no_clone
+64928,no_clone
+64953,no_clone
+64958,no_clone
+65050,no_clone
+65052,no_clone
+65110,no_clone
+65530,no_clone
+65620,review with at least one clone
+66034,no_clone
+66087,no_clone
+66149,no_clone
+66197,no_clone
+66199,no_clone
+66218,review with at least one clone
+66290,no_clone
+66454,no_clone
+66649,no_clone
+66801,no_clone
+66831,no_clone
+66868,review with at least one clone
+66987,no_clone
+67193,no_clone
+67383,no_clone
+67630,no_clone
+67632,no_clone
+67874,no_clone
+68089,no_clone
+68090,no_clone
+68385,no_clone
+68796,no_clone
+68904,review with at least one clone
+69167,no_clone
+69169,no_clone
+69417,no_clone
+69909,review with at least one clone
+69991,no_clone
+69995,no_clone
+70001,review with at least one clone
+70046,no_clone
+70146,no_clone
+70148,uninteresting_clone
+70253,uninteresting_clone
+70551,no_clone
+70682,no_clone
+70865,no_clone
+70951,review with at least one clone
+71182,no_clone
+71299,no_clone
+71317,no_clone
+71319,review with at least one clone
+71322,no_clone
+71435,no_clone
+71468,no_clone
+71470,no_clone
+71474,no_clone
+71562,uninteresting_clone
+71590,no_clone
+71598,no_clone
+71856,no_clone
+71897,no_clone
+71966,no_clone
+71967,no_clone
+71968,no_clone
+71969,no_clone
+71970,uninteresting_clone
+72179,no_clone
+72437,review with at least one clone
+73194,no_clone
+73426,no_clone
+73513,review with at least one clone
+74518,no_clone
+74519,review with at least one clone
+74778,no_clone
+75074,no_clone
+75263,review with at least one clone
+75266,review with at least one clone
+75774,review with at least one clone
+75779,no_clone
+75839,no_clone
+76072,review with at least one clone
+76074,no_clone
+76246,no_clone
+76268,no_clone
+76433,no_clone
+76435,no_clone
+76437,uninteresting_clone
+76560,no_clone
+76561,no_clone
+76637,no_clone
+76638,no_clone
+77007,no_clone
+77257,no_clone
+77432,no_clone
+77516,no_clone
+77541,no_clone
+77612,no_clone
+77652,no_clone
+77723,no_clone
+77737,uninteresting_clone
+78197,no_clone
+78709,no_clone
+78720,no_clone
+78765,no_clone
+79116,no_clone
+79393,no_clone
+79483,no_clone
+79520,review with at least one clone
+79717,no_clone
+80007,no_clone
+80008,no_clone
+80433,no_clone
+80443,no_clone
+80522,no_clone
+80556,no_clone
+80570,uninteresting_clone
+80659,no_clone
+80934,no_clone
+81466,no_clone
+81520,no_clone
+81842,no_clone
+81998,no_clone
+82004,no_clone
+82241,no_clone
+82344,no_clone
+82444,review with at least one clone
+82453,no_clone
+82495,no_clone
+82498,no_clone
+82507,no_clone
+82626,no_clone
+82684,no_clone
+83033,no_clone
+83035,no_clone
+83081,no_clone
+83129,no_clone
+83156,no_clone
+83445,no_clone
+83488,no_clone
+83490,review with at least one clone
+83725,no_clone
+83816,no_clone
+83946,no_clone
+83964,no_clone
+83965,no_clone
+84195,no_clone
+84196,no_clone
+84198,no_clone
+84255,no_clone
+84365,no_clone
+84498,no_clone
+84749,uninteresting_clone
+84870,no_clone
+84871,no_clone
+84874,no_clone
+84887,no_clone
+85247,no_clone
+85455,no_clone
+85841,no_clone
+86268,no_clone
+86364,no_clone
+86381,no_clone
+86392,no_clone
+86403,no_clone
+86967,no_clone
+87094,no_clone
+87588,no_clone
+87679,no_clone
+87690,no_clone
+88180,no_clone
+88854,no_clone
+88913,no_clone
+88978,no_clone
+89013,no_clone
+89085,no_clone
+89090,no_clone
+89235,no_clone
+89730,no_clone
+89902,no_clone
+89951,no_clone
+89962,review with at least one clone
+90043,review with at least one clone
+90045,review with at least one clone
+90062,no_clone
+90119,no_clone
+90121,review with at least one clone
+90124,review with at least one clone
+90149,no_clone
+90498,no_clone
+90569,no_clone
+90708,no_clone
+90924,no_clone
+90928,review with at least one clone
+90930,review with at least one clone
+90998,review with at least one clone
+91293,no_clone
+91593,review with at least one clone
+91687,review with at least one clone
+91750,review with at least one clone
+91856,no_clone
+91901,no_clone
+91922,no_clone
+91924,no_clone
+91925,no_clone
+91926,no_clone
+91927,no_clone
+91928,no_clone
+92028,no_clone
+92132,no_clone
+92662,no_clone
+92665,no_clone
+92684,uninteresting_clone
+92685,no_clone
+92711,no_clone
+92712,no_clone
+93137,review with at least one clone
+93177,no_clone
+93419,no_clone
+93505,review with at least one clone
+93512,no_clone
+93569,no_clone
+94200,no_clone
+94394,no_clone
+94503,no_clone
+94676,uninteresting_clone
+94769,no_clone
+94770,no_clone
+95011,no_clone
+95012,no_clone
+95044,review with at least one clone
+95058,no_clone
+95134,uninteresting_clone
+95140,no_clone
+95189,review with at least one clone
+95227,review with at least one clone
+95228,no_clone
+95271,no_clone
+95326,no_clone
+95327,no_clone
+95355,no_clone
+95855,review with at least one clone
+95993,no_clone
+96347,review with at least one clone
+96374,no_clone
+96449,no_clone
+96472,no_clone
+96545,no_clone
+96550,no_clone
+96737,no_clone
+96766,no_clone
+96843,review with at least one clone
+97290,no_clone
+97298,no_clone
+97384,no_clone
+97385,no_clone
+97447,no_clone
+98362,no_clone
+98375,no_clone
+98435,no_clone
+98577,review with at least one clone
+99046,no_clone
+99047,no_clone
+99160,no_clone
+99592,no_clone
+99605,no_clone
+99900,no_clone
+99933,review with at least one clone
+99934,no_clone
+99935,uninteresting_clone
+99952,review with at least one clone
+99967,no_clone
+100041,review with at least one clone
+100051,no_clone
+100054,no_clone
+100196,no_clone
+100201,no_clone
+100252,no_clone
+100269,no_clone
+100534,no_clone
+100535,no_clone
+100536,review with at least one clone
+100546,no_clone
+100606,review with at least one clone
+100690,no_clone
+100869,review with at least one clone
+101059,no_clone
+101161,no_clone
+101365,no_clone
+101443,no_clone
+101497,no_clone
+101542,no_clone
+101543,no_clone
+101587,no_clone
+101905,no_clone
+101930,no_clone
+101968,uninteresting_clone
+102410,no_clone
+102501,no_clone
+102503,no_clone
+104188,no_clone
+104189,no_clone
+104249,no_clone
+104348,no_clone
+104351,no_clone
+104536,no_clone
+104870,no_clone
+104871,no_clone
+104911,no_clone
+105357,no_clone
+105364,no_clone
+106496,no_clone
+107927,no_clone
+108442,no_clone
+108467,no_clone
+109214,no_clone
+109322,no_clone
+109437,no_clone
+110036,no_clone
+110038,no_clone
+110311,no_clone
+111492,no_clone
+111512,no_clone
+111755,no_clone
+111768,no_clone
+111819,no_clone
+111824,no_clone
+111869,no_clone
+111878,no_clone
+111918,no_clone
+111920,no_clone
+111923,no_clone
+111925,no_clone
+112108,no_clone
+112166,no_clone
+112175,no_clone
+112177,no_clone
+112181,uninteresting_clone
+112367,no_clone
+112442,no_clone
+112514,no_clone
+112556,no_clone
+112562,no_clone
+112565,review with at least one clone
+112569,no_clone
+112815,no_clone
+112897,no_clone
+112920,no_clone
+112970,no_clone
+117579,no_clone
+118404,no_clone
+118869,no_clone
+118878,no_clone
+118946,no_clone
+119335,uninteresting_clone
+120924,no_clone
+121613,no_clone
+122597,no_clone
+122598,no_clone
+123117,no_clone
+124218,no_clone
+124498,no_clone
+125046,no_clone
+125081,no_clone
+125216,no_clone
+125773,no_clone
+127621,no_clone
+129905,no_clone
+129906,no_clone
+132440,no_clone
+139376,no_clone
+139377,no_clone
+139795,no_clone
+140173,no_clone
+146059,no_clone
+146345,no_clone
+150381,no_clone
+150758,no_clone
+158285,no_clone
+161459,no_clone
+164078,review with at least one clone
+164244,review with at least one clone
+164247,no_clone
+164248,review with at least one clone
+164268,no_clone
+164816,no_clone
+166268,no_clone
+169312,no_clone
+169713,no_clone
+182475,no_clone

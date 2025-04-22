@@ -1,0 +1,19 @@
+				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+					IWorkbenchPage activePage = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage();
+					IEditorReference[] editorReferences = activePage
+							.getEditorReferences();
+					for (IEditorReference editorReference : editorReferences) {
+						IEditorInput editorInput = null;
+						try {
+							editorInput = editorReference.getEditorInput();
+						} catch (PartInitException e) {
+							Activator.handleError(e.getMessage(), e, true);
+						}
+						if (editorInput instanceof CommitEditorInput) {
+							CommitEditorInput comEditorInput = (CommitEditorInput) editorInput;
+							if (comEditorInput.getCommit().getRevCommit()
+									.equals(node.getObject())) {
+								activePage.closeEditor(
+										editorReference.getEditor(false),
+										false);

@@ -1,0 +1,19 @@
+	@Override
+	Set<ObjectId> getShallowCommits() throws IOException {
+		final File shallow = shallowFile;
+		if (!shallow.isFile())
+			return Collections.emptySet();
+
+		final BufferedReader reader = new BufferedReader(
+				new FileReader(shallow));
+		try {
+			final Set<ObjectId> ids = new HashSet<ObjectId>();
+			String line;
+			while ((line = reader.readLine()) != null)
+				ids.add(ObjectId.fromString(line));
+			return ids;
+		} finally {
+			reader.close();
+		}
+	}
+

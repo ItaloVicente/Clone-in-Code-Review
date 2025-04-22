@@ -1,0 +1,97 @@
+
+package com.couchbase.client;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.spy.memcached.compat.CloseUtil;
+
+public class CouchbaseProperties {
+
+  private static Properties fileProperties = new Properties();
+
+  private static final Logger LOGGER = Logger.getLogger(
+    CouchbaseProperties.class.getName());
+
+  private static String namespace = "cbclient";
+
+  public static void setPropertyFile(String filename) {
+      FileInputStream fs = null;
+      try {
+        if(filename == null) {
+          throw new IllegalArgumentException(
+            "Given property filename is null.");
+        }
+
+        URL url =  ClassLoader.getSystemResource(filename);
+        if (url != null) {
+          String clFilename = url.getFile();
+          File propFile = new File(clFilename);
+          fs = new FileInputStream(propFile);
+          fileProperties.load(fs);
+        } else {
+          throw new IOException("File not found with system classloader.");
+        }
+        LOGGER.log(Level.INFO, "Successfully loaded properties file \"{0}\".",
+          filename);
+      } catch (Exception e) {
+        LOGGER.log(Level.WARNING, "Could not load properties file \"{0}\" "
+          + "because: {1}", new Object[]{filename, e.getMessage()});
+      } finally {
+        if (fs != null) {
+          CloseUtil.close(fs);
+        }
+      }
+  }
+
+  public static String getProperty(String name, String def, boolean ignore) {
+    if(ignore == false) {
+      name = namespace + "." + name;
+    }
+
+    String systemProperty = System.getProperty(name, null);
+    if(systemProperty != null) {
+      return systemProperty;
+    }
+
+    if(fileProperties != null
+      && fileProperties.getProperty(name, null) != null) {
+      return fileProperties.getProperty(name, null);
+    }
+
+    return def;
+  }
+
+  public static String getProperty(String name, boolean ignore) {
+    return getProperty(name, null, ignore);
+  }
+
+  public static String getProperty(String name) {
+    return getProperty(name, null, false);
+  }
+
+  public static String getProperty(String name, String def) {
+    return getProperty(name, def, false);
+  }
+
+  public static String getNamespace() {
+    return namespace;
+  }
+
+  public static void setNamespace(String ns) {
+    namespace = ns;
+  }
+
+  static boolean hasFileProperties() {
+    return !fileProperties.isEmpty();
+  }
+
+  static void resetFileProperties() {
+    fileProperties = new Properties();
+  }
+
+}

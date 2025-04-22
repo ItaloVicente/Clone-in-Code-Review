@@ -1,0 +1,362 @@
+
+package org.eclipse.jgit.storage.file;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.security.MessageDigest;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.zip.CRC32;
+import java.util.zip.Deflater;
+
+import org.eclipse.jgit.JGitText;
+import org.eclipse.jgit.lib.AnyObjectId;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.CoreConfig;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectInserter;
+import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.transport.PackParser;
+import org.eclipse.jgit.transport.PackedObjectInfo;
+import org.eclipse.jgit.util.FileUtils;
+import org.eclipse.jgit.util.NB;
+
+public class ObjectDirectoryPackParser extends PackParser {
+	private final FileObjectDatabase db;
+
+	private final CRC32 crc;
+
+	private final MessageDigest tailDigest;
+
+	private int indexVersion;
+
+	private boolean keepEmpty;
+
+	private File tmpPack;
+
+	private File tmpIdx;
+
+	private RandomAccessFile out;
+
+	private long currObjPos;
+
+	private long origEnd;
+
+	private byte[] origHash;
+
+	private long packEnd;
+
+	private byte[] packHash;
+
+	private Deflater def;
+
+	private PackFile newPack;
+
+	ObjectDirectoryPackParser(FileObjectDatabase odb
+		super(odb
+		this.db = odb;
+		this.crc = new CRC32();
+		this.tailDigest = Constants.newMessageDigest();
+
+		indexVersion = db.getConfig().get(CoreConfig.KEY).getPackIndexVersion();
+	}
+
+	public void setIndexVersion(int version) {
+		indexVersion = version;
+	}
+
+	public void setKeepEmpty(final boolean empty) {
+		keepEmpty = empty;
+	}
+
+	public PackFile getPackFile() {
+		return newPack;
+	}
+
+	@Override
+	public PackLock parse(ProgressMonitor progress) throws IOException {
+		tmpPack = File.createTempFile("incoming_"
+		tmpIdx = new File(db.getDirectory()
+		try {
+			out = new RandomAccessFile(tmpPack
+
+			super.parse(progress);
+
+			out.seek(packEnd);
+			out.write(packHash);
+			out.getChannel().force(true);
+			out.close();
+
+			writeIdx();
+
+			tmpPack.setReadOnly();
+			tmpIdx.setReadOnly();
+
+			return renameAndOpenPack(getLockMessage());
+		} finally {
+			if (def != null)
+				def.end();
+			try {
+				if (out != null && out.getChannel().isOpen())
+					out.close();
+			} catch (IOException closeError) {
+			}
+			cleanupTemporaryFiles();
+		}
+	}
+
+	@Override
+	protected void onBeginWholeObject(long streamPosition
+			long inflatedSize) throws IOException {
+		currObjPos = streamPosition;
+	}
+
+	@Override
+	protected long onEndWholeObject() throws IOException {
+		return currObjPos;
+	}
+
+	@Override
+	protected void onBeginOfsDelta(long streamPosition
+			long baseStreamPosition
+		currObjPos = streamPosition;
+	}
+
+	@Override
+	protected long onEndOfsDelta() throws IOException {
+		return currObjPos;
+	}
+
+	@Override
+	protected void onBeginRefDelta(long streamPosition
+			long inflatedSize) throws IOException {
+		currObjPos = streamPosition;
+	}
+
+	@Override
+	protected long onEndRefDelta() throws IOException {
+		return currObjPos;
+	}
+
+	@Override
+	protected void onEndObject(PackedObjectInfo obj) throws IOException {
+	}
+
+	@Override
+	protected void onStoreStream(byte[] raw
+			throws IOException {
+		out.write(raw
+	}
+
+	@Override
+	protected void onPackFooter(byte[] hash) throws IOException {
+		packEnd = out.getFilePointer();
+		origEnd = packEnd;
+		origHash = hash;
+		packHash = hash;
+	}
+
+	@Override
+	protected ObjectTypeAndSize seekDatabase(long databasePosition
+			ObjectTypeAndSize info) throws IOException {
+		out.seek(databasePosition);
+		return readObjectHeader(info);
+	}
+
+	@Override
+	protected int readDatabase(byte[] dst
+		return out.read(dst
+	}
+
+	private static String baseName(File tmpPack) {
+		String name = tmpPack.getName();
+		return name.substring(0
+	}
+
+	private void cleanupTemporaryFiles() {
+		if (tmpIdx != null && !tmpIdx.delete() && tmpIdx.exists())
+			tmpIdx.deleteOnExit();
+		if (tmpPack != null && !tmpPack.delete() && tmpPack.exists())
+			tmpPack.deleteOnExit();
+	}
+
+	@Override
+	protected boolean onAppendBase(final int typeCode
+			final PackedObjectInfo info) throws IOException {
+		info.setOffset(packEnd);
+
+		final byte[] buf = buffer();
+		int sz = data.length;
+		int len = 0;
+		buf[len++] = (byte) ((typeCode << 4) | sz & 15);
+		sz >>>= 4;
+		while (sz > 0) {
+			buf[len - 1] |= 0x80;
+			buf[len++] = (byte) (sz & 0x7f);
+			sz >>>= 7;
+		}
+
+		tailDigest.update(buf
+		crc.reset();
+		crc.update(buf
+		out.seek(packEnd);
+		out.write(buf
+		packEnd += len;
+
+		if (def == null)
+			def = new Deflater(Deflater.DEFAULT_COMPRESSION
+		else
+			def.reset();
+		def.setInput(data);
+		def.finish();
+
+		while (!def.finished()) {
+			len = def.deflate(buf);
+			tailDigest.update(buf
+			crc.update(buf
+			out.write(buf
+			packEnd += len;
+		}
+
+		info.setCRC((int) crc.getValue());
+		return true;
+	}
+
+	@Override
+	protected void onEndThinPack() throws IOException {
+		final byte[] tailHash = this.tailDigest.digest();
+		final byte[] buf = buffer();
+
+		final MessageDigest origDigest = Constants.newMessageDigest();
+		final MessageDigest tailDigest = Constants.newMessageDigest();
+		final MessageDigest packDigest = Constants.newMessageDigest();
+
+		long origRemaining = origEnd;
+		out.seek(0);
+		out.readFully(buf
+		origDigest.update(buf
+		origRemaining -= 12;
+
+		NB.encodeInt32(buf
+		out.seek(0);
+		out.write(buf
+		packDigest.update(buf
+
+		for (;;) {
+			final int n = out.read(buf);
+			if (n < 0)
+				break;
+			if (origRemaining != 0) {
+				final int origCnt = (int) Math.min(n
+				origDigest.update(buf
+				origRemaining -= origCnt;
+				if (origRemaining == 0)
+					tailDigest.update(buf
+			} else
+				tailDigest.update(buf
+
+			packDigest.update(buf
+		}
+
+		if (!Arrays.equals(origDigest.digest()
+				|| !Arrays.equals(tailDigest.digest()
+			throw new IOException(
+					JGitText.get().packCorruptedWhileWritingToFilesystem);
+
+		packHash = packDigest.digest();
+	}
+
+	private void writeIdx() throws IOException {
+		List<PackedObjectInfo> list = getSortedObjectList();
+		final FileOutputStream os = new FileOutputStream(tmpIdx);
+		try {
+			final PackIndexWriter iw;
+			if (indexVersion <= 0)
+				iw = PackIndexWriter.createOldestPossible(os
+			else
+				iw = PackIndexWriter.createVersion(os
+			iw.write(list
+			os.getChannel().force(true);
+		} finally {
+			os.close();
+		}
+	}
+
+	private PackLock renameAndOpenPack(final String lockMessage)
+			throws IOException {
+		if (!keepEmpty && getObjectCount() == 0) {
+			cleanupTemporaryFiles();
+			return null;
+		}
+
+		final MessageDigest d = Constants.newMessageDigest();
+		final byte[] oeBytes = new byte[Constants.OBJECT_ID_LENGTH];
+		for (int i = 0; i < getObjectCount(); i++) {
+			final PackedObjectInfo oe = getObject(i);
+			oe.copyRawTo(oeBytes
+			d.update(oeBytes);
+		}
+
+		final String name = ObjectId.fromRaw(d.digest()).name();
+		final File packDir = new File(db.getDirectory()
+		final File finalPack = new File(packDir
+		final File finalIdx = new File(packDir
+		final PackLock keep = new PackLock(finalPack
+
+		if (!packDir.exists() && !packDir.mkdir() && !packDir.exists()) {
+			cleanupTemporaryFiles();
+			throw new IOException(MessageFormat.format(
+					JGitText.get().cannotCreateDirectory
+							.getAbsolutePath()));
+		}
+
+		if (finalPack.exists()) {
+			cleanupTemporaryFiles();
+			return null;
+		}
+
+		if (lockMessage != null) {
+			try {
+				if (!keep.lock(lockMessage))
+					throw new IOException(MessageFormat.format(
+							JGitText.get().cannotLockPackIn
+			} catch (IOException e) {
+				cleanupTemporaryFiles();
+				throw e;
+			}
+		}
+
+		if (!tmpPack.renameTo(finalPack)) {
+			cleanupTemporaryFiles();
+			keep.unlock();
+			throw new IOException(MessageFormat.format(
+					JGitText.get().cannotMovePackTo
+		}
+
+		if (!tmpIdx.renameTo(finalIdx)) {
+			cleanupTemporaryFiles();
+			keep.unlock();
+			if (!finalPack.delete())
+				finalPack.deleteOnExit();
+			throw new IOException(MessageFormat.format(
+					JGitText.get().cannotMoveIndexTo
+		}
+
+		try {
+			newPack = db.openPack(finalPack
+		} catch (IOException err) {
+			keep.unlock();
+			if (finalPack.exists())
+				FileUtils.delete(finalPack);
+			if (finalIdx.exists())
+				FileUtils.delete(finalIdx);
+			throw err;
+		}
+
+		return lockMessage != null ? keep : null;
+	}
+}

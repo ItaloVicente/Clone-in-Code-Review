@@ -1,0 +1,15 @@
+	public static final String IMG_FORM_BG = "formBg";
+	public static final String IMG_LARGE = "large";
+	public static final String IMG_HORIZONTAL = "horizontal";
+	public static final String IMG_VERTICAL = "vertical";
+	public static final String IMG_SAMPLE = "sample";
+	public static final String IMG_WIZBAN = "wizban";
+	public static final String IMG_LINKTO_HELP = "linkto_help";
+	public static final String IMG_HELP_TOPIC = "help_topic";
+	public static final String IMG_CLOSE = "close";
+	public static final String IMG_HELP_CONTAINER = "container_obj";
+	public static final String IMG_HELP_TOC_OPEN = "toc_open";
+	public static final String IMG_HELP_TOC_CLOSED = "toc_closed";
+	public static final String IMG_HELP_SEARCH = "e_search_menu";
+	public static final String IMG_CLEAR = "clear";
+	public static final String IMG_NW = "nw";

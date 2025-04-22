@@ -1,0 +1,12 @@
+				RemoteAddCommand cmd = git.remoteAdd();
+				cmd.setName(name);
+				cmd.setUri(new URIish(uri));
+				cmd.call();
+				RemoteRemoveCommand cmd = git.remoteRemove();
+				cmd.setRemoteName(name);
+				cmd.call();
+				RemoteSetUrlCommand cmd = git.remoteSetUrl();
+				cmd.setRemoteName(name);
+				cmd.setRemoteUri(new URIish(uri));
+				cmd.setUriType(push ? UriType.PUSH : UriType.FETCH);
+				cmd.call();

@@ -1,0 +1,18 @@
+	/**
+	 * Converts a field in a byte array into a value.
+	 * @param buffer The byte array that contains the value
+	 * @param offset The offset of where the value begins in the byte array
+	 * @param length The length of the field to be converted
+	 * @return A long that represent the value of the field
+	 */
+	public static long fieldToValue(byte[] buffer, int offset, int length) {
+		long total = 0;
+		long val = 0;
+		for (int i = 0; i < length; i++) {
+			val = buffer[offset + i];
+			if (val < 0)
+				val = val + 256;
+			total += (long)Math.pow(256.0, (double) (length - 1 - i)) * val;
+		}
+		return total;
+	}

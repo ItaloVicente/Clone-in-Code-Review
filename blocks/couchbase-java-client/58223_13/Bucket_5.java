@@ -1,0 +1,12 @@
+import com.couchbase.client.java.error.subdoc.CannotInsertValueException;
+import com.couchbase.client.java.error.subdoc.DeltaTooBigException;
+import com.couchbase.client.java.error.subdoc.DocumentNotJsonException;
+import com.couchbase.client.java.error.subdoc.MultiMutationException;
+import com.couchbase.client.java.error.subdoc.NumberTooBigException;
+import com.couchbase.client.java.error.subdoc.PathExistsException;
+import com.couchbase.client.java.error.subdoc.PathInvalidException;
+import com.couchbase.client.java.error.subdoc.PathMismatchException;
+import com.couchbase.client.java.error.subdoc.PathNotFoundException;
+import com.couchbase.client.java.error.subdoc.PathTooDeepException;
+import com.couchbase.client.java.error.subdoc.SubDocumentException;
+import com.couchbase.client.java.error.subdoc.ZeroDeltaException;

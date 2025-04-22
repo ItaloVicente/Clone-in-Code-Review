@@ -1,0 +1,7 @@
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.swt.dnd.DragSourceListener#dragStart(org.eclipse.swt.
+		 * dnd.DragSourceEvent)
+		 */

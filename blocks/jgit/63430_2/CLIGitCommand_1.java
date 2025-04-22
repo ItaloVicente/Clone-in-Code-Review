@@ -1,0 +1,21 @@
+	@Override
+	PrintWriter createErrorWriter() {
+		return new PrintWriter(result.err);
+	}
+
+	void init(final TextBuiltin cmd) throws IOException {
+		cmd.outs = result.out;
+		cmd.errs = result.err;
+		super.init(cmd);
+	}
+
+	@Override
+	protected Repository openGitDir(String aGitdir) throws IOException {
+		assertNull(aGitdir);
+		return db;
+	}
+
+	@Override
+	void exit(int status
+		if (t == null) {
+			t = new IllegalStateException(Integer.toString(status));

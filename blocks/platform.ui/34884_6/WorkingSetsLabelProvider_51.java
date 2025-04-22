@@ -1,0 +1,183 @@
+package org.eclipse.ui.internal.navigator.workingsets;
+
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import org.eclipse.core.runtime.IAdaptable;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.Viewer;
+
+import org.eclipse.ui.IAggregateWorkingSet;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IWorkingSet;
+import org.eclipse.ui.internal.navigator.NavigatorContentService;
+import org.eclipse.ui.navigator.CommonNavigator;
+import org.eclipse.ui.navigator.CommonViewer;
+import org.eclipse.ui.navigator.ICommonContentExtensionSite;
+import org.eclipse.ui.navigator.ICommonContentProvider;
+import org.eclipse.ui.navigator.IExtensionStateModel;
+import org.eclipse.ui.navigator.resources.ProjectExplorer;
+
+public class WorkingSetsContentProvider implements ICommonContentProvider {
+
+	public static final String EXTENSION_ID = "org.eclipse.ui.navigator.resources.workingSets"; //$NON-NLS-1$
+
+	public static final String SHOW_TOP_LEVEL_WORKING_SETS = EXTENSION_ID + ".showTopLevelWorkingSets"; //$NON-NLS-1$
+
+
+	private static final Object[] NO_CHILDREN = new Object[0];
+
+	private WorkingSetHelper helper;
+	private IAggregateWorkingSet workingSetRoot;
+	private IExtensionStateModel extensionStateModel;
+	private CommonNavigator projectExplorer;
+	private CommonViewer viewer;
+	
+	private IPropertyChangeListener rootModeListener = new IPropertyChangeListener() {
+		
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if(SHOW_TOP_LEVEL_WORKING_SETS.equals(event.getProperty())) {
+				updateRootMode();
+			}
+		}
+
+	};
+	
+
+	@Override
+	public void init(ICommonContentExtensionSite aConfig) {
+		NavigatorContentService cs = (NavigatorContentService) aConfig.getService();
+		viewer = (CommonViewer) cs.getViewer();
+		projectExplorer = viewer.getCommonNavigator();
+		
+		extensionStateModel = aConfig.getExtensionStateModel();
+		extensionStateModel.addPropertyChangeListener(rootModeListener);
+		updateRootMode();
+		
+	}
+
+	@Override
+	public void restoreState(IMemento aMemento) {
+		
+	}
+
+	@Override
+	public void saveState(IMemento aMemento) {
+		
+	}
+
+	@Override
+	public Object[] getChildren(Object parentElement) {
+		if (parentElement instanceof IWorkingSet) {
+			IWorkingSet workingSet = (IWorkingSet) parentElement;
+			if (workingSet.isAggregateWorkingSet() && projectExplorer != null) {
+				switch (projectExplorer.getRootMode()) {
+					case ProjectExplorer.WORKING_SETS :
+						return ((IAggregateWorkingSet) workingSet).getComponents();
+					case ProjectExplorer.PROJECTS :
+						return getWorkingSetElements(workingSet);
+				}
+			}
+			return getWorkingSetElements(workingSet);
+		}
+		return NO_CHILDREN;
+	}
+
+	private IAdaptable[] getWorkingSetElements(IWorkingSet workingSet) {
+		IAdaptable[] children = workingSet.getElements();
+		for (int i = 0; i < children.length; i++) {
+			Object resource = children[i].getAdapter(IResource.class);
+			if (resource instanceof IProject)
+				children[i] = (IProject) resource;
+		}
+		return children;
+	}
+
+	@Override
+	public Object getParent(Object element) {
+		if (helper != null)
+			return helper.getParent(element);
+		return null;
+	}
+
+	@Override
+	public boolean hasChildren(Object element) {
+		return true;
+	}
+
+	@Override
+	public Object[] getElements(Object inputElement) {
+		return getChildren(inputElement);
+	}
+
+	@Override
+	public void dispose() {
+		helper = null;
+		extensionStateModel.removePropertyChangeListener(rootModeListener);
+	}
+
+	@Override
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		if (newInput instanceof IWorkingSet) {
+			IWorkingSet rootSet = (IWorkingSet) newInput;
+			helper = new WorkingSetHelper(rootSet);
+		}
+	}
+ 
+	private void updateRootMode() {
+		if (projectExplorer == null) {
+			return;
+		}
+		if( extensionStateModel.getBooleanProperty(SHOW_TOP_LEVEL_WORKING_SETS) )
+			projectExplorer.setRootMode(ProjectExplorer.WORKING_SETS);
+		else
+			projectExplorer.setRootMode(ProjectExplorer.PROJECTS);
+	}
+
+	protected class WorkingSetHelper {
+
+		private final IWorkingSet workingSet;
+		private final Map<IAdaptable, IAdaptable> parents = new WeakHashMap<IAdaptable, IAdaptable>();
+
+		public WorkingSetHelper(IWorkingSet set) {
+			workingSet = set;
+
+			if (workingSet.isAggregateWorkingSet()) {
+				IAggregateWorkingSet aggregateSet = (IAggregateWorkingSet) workingSet;
+				if (workingSetRoot == null)
+					workingSetRoot = aggregateSet;
+
+				IWorkingSet[] components = aggregateSet.getComponents();
+
+				for (IWorkingSet component : components) {
+					IAdaptable[] elements = getWorkingSetElements(component);
+					for (IAdaptable element : elements) {
+						parents.put(element, component);
+					}
+					parents.put(component, aggregateSet);
+
+				}
+			} else {
+				IAdaptable[] elements = getWorkingSetElements(workingSet);
+				for (int elementsIndex = 0; elementsIndex < elements.length; elementsIndex++) {
+					parents.put(elements[elementsIndex], workingSet);
+				}
+			}
+		}
+
+		public Object getParent(Object element) {
+			if (element instanceof IWorkingSet && element != workingSetRoot)
+				return workingSetRoot;
+			return parents.get(element);
+		}
+	}
+	
+
+
+}

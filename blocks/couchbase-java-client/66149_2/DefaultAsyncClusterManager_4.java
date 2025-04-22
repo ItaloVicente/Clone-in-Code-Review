@@ -1,0 +1,12 @@
+import com.couchbase.client.core.message.config.BucketsConfigRequest;
+import com.couchbase.client.core.message.config.BucketsConfigResponse;
+import com.couchbase.client.core.message.config.ClusterConfigRequest;
+import com.couchbase.client.core.message.config.ClusterConfigResponse;
+import com.couchbase.client.core.message.config.InsertBucketRequest;
+import com.couchbase.client.core.message.config.InsertBucketResponse;
+import com.couchbase.client.core.message.config.RemoveBucketRequest;
+import com.couchbase.client.core.message.config.RemoveBucketResponse;
+import com.couchbase.client.core.message.config.RestApiRequest;
+import com.couchbase.client.core.message.config.RestApiResponse;
+import com.couchbase.client.core.message.config.UpdateBucketRequest;
+import com.couchbase.client.core.message.config.UpdateBucketResponse;

@@ -1,0 +1,9 @@
+	public static String ContributionInfo_Editor;
+	public static String ContributionInfo_View;
+	public static String ContributionInfo_ActionSet;
+	public static String ContributionInfo_Category;
+	public static String ContributionInfo_ColorDefinition;
+	public static String ContributionInfo_Wizard;
+	public static String ContributionInfo_Perspective;
+	public static String ContributionInfo_Page;
+	public static String ContributionInfo_EarlyStartupPlugin;

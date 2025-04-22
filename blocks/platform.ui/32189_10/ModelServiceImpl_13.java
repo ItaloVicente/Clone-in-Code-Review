@@ -1,0 +1,10 @@
+		PartSizeInfo infoSrc = PartSizeInfo.get(relTo);
+		PartSizeInfo infoDst = PartSizeInfo.get(toInsert);
+		infoDst.setDefaultValue(10000.0 * ratio);
+		infoSrc.setDefaultValue(10000.0 * (1.0 - ratio));
+		infoDst.setDefaultAbsolute(false);
+		infoSrc.setDefaultAbsolute(false);
+		infoDst.storeInfo();
+		infoSrc.storeInfo();
+		infoSrc.notifyChanged();
+		infoDst.notifyChanged();

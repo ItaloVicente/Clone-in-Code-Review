@@ -1,0 +1,6 @@
+                handleAboutToShow();
+            }
+        });
+    }
+
+    @Override

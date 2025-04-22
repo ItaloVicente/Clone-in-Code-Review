@@ -1,0 +1,9 @@
+import org.eclipse.egit.core.op.CloneOperation;
+import org.eclipse.egit.core.op.CloneOperation.PostCloneTask;
+import org.eclipse.egit.core.op.ConfigureFetchAfterCloneTask;
+import org.eclipse.egit.core.op.ConfigurePushAfterCloneTask;
+import org.eclipse.egit.core.op.SetRepositoryConfigPropertyTask;
+import org.eclipse.egit.core.securestorage.UserPasswordCredentials;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.JobFamilies;
+import org.eclipse.egit.ui.UIPreferences;

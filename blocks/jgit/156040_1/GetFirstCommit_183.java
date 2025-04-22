@@ -1,0 +1,22 @@
+	private final Git git;
+	private final Ref ref;
+
+	public GetFirstCommit(final Git git
+		this(git
+	}
+
+	public GetFirstCommit(final Git git
+		this.git = git;
+		this.ref = ref;
+	}
+
+	public RevCommit execute() throws IOException {
+		try (final RevWalk rw = new RevWalk(git.getRepository())) {
+			final RevCommit root = rw.parseCommit(ref.getObjectId());
+			rw.sort(RevSort.REVERSE);
+			rw.markStart(root);
+			return rw.next();
+		} catch (final IOException ignored) {
+		}
+		return null;
+	}

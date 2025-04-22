@@ -1,0 +1,14 @@
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.egit.core.RepositoryUtil;
+import org.eclipse.egit.core.internal.util.ProjectUtil;
+import org.eclipse.egit.core.op.CloneOperation;
+import org.eclipse.egit.core.op.CloneOperation.PostCloneTask;
+import org.eclipse.egit.core.op.ConfigureFetchAfterCloneTask;
+import org.eclipse.egit.core.op.ConfigurePushAfterCloneTask;
+import org.eclipse.egit.core.op.ListRemoteOperation;
+import org.eclipse.egit.core.op.SetChangeIdTask;
+import org.eclipse.egit.core.securestorage.UserPasswordCredentials;

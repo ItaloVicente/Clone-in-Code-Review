@@ -1,0 +1,31 @@
+    /**
+    * Get a {@link Document} by its unique ID.
+    *
+    * The loaded document will be converted using the default converter, which is
+    * JSON if not configured otherwise.
+    *
+    * @param id the ID of the document.
+    * @return the loaded and converted document.
+    */
+    Observable<JsonDocument> get(String id);
+
+    /**
+    * Get a {@link Document} by its unique ID.
+    *
+    * The loaded document will be converted into the target class, which needs
+    * a custom converter registered with the system.
+    *
+    * @param id the ID of the document.
+    * @param target the document type.
+    * @return the loaded and converted document.
+    */
+    <D extends Document<?>> Observable<D> get(String id, Class<D> target);
+
+    /**
+    * Insert a {@link Document}.
+    *
+    * @param document the document to insert.
+    * @param <D> the type of the document, which is inferred from the instance.
+    * @return the document again.
+    */
+    <D extends Document<?>> Observable<D> insert(D document);

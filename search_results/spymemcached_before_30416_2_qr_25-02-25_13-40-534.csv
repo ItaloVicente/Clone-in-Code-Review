@@ -1,0 +1,5 @@
+block0.java_method#1#19,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_30416_2/src/main/java/net/spy/memcached/MemcachedConnection.java_handleIO#279#371
+block7.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_30416_2/src/main/java/net/spy/memcached/MemcachedConnection.java_connectionsStatus#973#987
+block1.java_method#1#54,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_30416_2/src/main/java/net/spy/memcached/MemcachedConnection.java_handleIO#476#578
+block2.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_30416_2/src/main/java/net/spy/memcached/MemcachedConnection.java_handleReads#592#664
+block5.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_30416_2/src/main/java/net/spy/memcached/MemcachedConnection.java_queueReconnect#682#725

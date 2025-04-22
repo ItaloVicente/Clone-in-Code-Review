@@ -1,0 +1,2 @@
+block1.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_19606_2/src/main/java/com/couchbase/client/ViewConnection.java_reconfigure#198#245,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_19606_2/src/main/java/com/couchbase/client/CouchbaseConnection.java_reconfigure#66#130
+block2.java_method#1#21,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_19606_2/src/main/java/com/couchbase/client/ViewNode.java_doWrites#102#145

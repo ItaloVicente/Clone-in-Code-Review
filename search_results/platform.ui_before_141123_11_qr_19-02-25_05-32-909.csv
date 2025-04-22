@@ -1,0 +1,3 @@
+block5.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_141123_11/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/e4/compatibility/CompatibilityPart.java_create#330#413
+block1.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_141123_11/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/SaveablesList.java_preCloseParts#500#570
+block2.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_141123_11/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/WorkbenchPage.java_removeSaveOnCloseNotNeededParts#3640#3648

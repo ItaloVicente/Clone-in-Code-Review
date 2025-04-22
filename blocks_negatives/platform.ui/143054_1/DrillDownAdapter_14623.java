@@ -1,0 +1,9 @@
+                goBack();
+            }
+        };
+        backAction
+                .setToolTipText(WorkbenchMessages.GoBack_toolTip);
+        backAction.setImageDescriptor(images
+                .getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
+        backAction.setDisabledImageDescriptor(images
+                .getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED));

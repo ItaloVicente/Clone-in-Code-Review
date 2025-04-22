@@ -1,0 +1,11 @@
+ *     [*] --> Disconnected
+ *     Disconnected --> Connecting
+ *     Connecting --> Disconnected
+ *     Connecting --> Connected
+ *     Connecting --> Degraded
+ *     Connected --> Disconnecting
+ *     Connected --> Degraded
+ *     Degraded --> Connected
+ *     Disconnecting -> Disconnected
+ *
+ * @enduml

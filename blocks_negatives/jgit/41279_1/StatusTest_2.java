@@ -1,0 +1,16 @@
+				"On branch master", //
+						"Changes to be committed:", //
+						"", //
+						"\tdeleted:    stagedDeleted", //
+						"\tmodified:   stagedModified", //
+						"\tnew file:   stagedNew", //
+						"", //
+						"Changes not staged for commit:", //
+						"", //
+						"\tdeleted:    trackedDeleted", //
+						"\tmodified:   trackedModified", //
+						"", //
+						"Untracked files:", //
+						"", //
+						"\tuntracked", //
+				}, execute("git status")); //

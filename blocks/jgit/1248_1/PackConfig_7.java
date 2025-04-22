@@ -1,0 +1,15 @@
+	public void fromConfig(final Config rc) {
+		setMaxDeltaDepth(rc.getInt("pack"
+		setDeltaSearchWindowSize(rc.getInt("pack"
+		setDeltaSearchMemoryLimit(rc.getLong("pack"
+		setDeltaCacheSize(rc.getLong("pack"
+		setDeltaCacheLimit(rc.getInt("pack"
+		setCompressionLevel(rc.getInt("pack"
+				rc.getInt("core"
+		setIndexVersion(rc.getInt("pack"
+		setBigFileThreshold(rc.getLong("core"
+		setThreads(rc.getInt("pack"
+
+		setReuseDeltas(rc.getBoolean("pack"
+		setReuseObjects(rc.getBoolean("pack"
+		setDeltaCompress(rc.getBoolean("pack"

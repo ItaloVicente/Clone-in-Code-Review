@@ -1,0 +1,26 @@
+	@Override
+	protected void createButtonsForButtonBar(final Composite parent) {
+		if (!hideConfigure
+				&& SimpleConfigureFetchDialog.getConfiguredRemote(localDb) != null)
+			createButton(parent, CONFIGURE,
+					UIText.FetchResultDialog_ConfigureButton, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+	}
+
+	@Override
+	protected void buttonPressed(int buttonId) {
+		super.buttonPressed(buttonId);
+		if (buttonId == CONFIGURE) {
+			super.buttonPressed(IDialogConstants.OK_ID);
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Dialog dlg = SimpleConfigureFetchDialog.getDialog(
+							PlatformUI.getWorkbench().getDisplay()
+									.getActiveShell(), localDb);
+					dlg.open();
+				}
+			});
+		}
+	}
+

@@ -1,0 +1,11 @@
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_ALLOW_TIP_SHA1_IN_WANT;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_INCLUDE_TAG;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_MULTI_ACK;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_MULTI_ACK_DETAILED;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_NO_DONE;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_NO_PROGRESS;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_OFS_DELTA;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_SHALLOW;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_SIDE_BAND;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_SIDE_BAND_64K;
+import static org.eclipse.jgit.transport.GitProtocolConstants.OPTION_THIN_PACK;

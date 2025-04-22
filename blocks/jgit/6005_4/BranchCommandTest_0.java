@@ -1,0 +1,14 @@
+		assertEquals(
+				"."
+				localGit.getRepository().getConfig()
+						.getString("branch"
+		localGit.branchRename().setOldName("newFromMaster")
+				.setNewName("renamed").call();
+		assertNull(
+				"."
+				localGit.getRepository().getConfig()
+						.getString("branch"
+		assertEquals(
+				"."
+				localGit.getRepository().getConfig()
+						.getString("branch"

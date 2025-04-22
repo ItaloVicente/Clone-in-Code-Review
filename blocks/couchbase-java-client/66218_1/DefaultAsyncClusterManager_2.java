@@ -1,0 +1,9 @@
+                                    .name(bucket.getString("name"))
+                                    .enableFlush(enableFlush)
+                                    .type(bucketType)
+                                    .replicas(bucket.getInt("replicaNumber"))
+                                    .quota(ramQuota)
+                                    .indexReplicas(indexReplicas)
+                                    .port(bucket.getInt("proxyPort"))
+                                    .password(bucket.getString("saslPassword"))
+                                    .build(bucket));

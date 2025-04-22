@@ -1,0 +1,4 @@
+block5.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_6005_4/org.eclipse.jgit/src/org/eclipse/jgit/api/MergeCommand.java_call#112#268
+block1.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/jgit/before_6005_4/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/CommitAndLogCommandTests.java_testCommitRange#300#334
+block3.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_6005_4/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/MergeCommandTest.java_testAlreadyUpToDate#93#108
+block0.java_method#1#14,/home/gesad/PycharmProjects/Diff/befores/jgit/before_6005_4/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/BranchCommandTest.java_testPullConfigRenameLocalBranch#370#393,/home/gesad/PycharmProjects/Diff/befores/jgit/before_6005_4/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/BranchCommandTest.java_testPullConfigLocalBranch#350#368

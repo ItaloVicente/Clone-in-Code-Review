@@ -1,0 +1,116 @@
+
+package org.eclipse.ui.tests.commands;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.tests.harness.util.UITestCase;
+import org.junit.Test;
+
+public class Bug417762Test extends UITestCase {
+
+	public Bug417762Test(String testName) {
+		super(testName);
+	}
+
+	@Test
+	public void testAsReported() throws ExecutionException,
+			NotDefinedException, NotEnabledException, NotHandledException {
+		IWorkbench workbench = getWorkbench();
+		ICommandService commandService = workbench
+				.getService(ICommandService.class);
+		IHandlerService handlerService = workbench
+				.getService(IHandlerService.class);
+		Command showInCommand = commandService
+				.getCommand(IWorkbenchCommandConstants.NAVIGATE_SHOW_IN);
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put(IWorkbenchCommandConstants.NAVIGATE_SHOW_IN_PARM_TARGET,
+				"my.view.id");
+		IEvaluationContext contextSnapshot = handlerService
+				.createContextSnapshot(true);
+		ExecutionEvent event = new ExecutionEvent(showInCommand, parameters,
+				null, contextSnapshot);
+		showInCommand.executeWithChecks(event);
+	}
+
+	@Test
+	public void testSuggestionUseExecuteCommand() throws ExecutionException,
+			NotDefinedException, NotEnabledException, NotHandledException {
+		IWorkbench workbench = getWorkbench();
+		ICommandService commandService = workbench
+				.getService(ICommandService.class);
+		IHandlerService handlerService = workbench
+				.getService(IHandlerService.class);
+		Command showInCommand = commandService
+				.getCommand(IWorkbenchCommandConstants.NAVIGATE_SHOW_IN);
+
+		handlerService
+				.executeCommand(
+						ParameterizedCommand.generateCommand(
+								showInCommand,
+								Collections
+										.singletonMap(
+												IWorkbenchCommandConstants.NAVIGATE_SHOW_IN_PARM_TARGET,
+												"my.view.id")), null);
+	}
+
+	@Test
+	public void testSuggestionUseExecuteCommandInContext() throws ExecutionException,
+			NotDefinedException, NotEnabledException, NotHandledException {
+		IWorkbench workbench = getWorkbench();
+		ICommandService commandService = workbench
+				.getService(ICommandService.class);
+		IHandlerService handlerService = workbench
+				.getService(IHandlerService.class);
+		Command showInCommand = commandService
+				.getCommand(IWorkbenchCommandConstants.NAVIGATE_SHOW_IN);
+		IEvaluationContext contextSnapshot = handlerService
+				.createContextSnapshot(true);
+
+		handlerService
+				.executeCommandInContext(
+						ParameterizedCommand.generateCommand(
+								showInCommand,
+								Collections
+										.singletonMap(
+												IWorkbenchCommandConstants.NAVIGATE_SHOW_IN_PARM_TARGET,
+												"my.view.id")), null, contextSnapshot);
+	}
+
+	@Test
+	public void testSuggestionUseParameterizedCommandExecuteWithChecks() throws ExecutionException,
+			NotDefinedException, NotEnabledException, NotHandledException {
+		IWorkbench workbench = getWorkbench();
+		ICommandService commandService = workbench
+				.getService(ICommandService.class);
+		IHandlerService handlerService = workbench
+				.getService(IHandlerService.class);
+		Command showInCommand = commandService
+				.getCommand(IWorkbenchCommandConstants.NAVIGATE_SHOW_IN);
+		IEvaluationContext contextSnapshot = handlerService
+				.createContextSnapshot(true);
+
+		final ParameterizedCommand pc = ParameterizedCommand.generateCommand(
+				showInCommand,
+				Collections
+						.singletonMap(
+								IWorkbenchCommandConstants.NAVIGATE_SHOW_IN_PARM_TARGET,
+								"my.view.id"));
+		pc.executeWithChecks(null, contextSnapshot);
+	}
+
+
+}

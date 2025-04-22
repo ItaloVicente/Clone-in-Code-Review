@@ -1,0 +1,11 @@
+import org.eclipse.egit.ui.internal.components.BranchNameNormalizer;
+import org.eclipse.egit.ui.internal.dialogs.AbstractBranchSelectionDialog;
+import org.eclipse.egit.ui.internal.dialogs.BranchEditDialog;
+import org.eclipse.egit.ui.internal.dialogs.NonBlockingWizardDialog;
+import org.eclipse.egit.ui.internal.gerrit.GerritDialogSettings;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.IPageChangeProvider;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;

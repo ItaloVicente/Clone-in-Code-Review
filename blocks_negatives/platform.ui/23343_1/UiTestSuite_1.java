@@ -1,0 +1,14 @@
+		addTest(new TestSuite(StartupTest.class));
+		addTest(new UIAutomatedSuite());
+		addTest(new ApiTestSuite());
+		addTest(new NavigatorTestSuite());
+		addTest(new DecoratorsTestSuite());
+		addTest(new DataTransferTestSuite());
+		addTest(new PreferencesTestSuite());
+		addTest(new KeysTestSuite());
+		addTest(new ActivitiesTestSuite());
+		addTest(new ThemesTestSuite());
+		addTest(new EncodingTestSuite());
+		addTest(new OperationsTestSuite());
+		addTest(new FieldAssistTestSuite());
+		addTest(new ProgressTestSuite());

@@ -1,0 +1,9 @@
+        StringBuilder s = new StringBuilder("DefaultBucketSettings{")
+            .append("name='").append(name).append('\'')
+            .append(", type=").append(type)
+            .append(", quota=").append(quota)
+            .append(", port=").append(port)
+            .append(", password='").append(password).append('\'')
+            .append(", replicas=").append(replicas)
+            .append(", indexReplicas=").append(indexReplicas)
+            .append(", enableFlush=").append(enableFlush);

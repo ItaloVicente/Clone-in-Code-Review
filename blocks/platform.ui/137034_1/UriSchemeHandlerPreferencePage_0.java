@@ -1,0 +1,13 @@
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UriHandlerPreferencePage_Warning_OtherApp;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UriHandlerPreferencePage_Warning_OtherApp_Description;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_ColumnName_Handler;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_ColumnName_SchemeDescription;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_ColumnName_SchemeName;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_Column_Handler_Text_Current_Application;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_Column_Handler_Text_Other_Application;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_Error_Reading_Scheme;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_Error_Writing_Scheme;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_Handler_Label;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_Handler_Text_No_Application;
+import static org.eclipse.ui.internal.ide.IDEWorkbenchMessages.UrlHandlerPreferencePage_Page_Description;
+

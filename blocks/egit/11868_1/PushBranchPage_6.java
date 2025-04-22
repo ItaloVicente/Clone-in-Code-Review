@@ -1,0 +1,40 @@
+package org.eclipse.egit.ui.internal.push;
+
+import org.eclipse.egit.ui.internal.components.RepositorySelection;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.transport.URIish;
+
+public class AddRemoteWizard extends Wizard {
+
+	private AddRemotePage page;
+
+	private URIish uri;
+
+	private String remoteName;
+
+	public AddRemoteWizard(Repository repository) {
+		setWindowTitle("Add Remote"); //$NON-NLS-1$
+		page = new AddRemotePage(repository);
+		addPage(page);
+	}
+
+	@Override
+	public boolean performFinish() {
+		uri = page.getSelection().getURI();
+		remoteName = page.getRemoteName();
+		return uri != null;
+	}
+
+	public RepositorySelection getRepositorySelection() {
+		return page.getSelection();
+	}
+
+	public URIish getUri() {
+		return uri;
+	}
+
+	public String getRemoteName() {
+		return remoteName;
+	}
+}

@@ -1,0 +1,6 @@
+block5.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_38634_9/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/Perspective.java_turnOnActionSets#265#271,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_38634_9/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/ActionPresentation.java_setActionSets#96#191
+block4.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_38634_9/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/Perspective.java_removeAlwaysOff#245#256
+block1.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_38634_9/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/Perspective.java_removeAlwaysOn#203#215
+block3.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_38634_9/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/Perspective.java_addAlwaysOn#231#243
+block2.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_38634_9/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/Perspective.java_addAlwaysOff#217#229
+block6.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_38634_9/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/Perspective.java_turnOffActionSets#273#279

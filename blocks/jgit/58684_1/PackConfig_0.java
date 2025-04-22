@@ -1,0 +1,11 @@
+	public static final int DEFAULT_BITMAP_CONTIGUOUS_COMMIT_COUNT = 100;
+
+	public static final int DEFAULT_BITMAP_RECENT_COMMIT_COUNT = 20000;
+
+	public static final int DEFAULT_BITMAP_RECENT_COMMIT_SPAN = 100;
+
+	public static final int DEFAULT_BITMAP_DISTANT_COMMIT_SPAN = 5000;
+
+	public static final int DEFAULT_BITMAP_EXCESSIVE_BRANCH_COUNT = 100;
+
+	public static final int DEFAULT_BITMAP_INACTIVE_BRANCH_AGE_IN_DAYS = 90;

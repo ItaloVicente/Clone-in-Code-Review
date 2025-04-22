@@ -1,0 +1,11 @@
+        Font font = parent.getFont();
+        Composite groupComponent = new Composite(parent, SWT.NULL);
+        GridLayout groupLayout = new GridLayout();
+        groupLayout.marginWidth = 0;
+        groupLayout.marginHeight = 0;
+        groupComponent.setLayout(groupLayout);
+        GridData data = new GridData();
+        data.verticalAlignment = GridData.FILL;
+        data.horizontalAlignment = GridData.FILL;
+        groupComponent.setLayoutData(data);
+        groupComponent.setFont(font);

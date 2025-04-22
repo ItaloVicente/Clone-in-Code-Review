@@ -1,0 +1,7 @@
+			clear(r);
+
+			final int s = slot(r.pack
+			final Entry e1 = table.get(s);
+			for (Entry n = e1; n != null; n = n.next) {
+				if (n.ref == r) {
+					n.dead = true;

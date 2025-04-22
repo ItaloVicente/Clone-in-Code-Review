@@ -1,0 +1,570 @@
+package org.eclipse.ui.internal.monitoring;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.monitoring.PreferenceConstants;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class EventLoopMonitorThreadManualTests {
+	private static final boolean PRINT_TO_CONSOLE = false;
+
+	protected static final double TARGET_RUNNING_TIME_PER_MEASUREMENT = 5.0; // seconds
+
+	protected static final double MAX_RELATIVE_INCREASE_ONE_STACK_PERCENT = 2.5; // %
+
+	protected static final double MAX_RELATIVE_INCREASE_PER_EXTRA_THREAD_PERCENT = 0.3; // %
+
+	protected static final int NUM_CONTROL_MEASUREMENTS = 5;
+
+	protected static final int NUM_UI_STACK_MEASUREMENTS = 5;
+
+	protected static final int NUM_ALL_STACKS_MEASUREMENTS = 5;
+
+	protected static final long WORK_INTEGRATION_ITERATIONS = 70000; // iterations
+
+	protected static final int MIN_CONVERGING_ITERATIONS = 256; // iterations
+
+	protected static final double MAX_OUTLIER_RATIO = 0.03;
+
+	protected static final double CAL_EMA_ALPHA = 2.0 / (MIN_CONVERGING_ITERATIONS - 1.0);
+
+	protected static final double CAL_MAX_RELATIVE_ERROR = 0.003;
+
+	protected static final long PN63_GENERATOR_POLY = (3L << 62) | 1;
+
+	@Before
+	public void setUp() {
+		getPreferences().setValue(PreferenceConstants.MONITORING_ENABLED, false);
+	}
+
+	@After
+	public void tearDown() {
+		getPreferences().setToDefault(PreferenceConstants.MONITORING_ENABLED);
+	}
+
+	protected static long pn63(long pnSequence) {
+		int nextBit = 0;
+		for (int i = 0; i < 64; ++i) {
+			if (((PN63_GENERATOR_POLY >> i) & 1) == 1) {
+				nextBit ^= (pnSequence >> i) & 1;
+			}
+		}
+
+		return (pnSequence << 1) | nextBit;
+	}
+
+	protected static long doWork(long pnSeqeuence, long iterations) {
+		LinkedList<String> messages = new LinkedList<String>();
+
+		for (long i = 0; i < iterations; ++i) {
+			pnSeqeuence = pn63(pnSeqeuence);
+
+			if (i % 10000 == 0) {
+				messages.add("10000!");
+			} else if (i % 1000 == 0) {
+				for (int c = messages.size() / 2; c >= 0; --c) {
+					messages.removeFirst();
+				}
+			} else if (i % 100 == 0) {
+				messages.add(String.format("Iteration %d", i));
+			}
+		}
+
+		for (String s : messages) {
+			pnSeqeuence ^= s.hashCode();
+		}
+
+		return pnSeqeuence;
+	}
+
+	@Test
+	public void testFixedWork() throws Exception{
+		final Display display = Display.getDefault();
+		assertNotNull("No SWT Display available.", display);
+
+		final MockUiFreezeEventLogger logger = new MockUiFreezeEventLogger();
+		final CountDownLatch backgroundJobsDone = new CountDownLatch(1);
+		Queue<Thread> threads = startBackgroundThreads(backgroundJobsDone);
+
+		double nsPerWork = calibrate(display);
+		final long numIterations = Math.round(1e9 * TARGET_RUNNING_TIME_PER_MEASUREMENT / nsPerWork);
+
+		final double[] tWork = {0};
+		final long[] workOutput = {0};
+		final Runnable doFixedAmountOfWork = new Runnable() {
+			@Override
+			public void run() {
+				long start = System.nanoTime();
+				long result = doWork(start, numIterations);
+				tWork[0] = System.nanoTime() - start;
+				workOutput[0] ^= result;
+			}
+		};
+
+		ThreadMXBean jvmThreadManager = ManagementFactory.getThreadMXBean();
+		boolean dumpLockedMonitors = jvmThreadManager.isObjectMonitorUsageSupported();
+		boolean dumpLockedSynchronizers = jvmThreadManager.isSynchronizerUsageSupported();
+		int totalThreadCount =
+				jvmThreadManager.dumpAllThreads(dumpLockedMonitors, dumpLockedSynchronizers).length;
+
+		List<Double> controlResults = new ArrayList<Double>(NUM_CONTROL_MEASUREMENTS);
+		List<Double> uiStackResults = new ArrayList<Double>(NUM_UI_STACK_MEASUREMENTS);
+		List<Double> allStacksResults = new ArrayList<Double>(NUM_ALL_STACKS_MEASUREMENTS);
+		double expectedRunningTime = 0.0;
+		double maxRunningTime = 0.0;
+
+		if (PRINT_TO_CONSOLE) {
+			System.out.println(String.format("Starting %d control measurements without monitoring.",
+					NUM_CONTROL_MEASUREMENTS));
+		}
+		for (int i = 1; i <= NUM_CONTROL_MEASUREMENTS; ++i) {
+			display.syncExec(doFixedAmountOfWork);
+			if (PRINT_TO_CONSOLE) {
+				System.out.println(String.format("Control measurement %d/%d finished. tWork = %fs",
+					i, NUM_CONTROL_MEASUREMENTS, tWork[0] / 1e9));
+			}
+			controlResults.add(tWork[0]);
+			expectedRunningTime += tWork[0] / NUM_CONTROL_MEASUREMENTS;
+			if (tWork[0] > maxRunningTime) {
+				maxRunningTime = tWork[0];
+			}
+		}
+
+		double controlDiff = Math.abs((maxRunningTime - expectedRunningTime) / expectedRunningTime);
+		double maxRelativeIncreaseOneStackAllowed =
+			(MAX_RELATIVE_INCREASE_ONE_STACK_PERCENT / 100.) * (1 + controlDiff);
+		double maxRelativeIncreaseAllStacksAllowed =
+				((MAX_RELATIVE_INCREASE_ONE_STACK_PERCENT + MAX_RELATIVE_INCREASE_PER_EXTRA_THREAD_PERCENT
+
+		Thread monitor1 = createAndStartMonitoringThread(display, false);
+		double worstRelativeDiffOneThread = Double.MIN_NORMAL;
+		if (PRINT_TO_CONSOLE) {
+			System.out.println(
+					String.format("Starting %d measurements while collecting UI thread stacks.",
+					NUM_UI_STACK_MEASUREMENTS));
+		}
+		for (int i = 1; i <= NUM_UI_STACK_MEASUREMENTS; ++i) {
+			display.syncExec(doFixedAmountOfWork);
+			uiStackResults.add(tWork[0]);
+			double relativeDiffOneThread = (tWork[0] - expectedRunningTime) / expectedRunningTime;
+			if (relativeDiffOneThread > worstRelativeDiffOneThread) {
+				worstRelativeDiffOneThread = relativeDiffOneThread;
+			}
+			if (PRINT_TO_CONSOLE) {
+				System.out.println(String.format(
+						"Measurement %d of %d took %.3fs. Relative increase = %.3f%% "
+						+ "(allowed < %.3f%%).",
+						i, NUM_UI_STACK_MEASUREMENTS, tWork[0] / 1e9, relativeDiffOneThread * 100,
+						maxRelativeIncreaseOneStackAllowed * 100));
+			}
+			assertTrue(
+				String.format("Relative overhead of monitoring surpassed threshold for "
+					+ "measurement %d of %d. It took %.3fs with a relative increase of %.3f%% "
+					+ "(allowed < %.3f%%).",
+					i, NUM_UI_STACK_MEASUREMENTS, tWork[0] / 1e9, relativeDiffOneThread * 100,
+					maxRelativeIncreaseOneStackAllowed * 100),
+				relativeDiffOneThread <= maxRelativeIncreaseOneStackAllowed);
+		}
+		killMonitorThread(monitor1, display);
+
+		Thread monitor2 = createAndStartMonitoringThread(display, true);
+		double worstRelativeDiffAllThreads = Double.MIN_NORMAL;
+		if (PRINT_TO_CONSOLE) {
+			System.out.println(
+					String.format("Starting %d measurements while collecting all thread stacks.",
+					NUM_ALL_STACKS_MEASUREMENTS));
+		}
+		for (int i = 1; i <= NUM_ALL_STACKS_MEASUREMENTS; ++i) {
+			display.syncExec(doFixedAmountOfWork);
+			allStacksResults.add(tWork[0]);
+			double relativeDiffAllThreads = (tWork[0] - expectedRunningTime) / expectedRunningTime;
+			if (relativeDiffAllThreads > worstRelativeDiffAllThreads) {
+				worstRelativeDiffAllThreads = relativeDiffAllThreads;
+			}
+			if (PRINT_TO_CONSOLE) {
+				System.out.println(String.format(
+						"Measurement %d of %d took %.3fs, Relative increase = %.3f%% "
+						+ "(allowed < %.3f%%).",
+						i, NUM_ALL_STACKS_MEASUREMENTS, tWork[0] / 1e9, relativeDiffAllThreads * 100,
+						maxRelativeIncreaseAllStacksAllowed * 100));
+			}
+			assertTrue(
+				String.format("Relative overhead of monitoring with stack traces of all threads "
+					+ "surpassed threshold for measurement %d of %d. It took %.3fs with a relative "
+					+ "increase of %.3f%% (allowed < %.3f%%).",
+					i, NUM_ALL_STACKS_MEASUREMENTS, tWork[0] / 1e9, relativeDiffAllThreads * 100,
+					maxRelativeIncreaseAllStacksAllowed * 100),
+				relativeDiffAllThreads <= maxRelativeIncreaseAllStacksAllowed);
+		}
+		killMonitorThread(monitor2, display);
+
+		backgroundJobsDone.countDown();
+
+		if (PRINT_TO_CONSOLE) {
+			double controlMean = 0;
+			double controlMin = Double.MAX_VALUE;
+			double controlMax = Double.MIN_NORMAL;
+			double controlM2 = 0;
+			for (int n = 0; n < controlResults.size(); ) {
+				double v = controlResults.get(n) / 1e9;
+				controlResults.set(n, v);
+				++n;
+				double delta = v - controlMean;
+				controlMean += delta / n;
+				controlM2 += delta * (v - controlMean);
+				controlMin = Math.min(controlMin, v);
+				controlMax = Math.max(controlMax, v);
+			}
+			double controlStD = Math.sqrt(controlM2 / controlResults.size());
+
+			double uiStackMean = 0;
+			double uiStackMin = Double.MAX_VALUE;
+			double uiStackMax = Double.MIN_NORMAL;
+			double uiStackM2 = 0;
+			for (int n = 0; n < uiStackResults.size(); ) {
+				double v = uiStackResults.get(n) / 1e9;
+				uiStackResults.set(n, v);
+				++n;
+				double delta = v - uiStackMean;
+				uiStackMean += delta / n;
+				uiStackM2 += delta * (v - uiStackMean);
+				uiStackMin = Math.min(uiStackMin, v);
+				uiStackMax = Math.max(uiStackMax, v);
+			}
+
+			double allStacksMean = 0;
+			double allStacksMin = Double.MAX_VALUE;
+			double allStacksMax = Double.MIN_NORMAL;
+			double allStacksM2 = 0;
+			for (int n = 0; n < allStacksResults.size(); ) {
+				double v = allStacksResults.get(n) / 1e9;
+				allStacksResults.set(n, v);
+				++n;
+				double delta = v - allStacksMean;
+				allStacksMean += delta / n;
+				allStacksM2 += delta * (v - allStacksMean);
+				allStacksMin = Math.min(allStacksMin, v);
+				allStacksMax = Math.max(allStacksMax, v);
+			}
+
+			System.out.println(String.format("Work result = %016X", workOutput[0]));
+
+			if (!(worstRelativeDiffOneThread <= maxRelativeIncreaseOneStackAllowed)) {
+				System.out.println(" * Monitoring UI thread slowed down work too much");
+			}
+			if (!(worstRelativeDiffAllThreads <= maxRelativeIncreaseAllStacksAllowed)) {
+				System.out.println(" * Monitoring all threads slowed down work too much");
+			}
+			if (logger.getLoggedEvents().size() != NUM_UI_STACK_MEASUREMENTS + NUM_ALL_STACKS_MEASUREMENTS) {
+				System.out.println(String.format(" * Didn't get expected freeze events (got %d/%d)",
+						logger.getLoggedEvents().size(),
+						NUM_UI_STACK_MEASUREMENTS + NUM_ALL_STACKS_MEASUREMENTS));
+			}
+
+			System.out.println("\nRaw results (in seconds): ");
+			System.out.println(String.format(
+					" * Control    (min = %f max = %f avg = %f stD = %f): %s",
+					controlMin, controlMax, controlMean, controlStD, joinItems(controlResults)));
+			System.out.println(String.format(
+					" * UI stack   (min = %f max = %f avg = %f stD = %f, vsC = %f): %s",
+					uiStackMin, uiStackMax, uiStackMean, Math.sqrt(uiStackM2 / uiStackResults.size()),
+					Math.abs(uiStackMean - controlMean) / controlStD, joinItems(uiStackResults)));
+			System.out.println(String.format(
+					" * All stacks (min = %f max = %f avg = %f stD = %f, vsC = %f): %s",
+					allStacksMin, allStacksMax, allStacksMean, Math.sqrt(allStacksM2 / allStacksResults.size()),
+					Math.abs(allStacksMean - controlMean) / controlStD,
+					joinItems(allStacksResults)));
+		}
+
+		while (!threads.isEmpty()) {
+			Thread t = threads.poll();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				threads.offer(t); // Retry.
+			}
+		}
+
+		assertEquals("Did not log expected number of freeze events,",
+				NUM_UI_STACK_MEASUREMENTS + NUM_ALL_STACKS_MEASUREMENTS,
+				logger.getLoggedEvents().size());
+		assertTrue(String.format("Relative overhead of monitoring with stack traces of the UI "
+				+ "thread was %.3f%% (allowed < %.3f%%).",
+				worstRelativeDiffOneThread * 100,
+				maxRelativeIncreaseOneStackAllowed * 100),
+				worstRelativeDiffOneThread <= maxRelativeIncreaseOneStackAllowed);
+		assertTrue(String.format("Relative overhead of monitoring with stack traces of all "
+				+ "threads was %.3f%% (allowed < %.3f%%).",
+				worstRelativeDiffAllThreads * 100,
+				maxRelativeIncreaseAllStacksAllowed * 100),
+				worstRelativeDiffAllThreads <= maxRelativeIncreaseAllStacksAllowed);
+	}
+
+	private Thread createAndStartMonitoringThread(Display display, boolean dumpAll) throws Exception {
+		CountDownLatch monitorStarted = new CountDownLatch(2);
+		Thread monitor = createTestMonitor(dumpAll, monitorStarted);
+		startMonitoring(display, monitor, monitorStarted);
+		return monitor;
+	}
+
+	private void killMonitorThread(final Thread thread, Display display) throws Exception {
+		display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				shutdownThread(thread);
+			}
+		});
+
+		thread.join();
+	}
+
+	protected static EventLoopMonitorThread.Parameters createDefaultParameters() {
+		IPreferenceStore preferences = MonitoringPlugin.getDefault().getPreferenceStore();
+		EventLoopMonitorThread.Parameters params = new EventLoopMonitorThread.Parameters();
+
+		params.longEventWarningThreshold = preferences.getInt(
+				PreferenceConstants.LONG_EVENT_WARNING_THRESHOLD_MILLIS);
+		params.longEventErrorThreshold = preferences.getInt(
+				PreferenceConstants.LONG_EVENT_ERROR_THRESHOLD_MILLIS);
+		params.maxStackSamples = preferences.getInt(PreferenceConstants.MAX_STACK_SAMPLES);
+		params.deadlockThreshold = preferences.getInt(
+				PreferenceConstants.DEADLOCK_REPORTING_THRESHOLD_MILLIS);
+		params.filterTraces = preferences.getString(PreferenceConstants.FILTER_TRACES);
+
+		params.checkParameters();
+		return params;
+	}
+
+	protected Thread createTestMonitor(boolean dumpAllThreads, final CountDownLatch monitorStarted)
+			throws Exception {
+		EventLoopMonitorThread.Parameters args = createDefaultParameters();
+		if (dumpAllThreads) {
+			args.longEventErrorThreshold = args.longEventWarningThreshold;
+		}
+
+		return new EventLoopMonitorThread(args) {
+			@Override
+			protected void sleepForMillis(long nanoseconds) {
+				monitorStarted.countDown();
+				super.sleepForMillis(nanoseconds);
+			}
+		};
+	}
+
+	protected Queue<Thread> startBackgroundThreads(final CountDownLatch backgroundJobsDone) {
+		final Runnable backgroundTaskRunnable = new Runnable() {
+			@Override
+			public void run() {
+				final double dutyCycle = 0.10;
+
+				final double min = 100; // ns
+				final double max = 1e9; // ns
+				final double skew = 0.1; // the degree to which the values cluster around the mode
+				final double bias = -1e5; // bias the mode to approach the min (< 0) vs max (> 0)
+
+				double range = max - min;
+				double mid = min + range / 2.0;
+				double biasFactor = Math.exp(bias);
+				Random rng = new Random();
+
+				while (true) {
+					double rv = rng.nextGaussian();
+					double runFor = mid + (range * (biasFactor / (biasFactor + Math.exp(-rv / skew)) - 0.5));
+
+					long endTime = System.nanoTime() + (long) runFor;
+					do {
+						doWork(rng.nextInt(), (int) runFor);
+					} while (endTime - System.nanoTime() > 0);
+
+					double sleepScale = Math.abs(rng.nextGaussian() / dutyCycle);
+					try {
+						if (backgroundJobsDone.await((int) Math.round(runFor * sleepScale),
+								TimeUnit.NANOSECONDS)) {
+							return;
+						}
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		};
+
+		final Runnable backgroundIdle = new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						backgroundJobsDone.await();
+						return;
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		};
+
+		Random rng = new Random();
+		int activeThreads = Thread.activeCount();
+		int numBackgroundTasks = activeThreads <= 2 ? 5 + rng.nextInt(5) : 1;
+		int numBackgroundIdlers = 8 + rng.nextInt(30);
+		if (PRINT_TO_CONSOLE) {
+			System.out.println(String.format("Starting %d background tasks and %d background idlers",
+					numBackgroundTasks, numBackgroundIdlers));
+		}
+		Queue<Thread> threads = new ArrayDeque<Thread>(numBackgroundIdlers + numBackgroundTasks);
+		for (int i = 0; i < numBackgroundTasks; i++) {
+			Thread t = new Thread(backgroundTaskRunnable);
+			threads.add(t);
+			t.start();
+		}
+
+		for (int i = 0; i < numBackgroundIdlers; i++) {
+			Thread t = new Thread(backgroundIdle);
+			threads.add(t);
+			t.start();
+		}
+		return threads;
+	}
+
+	protected void startMonitoring(final Display display, final Thread monitorThread,
+			CountDownLatch eventsRegistered) throws Exception {
+		display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				monitorThread.start();
+
+				display.disposeExec(new Runnable() {
+					@Override
+					public void run() {
+						shutdownThread(monitorThread);
+					}
+				});
+			}
+		});
+
+		for (boolean eventsReady = false; !eventsReady;) {
+			while (display.readAndDispatch()) { // Keep invoking events.
+			}
+
+			eventsReady |= eventsRegistered.await(1, TimeUnit.MILLISECONDS);
+		}
+	}
+
+	protected void shutdownThread(Thread monitor) {
+		((EventLoopMonitorThread) monitor).shutdown();
+	}
+
+	protected double calibrate(final Display display) {
+		if (PRINT_TO_CONSOLE) {
+			System.out.println("Starting calibration...");
+		}
+		final double[] tWork = {0};
+		display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				tWork[0] = measureAvgTimePerWorkItem();
+			}
+		});
+		if (PRINT_TO_CONSOLE) {
+			System.out.println(String.format("Calibration finished. tWorkUnit = %fns", tWork[0]));
+		}
+		return tWork[0];
+	}
+
+	protected double measureAvgTimePerWorkItem() {
+		int consecutiveGood = 0;
+		int outliers = 0;
+		int hash = 0;
+		double avgAbsRelErr = 0;
+
+		double numSamplesAveraged = 2.0 / CAL_EMA_ALPHA + 1.0;
+
+		doWork(0, 1000);
+
+		long start = System.nanoTime();
+		long result = doWork(0, WORK_INTEGRATION_ITERATIONS);
+		double mean = System.nanoTime() - start;
+		double oldMean;
+
+		long n = 0;
+		long startWallTime = System.currentTimeMillis();
+		long nextPrintAt = startWallTime + 5000; // 5s
+		while (++n < Long.MAX_VALUE
+				&& (consecutiveGood < MIN_CONVERGING_ITERATIONS || avgAbsRelErr > CAL_MAX_RELATIVE_ERROR)) {
+			start = System.nanoTime();
+			result = doWork(result, WORK_INTEGRATION_ITERATIONS);
+			long duration = System.nanoTime() - start;
+			hash ^= result;
+
+			double deltaDuration = duration - mean;
+			oldMean = mean;
+			mean += CAL_EMA_ALPHA * (deltaDuration - mean); // EMA
+			double absRelErr = Math.abs((oldMean - mean) / mean);
+			if (absRelErr < CAL_MAX_RELATIVE_ERROR) {
+				consecutiveGood++;
+				avgAbsRelErr = avgAbsRelErr * ((consecutiveGood - 1) / consecutiveGood)
+						+ (absRelErr / consecutiveGood);
+			} else if (outliers < (int) (MAX_OUTLIER_RATIO * Math.min(n, numSamplesAveraged))) {
+				++outliers;
+			} else {
+				consecutiveGood = 1;
+				outliers = 0;
+				avgAbsRelErr = absRelErr;
+			}
+
+			if (nextPrintAt - System.currentTimeMillis() < 0) {
+				nextPrintAt += 2000; // 2s
+				if (PRINT_TO_CONSOLE) {
+					System.out.println(String.format(
+						"Still calibrating... n = %3d\t\ttWork = %f ns\t\tRelErr = %f\t\tOutliers = %d/%d",
+						n, 2.0 * mean / WORK_INTEGRATION_ITERATIONS, avgAbsRelErr, outliers,
+						(int) (MAX_OUTLIER_RATIO * Math.min(n, numSamplesAveraged))));
+				}
+			}
+		}
+
+		double tWork = 2.0 * mean / WORK_INTEGRATION_ITERATIONS;
+
+		System.out.println(String.format("Measurement converged in %d ms (%d loops) "
+				+ "tWork = %.3fns, relErr = %f, outliers = %d",
+				System.currentTimeMillis() - startWallTime,
+				n,
+				tWork,
+				avgAbsRelErr,
+				outliers,
+				hash));
+		return tWork;
+	}
+
+	private String joinItems(List<Double> items) {
+		StringBuilder mergedItems = new StringBuilder();
+
+		for (double item : items) {
+			if (mergedItems.length() != 0) {
+				mergedItems.append(',');
+			}
+			mergedItems.append(item);
+		}
+
+		return mergedItems.toString();
+	}
+
+	private static IPreferenceStore getPreferences() {
+		return MonitoringPlugin.getDefault().getPreferenceStore();
+	}
+}

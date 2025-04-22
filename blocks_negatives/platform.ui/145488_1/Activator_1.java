@@ -1,0 +1,17 @@
+		registry.put(SharedImages.DESC_CLEAR, createImageDescriptor(SharedImages.DESC_CLEAR));
+		registry.put(SharedImages.DESC_CLEAR_DISABLED, createImageDescriptor(SharedImages.DESC_CLEAR_DISABLED));
+		registry.put(SharedImages.DESC_OPEN_CONSOLE, createImageDescriptor(SharedImages.DESC_OPEN_CONSOLE));
+		registry.put(SharedImages.DESC_REMOVE_LOG, createImageDescriptor(SharedImages.DESC_REMOVE_LOG));
+		registry.put(SharedImages.DESC_REMOVE_LOG_DISABLED, createImageDescriptor(SharedImages.DESC_REMOVE_LOG_DISABLED));
+		registry.put(SharedImages.DESC_EXPORT, createImageDescriptor(SharedImages.DESC_EXPORT));
+		registry.put(SharedImages.DESC_EXPORT_DISABLED, createImageDescriptor(SharedImages.DESC_EXPORT_DISABLED));
+		registry.put(SharedImages.DESC_FILTER, createImageDescriptor(SharedImages.DESC_FILTER));
+		registry.put(SharedImages.DESC_FILTER_DISABLED, createImageDescriptor(SharedImages.DESC_FILTER_DISABLED));
+		registry.put(SharedImages.DESC_IMPORT, createImageDescriptor(SharedImages.DESC_IMPORT));
+		registry.put(SharedImages.DESC_IMPORT_DISABLED, createImageDescriptor(SharedImages.DESC_IMPORT_DISABLED));
+		registry.put(SharedImages.DESC_OPEN_LOG, createImageDescriptor(SharedImages.DESC_OPEN_LOG));
+		registry.put(SharedImages.DESC_OPEN_LOG_DISABLED, createImageDescriptor(SharedImages.DESC_OPEN_LOG_DISABLED));
+		registry.put(SharedImages.DESC_PROPERTIES, createImageDescriptor(SharedImages.DESC_PROPERTIES));
+		registry.put(SharedImages.DESC_PROPERTIES_DISABLED, createImageDescriptor(SharedImages.DESC_PROPERTIES_DISABLED));
+		registry.put(SharedImages.DESC_READ_LOG, createImageDescriptor(SharedImages.DESC_READ_LOG));
+		registry.put(SharedImages.DESC_READ_LOG_DISABLED, createImageDescriptor(SharedImages.DESC_READ_LOG_DISABLED));

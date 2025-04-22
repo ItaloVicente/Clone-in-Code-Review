@@ -1,0 +1,242 @@
+package org.eclipse.ui.tests.leaks;
+
+import java.lang.ref.PhantomReference;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.internal.part.NullEditorInput;
+import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
+import org.eclipse.ui.tests.api.MockViewPart;
+import org.eclipse.ui.tests.harness.util.FileUtil;
+import org.eclipse.ui.tests.harness.util.UITestCase;
+
+public class LeakTests extends UITestCase {
+    private IWorkbenchPage fActivePage;
+
+    private IWorkbenchWindow fWin;
+
+    private IProject proj;
+
+    public LeakTests(String testName) {
+        super(testName);
+    }
+
+    public static void checkRef(ReferenceQueue queue, Reference ref)
+            throws IllegalArgumentException, InterruptedException {
+        boolean flag = false;
+        for (int i = 0; i < 100; i++) {
+            System.runFinalization();
+            System.gc();
+            Thread.yield();
+            processEvents();
+            Reference checkRef = queue.remove(100);
+            if (checkRef != null && checkRef.equals(ref)) {
+                flag = true;
+                break;
+            }
+        }
+
+        assertTrue("Reference not enqueued", flag);
+    }
+
+    private Reference createReference(ReferenceQueue queue, Object object) {
+        return new PhantomReference(object, queue);
+    }
+
+    @Override
+	protected void doSetUp() throws Exception {
+        super.doSetUp();
+        fWin = openTestWindow(IDE.RESOURCE_PERSPECTIVE_ID);
+        fActivePage = fWin.getActivePage();
+    }
+
+    @Override
+	protected void doTearDown() throws Exception {
+        super.doTearDown();
+        fWin = null;
+        fActivePage = null;
+        if (proj != null) {
+            FileUtil.deleteProject(proj);
+            proj = null;
+        }
+    }
+
+    public void testSimpleEditorLeak() throws Exception {
+        proj = FileUtil.createProject("testEditorLeaks");
+
+        IFile file = FileUtil.createFile("test.mock1", proj);
+
+        ReferenceQueue queue = new ReferenceQueue();
+        IEditorPart editor = IDE.openEditor(fActivePage, file);
+        assertNotNull(editor);
+        Reference ref = createReference(queue, editor);
+        try {
+            fActivePage.closeEditor(editor, false);
+            editor = null;
+            checkRef(queue, ref);
+        } finally {
+            ref.clear();
+        }
+    }
+
+    public void testSimpleViewLeak() throws Exception {
+        ReferenceQueue queue = new ReferenceQueue();
+        IViewPart view = fActivePage.showView(MockViewPart.ID);
+        assertNotNull(view);
+        Reference ref = createReference(queue, view);
+
+        try {
+            fActivePage.hideView(view);
+            view = null;
+            checkRef(queue, ref);
+        } finally {
+            ref.clear();
+        }
+    }
+
+	public void testBug255005ServiceLeak() throws Exception {
+		ReferenceQueue queue = new ReferenceQueue();
+		IViewPart view = fActivePage.showView(MockViewPart.ID);
+		assertNotNull(view);
+
+		Job doNothingJob = new Job("Does Nothing") { //$NON-NLS-1$
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				return Status.OK_STATUS;
+			}
+		};
+
+		IWorkbenchSiteProgressService service = view
+				.getSite().getService(IWorkbenchSiteProgressService.class);
+		service.schedule(doNothingJob);
+
+		Reference ref = createReference(queue, service);
+
+		doNothingJob.join();
+
+		try {
+			fActivePage.hideView(view);
+			service = null;
+			view = null;
+			checkRef(queue, ref);
+		} finally {
+			ref.clear();
+		}
+	}
+
+	public void testBug255005SiteLeak() throws Exception {
+		ReferenceQueue queue = new ReferenceQueue();
+		IViewPart view = fActivePage.showView(MockViewPart.ID);
+		assertNotNull(view);
+
+		Job doNothingJob = new Job("Does Nothing") { //$NON-NLS-1$
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				return Status.OK_STATUS;
+			}
+		};
+
+		IWorkbenchSiteProgressService service = view
+				.getSite().getService(IWorkbenchSiteProgressService.class);
+		service.schedule(doNothingJob);
+
+		IWorkbenchPartSite site = view.getSite();
+		Reference ref = createReference(queue, site);
+
+		doNothingJob.join();
+
+		try {
+			fActivePage.hideView(view);
+			service = null;
+			site = null;
+			view = null;
+			checkRef(queue, ref);
+		} finally {
+			ref.clear();
+		}
+	}
+
+	public void testBug265449PropertiesLeak() throws Exception {
+    	proj = FileUtil.createProject("projectToSelect");
+
+    	IViewPart navigator = fActivePage.showView(IPageLayout.ID_RES_NAV);
+    	IViewPart propertiesView = fActivePage.showView(IPageLayout.ID_PROP_SHEET);
+
+    	navigator.getSite().getSelectionProvider().setSelection(new StructuredSelection(proj));
+
+		ReferenceQueue queue = new ReferenceQueue();
+		Reference ref = createReference(queue, propertiesView);
+
+		try {
+	    	fActivePage.hideView(navigator);
+	    	fActivePage.hideView(propertiesView);
+			navigator = null;
+			propertiesView = null;
+			checkRef(queue, ref);
+		} finally {
+			ref.clear();
+		}
+	}
+
+    public void testTextEditorContextMenu() throws Exception {
+    	proj = FileUtil.createProject("testEditorLeaks");
+
+    	IEditorInput input = new NullEditorInput();
+        ReferenceQueue queue = new ReferenceQueue();
+        IEditorPart editor = IDE.openEditor(fActivePage, input, "org.eclipse.ui.tests.leak.contextEditor");
+        assertTrue(editor instanceof ContextEditorPart);
+        Reference ref = createReference(queue, editor);
+
+        ContextEditorPart contextMenuEditor = (ContextEditorPart) editor;
+
+        contextMenuEditor.showMenu();
+        processEvents();
+
+        contextMenuEditor.hideMenu();
+        processEvents();
+
+        try {
+            contextMenuEditor = null;
+            fActivePage.closeEditor(editor, false);
+            editor = null;
+            checkRef(queue, ref);
+        } finally {
+            ref.clear();
+        }
+    }
+
+
+  public void testDestroyedDialogLeaks() throws Exception {
+	  ReferenceQueue queue = new ReferenceQueue();
+	  Dialog newDialog = new SaveAsDialog(fWin.getShell());
+      newDialog.setBlockOnOpen(false);
+      newDialog.open();
+      assertNotNull(newDialog);
+      Reference ref = createReference(queue, newDialog);
+      try {
+       	  newDialog.getShell().dispose();
+       	  newDialog.close();
+       	  newDialog = null;
+          checkRef(queue, ref);
+      } finally {
+    	  ref.clear();
+      }
+  }
+}

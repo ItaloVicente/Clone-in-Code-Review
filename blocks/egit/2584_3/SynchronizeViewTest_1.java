@@ -1,0 +1,9 @@
+import static org.eclipse.egit.ui.UIText.CommitAction_commit;
+import static org.eclipse.egit.ui.UIText.CommitDialog_Commit;
+import static org.eclipse.egit.ui.UIText.CommitDialog_CommitChanges;
+import static org.eclipse.egit.ui.UIText.CommitDialog_SelectAll;
+import static org.eclipse.egit.ui.UIText.GitModelWorkingTree_workingTree;
+import static org.eclipse.egit.ui.UIText.ResetCommand_WizardTitle;
+import static org.eclipse.egit.ui.UIText.ResetTargetSelectionDialog_ResetButton;
+import static org.eclipse.egit.ui.UIText.ResetTargetSelectionDialog_ResetQuestion;
+import static org.eclipse.egit.ui.UIText.ResetTargetSelectionDialog_ResetTypeHardButton;

@@ -1,0 +1,6 @@
+block3.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197252_1/org.eclipse.jgit.junit.ssh/src/org/eclipse/jgit/junit/ssh/SshTestGitServer.java_run#481#499
+block14.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197252_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/UploadPackTest.java_testGetSessionIDValueProtocolV0#2431#2447
+block11.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197252_1/org.eclipse.jgit.pgm/src/org/eclipse/jgit/pgm/UploadPack.java_run#40#57
+block8.java_method#1#23,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197252_1/org.eclipse.jgit.pgm/src/org/eclipse/jgit/pgm/Diff.java_nameStatus#197#222
+block2.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197252_1/org.eclipse.jgit.http.server/src/org/eclipse/jgit/http/server/UploadPackServlet.java_doPost#162#205
+block13.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197252_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/UploadPackTest.java_testGetPeerAgentProtocolV0#2414#2429

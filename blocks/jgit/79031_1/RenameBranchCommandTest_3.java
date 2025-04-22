@@ -1,0 +1,10 @@
+		assertEquals(BranchRebaseMode.REBASE
+				config.getEnum(BranchRebaseMode.values()
+						ConfigConstants.CONFIG_BRANCH_SECTION
+						ConfigConstants.CONFIG_KEY_REBASE
+						BranchRebaseMode.NONE));
+		assertEquals(BranchRebaseMode.NONE
+				config.getEnum(BranchRebaseMode.values()
+						ConfigConstants.CONFIG_BRANCH_SECTION
+						ConfigConstants.CONFIG_KEY_REBASE
+						BranchRebaseMode.NONE));

@@ -1,0 +1,12 @@
+		dialogEClass.getESuperTypes().add(theUiPackage.getUILabel());
+		dialogEClass.getESuperTypes().add(theUiPackage.getContext());
+		dialogEClass.getESuperTypes().add(theCommandsPackage.getHandlerContainer());
+		dialogEClass.getESuperTypes().add(theCommandsPackage.getBindings());
+		g1 = createEGenericType(theUiPackage.getElementContainer());
+		g2 = createEGenericType(this.getWindowElement());
+		g1.getETypeArguments().add(g2);
+		wizardEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getDialogElement());
+		wizardEClass.getEGenericSuperTypes().add(g1);
+		dialogElementEClass.getESuperTypes().add(theUiPackage.getUIElement());
+		wizardElementEClass.getESuperTypes().add(theUiPackage.getUIElement());

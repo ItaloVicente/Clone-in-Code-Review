@@ -1,0 +1,323 @@
+
+package org.eclipse.jgit.util;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import junit.framework.TestCase;
+
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
+
+public class RefMapTest extends TestCase {
+	private static final ObjectId ID_ONE = ObjectId
+			.fromString("41eb0d88f833b558bddeb269b7ab77399cdf98ed");
+
+	private static final ObjectId ID_TWO = ObjectId
+			.fromString("698dd0b8d0c299f080559a1cffc7fe029479a408");
+
+	private RefList<Ref> packed;
+
+	private RefList<Ref> loose;
+
+	private RefList<Ref> resolved;
+
+	protected void setUp() throws Exception {
+		super.setUp();
+		packed = RefList.emptyList();
+		loose = RefList.emptyList();
+		resolved = RefList.emptyList();
+	}
+
+	public void testEmpty_NoPrefix1() {
+		RefMap map = new RefMap(""
+		assertEquals(0
+
+		assertFalse(map.entrySet().iterator().hasNext());
+		assertFalse(map.keySet().iterator().hasNext());
+		assertFalse(map.containsKey("a"));
+		assertNull(map.get("a"));
+	}
+
+	public void testEmpty_NoPrefix2() {
+		RefMap map = new RefMap();
+		assertEquals(0
+
+		assertFalse(map.entrySet().iterator().hasNext());
+		assertFalse(map.keySet().iterator().hasNext());
+		assertFalse(map.containsKey("a"));
+		assertNull(map.get("a"));
+	}
+
+	public void testNotEmpty_NoPrefix() {
+		final Ref master = newRef("refs/heads/master"
+		packed = toList(master);
+
+		RefMap map = new RefMap(""
+		assertEquals(1
+		assertSame(master
+	}
+
+	public void testEmpty_WithPrefix() {
+		final Ref master = newRef("refs/heads/master"
+		packed = toList(master);
+
+		RefMap map = new RefMap("refs/tags/"
+		assertEquals(0
+
+		assertFalse(map.entrySet().iterator().hasNext());
+		assertFalse(map.keySet().iterator().hasNext());
+	}
+
+	public void testNotEmpty_WithPrefix() {
+		final Ref master = newRef("refs/heads/master"
+		packed = toList(master);
+
+		RefMap map = new RefMap("refs/heads/"
+		assertEquals(1
+		assertSame(master
+	}
+
+	public void testClear() {
+		final Ref master = newRef("refs/heads/master"
+		loose = toList(master);
+
+		RefMap map = new RefMap(""
+		assertSame(master
+
+		map.clear();
+		assertNull(map.get("refs/heads/master"));
+		assertTrue(map.isEmpty());
+		assertEquals(0
+	}
+
+	public void testIterator_RefusesRemove() {
+		final Ref master = newRef("refs/heads/master"
+		loose = toList(master);
+
+		RefMap map = new RefMap(""
+		Iterator<Ref> itr = map.values().iterator();
+		assertTrue(itr.hasNext());
+		assertSame(master
+		try {
+			itr.remove();
+			fail("iterator allowed remove");
+		} catch (UnsupportedOperationException err) {
+		}
+	}
+
+	public void testIterator_FailsAtEnd() {
+		final Ref master = newRef("refs/heads/master"
+		loose = toList(master);
+
+		RefMap map = new RefMap(""
+		Iterator<Ref> itr = map.values().iterator();
+		assertTrue(itr.hasNext());
+		assertSame(master
+		try {
+			itr.next();
+			fail("iterator allowed next");
+		} catch (NoSuchElementException err) {
+		}
+	}
+
+	public void testMerge_PackedLooseLoose() {
+		final Ref refA = newRef("A"
+		final Ref refB_ONE = newRef("B"
+		final Ref refB_TWO = newRef("B"
+		final Ref refc = newRef("c"
+
+		packed = toList(refA
+		loose = toList(refB_TWO
+
+		RefMap map = new RefMap(""
+		assertEquals(3
+		assertFalse(map.isEmpty());
+		assertTrue(map.containsKey(refA.getName()));
+		assertSame(refA
+
+		assertSame(refB_TWO
+
+		Iterator<Ref> itr = map.values().iterator();
+		assertTrue(itr.hasNext());
+		assertSame(refA
+		assertTrue(itr.hasNext());
+		assertSame(refB_TWO
+		assertTrue(itr.hasNext());
+		assertSame(refc
+		assertFalse(itr.hasNext());
+	}
+
+	public void testMerge_WithPrefix() {
+		final Ref a = newRef("refs/heads/A"
+		final Ref b = newRef("refs/heads/foo/bar/B"
+		final Ref c = newRef("refs/heads/foo/rab/C"
+		final Ref g = newRef("refs/heads/g"
+		packed = toList(a
+
+		RefMap map = new RefMap("refs/heads/foo/"
+		assertEquals(2
+
+		assertSame(b
+		assertSame(c
+		assertNull(map.get("refs/heads/foo/bar/B"));
+		assertNull(map.get("refs/heads/A"));
+
+		assertTrue(map.containsKey("bar/B"));
+		assertTrue(map.containsKey("rab/C"));
+		assertFalse(map.containsKey("refs/heads/foo/bar/B"));
+		assertFalse(map.containsKey("refs/heads/A"));
+
+		Iterator<Map.Entry<String
+		Map.Entry<String
+		assertTrue(itr.hasNext());
+		ent = itr.next();
+		assertEquals("bar/B"
+		assertSame(b
+		assertTrue(itr.hasNext());
+		ent = itr.next();
+		assertEquals("rab/C"
+		assertSame(c
+		assertFalse(itr.hasNext());
+	}
+
+	public void testPut_KeyMustMatchName_NoPrefix() {
+		final Ref refA = newRef("refs/heads/A"
+		RefMap map = new RefMap(""
+		try {
+			map.put("FOO"
+			fail("map accepted invalid key/value pair");
+		} catch (IllegalArgumentException err) {
+		}
+	}
+
+	public void testPut_KeyMustMatchName_WithPrefix() {
+		final Ref refA = newRef("refs/heads/A"
+		RefMap map = new RefMap("refs/heads/"
+		try {
+			map.put("FOO"
+			fail("map accepted invalid key/value pair");
+		} catch (IllegalArgumentException err) {
+		}
+	}
+
+	public void testPut_NoPrefix() {
+		final Ref refA_one = newRef("refs/heads/A"
+		final Ref refA_two = newRef("refs/heads/A"
+
+		packed = toList(refA_one);
+
+		RefMap map = new RefMap(""
+		assertSame(refA_one
+		assertSame(refA_one
+
+		assertSame(refA_two
+		assertSame(refA_one
+		assertEquals(0
+
+		assertSame(refA_two
+		assertSame(refA_one
+	}
+
+	public void testPut_WithPrefix() {
+		final Ref refA_one = newRef("refs/heads/A"
+		final Ref refA_two = newRef("refs/heads/A"
+
+		packed = toList(refA_one);
+
+		RefMap map = new RefMap("refs/heads/"
+		assertSame(refA_one
+		assertSame(refA_one
+
+		assertSame(refA_two
+		assertSame(refA_one
+		assertEquals(0
+
+		assertSame(refA_two
+		assertSame(refA_one
+	}
+
+	public void testToString_NoPrefix() {
+		final Ref a = newRef("refs/heads/A"
+		final Ref b = newRef("refs/heads/B"
+
+		packed = toList(a
+
+		StringBuilder exp = new StringBuilder();
+		exp.append("[");
+		exp.append(a.toString());
+		exp.append("
+		exp.append(b.toString());
+		exp.append("]");
+
+		RefMap map = new RefMap(""
+		assertEquals(exp.toString()
+	}
+
+	public void testToString_WithPrefix() {
+		final Ref a = newRef("refs/heads/A"
+		final Ref b = newRef("refs/heads/foo/B"
+		final Ref c = newRef("refs/heads/foo/C"
+		final Ref g = newRef("refs/heads/g"
+
+		packed = toList(a
+
+		StringBuilder exp = new StringBuilder();
+		exp.append("[");
+		exp.append(b.toString());
+		exp.append("
+		exp.append(c.toString());
+		exp.append("]");
+
+		RefMap map = new RefMap("refs/heads/foo/"
+		assertEquals(exp.toString()
+	}
+
+	public void testEntryType() {
+		final Ref a = newRef("refs/heads/A"
+		final Ref b = newRef("refs/heads/B"
+
+		packed = toList(a
+
+		RefMap map = new RefMap("refs/heads/"
+		Iterator<Map.Entry<String
+		Map.Entry<String
+		Map.Entry<String
+
+		assertEquals(ent_a.hashCode()
+		assertTrue(ent_a.equals(ent_a));
+		assertFalse(ent_a.equals(ent_b));
+
+		assertEquals(a.toString()
+	}
+
+	public void testEntryTypeSet() {
+		final Ref refA_one = newRef("refs/heads/A"
+		final Ref refA_two = newRef("refs/heads/A"
+
+		packed = toList(refA_one);
+
+		RefMap map = new RefMap("refs/heads/"
+		assertSame(refA_one
+
+		Map.Entry<String
+		assertEquals("A"
+		assertSame(refA_one
+
+		assertSame(refA_one
+		assertSame(refA_two
+		assertSame(refA_two
+		assertEquals(1
+	}
+
+	private RefList<Ref> toList(Ref... refs) {
+		RefList.Builder<Ref> b = new RefList.Builder<Ref>(refs.length);
+		b.addAll(refs
+		return b.toRefList();
+	}
+
+	private static Ref newRef(String name
+		return new Ref(Ref.Storage.LOOSE
+	}
+}

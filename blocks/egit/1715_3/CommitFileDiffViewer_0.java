@@ -1,0 +1,10 @@
+						MessageDialog
+								.openInformation(
+										PlatformUI.getWorkbench()
+												.getActiveWorkbenchWindow()
+												.getShell(),
+										UIText.CommitFileDiffViewer_CanNotOpenCompareEditorTitle,
+										UIText.CommitFileDiffViewer_MergeCommitMultiAncestorMessage);
+				}
+				else
+					openFileInEditor(d);

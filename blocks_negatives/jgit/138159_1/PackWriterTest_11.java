@@ -1,0 +1,13 @@
+		TestRepository<Repository> r = new TestRepository<>(repo);
+		BranchBuilder bb = r.branch("refs/heads/master");
+		contentA = r.blob("A");
+		contentB = r.blob("B");
+		contentC = r.blob("C");
+		contentD = r.blob("D");
+		contentE = r.blob("E");
+		c1 = bb.commit().add("a", contentA).create();
+		c2 = bb.commit().add("b", contentB).create();
+		c3 = bb.commit().add("c", contentC).create();
+		c4 = bb.commit().add("d", contentD).create();
+		c5 = bb.commit().add("e", contentE).create();
+		return repo;

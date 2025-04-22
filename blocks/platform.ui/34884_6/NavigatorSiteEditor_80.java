@@ -1,0 +1,486 @@
+
+package org.eclipse.ui.internal.navigator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreePathContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.TreePath;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.ISaveablesLifecycleListener;
+import org.eclipse.ui.ISaveablesSource;
+import org.eclipse.ui.Saveable;
+import org.eclipse.ui.SaveablesLifecycleEvent;
+import org.eclipse.ui.internal.navigator.VisibilityAssistant.VisibilityListener;
+import org.eclipse.ui.internal.navigator.extensions.ExtensionSequenceNumberComparator;
+import org.eclipse.ui.internal.navigator.extensions.NavigatorContentDescriptor;
+import org.eclipse.ui.internal.navigator.extensions.NavigatorContentExtension;
+import org.eclipse.ui.navigator.INavigatorContentDescriptor;
+import org.eclipse.ui.navigator.INavigatorSaveablesService;
+import org.eclipse.ui.navigator.SaveablesProvider;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleEvent;
+
+public class NavigatorSaveablesService implements INavigatorSaveablesService, VisibilityListener {
+
+	private NavigatorContentService contentService;
+
+	private static List<NavigatorSaveablesService> instances = new ArrayList<NavigatorSaveablesService>();
+
+	public NavigatorSaveablesService(NavigatorContentService contentService) {
+		this.contentService = contentService;
+	}
+
+	private static void addInstance(NavigatorSaveablesService saveablesService) {
+		synchronized (instances) {
+			instances.add(saveablesService);
+		}
+	}
+
+	private static void removeInstance(
+			NavigatorSaveablesService saveablesService) {
+		synchronized (instances) {
+			instances.remove(saveablesService);
+		}
+	}
+
+		synchronized(instances) {
+			if (event.getType() == BundleEvent.STARTED) {
+				for (Iterator<NavigatorSaveablesService> it = instances.iterator(); it.hasNext();) {
+					NavigatorSaveablesService instance = it
+							.next();
+					instance.handleBundleStarted(event.getBundle()
+							.getSymbolicName());
+				}
+			} else if (event.getType() == BundleEvent.STOPPED) {
+				for (Iterator<NavigatorSaveablesService> it = instances.iterator(); it.hasNext();) {
+					NavigatorSaveablesService instance = it
+							.next();
+					instance.handleBundleStopped(event.getBundle()
+							.getSymbolicName());
+				}
+			}
+		}
+	}
+
+	private class LifecycleListener implements ISaveablesLifecycleListener {
+		@Override
+		public void handleLifecycleEvent(SaveablesLifecycleEvent event) {
+			Saveable[] saveables = event.getSaveables();
+			Saveable[] shownSaveables = null;
+			synchronized (instances) {
+				synchronized (NavigatorSaveablesService.this) {
+					if (isDisposed())
+						return;
+					switch (event.getEventType()) {
+					case SaveablesLifecycleEvent.POST_OPEN:
+						recomputeSaveablesAndNotify(false, null);
+						break;
+					case SaveablesLifecycleEvent.POST_CLOSE:
+						recomputeSaveablesAndNotify(false, null);
+						break;
+					case SaveablesLifecycleEvent.DIRTY_CHANGED:
+						Set<Saveable> result = new HashSet<Saveable>(Arrays.asList(currentSaveables));
+						result.retainAll(Arrays.asList(saveables));
+						shownSaveables = result.toArray(new Saveable[result.size()]);
+						break;
+					}
+				}
+			}
+
+			if (shownSaveables != null && shownSaveables.length > 0) {
+				outsideListener.handleLifecycleEvent(new SaveablesLifecycleEvent(saveablesSource, SaveablesLifecycleEvent.DIRTY_CHANGED,
+						shownSaveables, false));
+			}
+		}
+	}
+
+	private Saveable[] currentSaveables;
+
+	private ISaveablesLifecycleListener outsideListener;
+
+	private ISaveablesLifecycleListener saveablesLifecycleListener = new LifecycleListener();
+
+	private ISaveablesSource saveablesSource;
+
+	private StructuredViewer viewer;
+
+	private SaveablesProvider[] saveablesProviders;
+
+	private DisposeListener disposeListener = new DisposeListener() {
+
+		@Override
+		public void widgetDisposed(DisposeEvent e) {
+			synchronized (instances) {
+				synchronized (NavigatorSaveablesService.this) {
+					if (saveablesProviders != null) {
+						for (int i = 0; i < saveablesProviders.length; i++) {
+							saveablesProviders[i].dispose();
+						}
+					}
+					removeInstance(NavigatorSaveablesService.this);
+					contentService = null;
+					currentSaveables = null;
+					outsideListener = null;
+					saveablesLifecycleListener = null;
+					saveablesSource = null;
+					viewer = null;
+					saveablesProviders = null;
+					disposeListener = null;
+				}
+			}
+		}
+	};
+
+	private Map<String, List> inactivePluginsWithSaveablesProviders;
+
+	private Map<NavigatorContentDescriptor, SaveablesProvider> saveablesProviderMap;
+
+	@Override
+	public void init(final ISaveablesSource saveablesSource,
+			final StructuredViewer viewer,
+			ISaveablesLifecycleListener outsideListener) {
+		synchronized (instances) {
+			synchronized (this) {
+				this.saveablesSource = saveablesSource;
+				this.viewer = viewer;
+				this.outsideListener = outsideListener;
+				currentSaveables = computeSaveables();
+				addInstance(this);
+			}
+		}
+		viewer.getControl().addDisposeListener(disposeListener);
+	}
+
+	private boolean isDisposed() {
+		return contentService == null;
+	}
+	
+	private Saveable[] computeSaveables() {
+		ITreeContentProvider contentProvider = (ITreeContentProvider) viewer
+				.getContentProvider();
+		boolean isTreepathContentProvider = contentProvider instanceof ITreePathContentProvider;
+		Object viewerInput = viewer.getInput();
+		List<Saveable> result = new ArrayList<Saveable>();
+		Set<Object> roots = new HashSet<Object>(Arrays.asList(contentProvider
+				.getElements(viewerInput)));
+		SaveablesProvider[] saveablesProviders = getSaveablesProviders();
+		for (int i = 0; i < saveablesProviders.length; i++) {
+			SaveablesProvider saveablesProvider = saveablesProviders[i];
+			Saveable[] saveables = saveablesProvider.getSaveables();
+			for (int j = 0; j < saveables.length; j++) {
+				Saveable saveable = saveables[j];
+				Object[] elements = saveablesProvider.getElements(saveable);
+				boolean foundRoot = false;
+				for (int k = 0; !foundRoot && k < elements.length; k++) {
+					Object element = elements[k];
+					if (roots.contains(element)) {
+					    result.add(saveable);
+					    foundRoot = true;
+					} else if (isTreepathContentProvider) {
+						ITreePathContentProvider treePathContentProvider = (ITreePathContentProvider) contentProvider;
+						TreePath[] parentPaths = treePathContentProvider.getParents(element);
+						for (int l = 0; !foundRoot && l < parentPaths.length; l++) {
+							TreePath parentPath = parentPaths[l];
+                            for (int m = 0; !foundRoot && m < parentPath.getSegmentCount(); m++) {
+                                if (roots.contains(parentPath.getSegment(m))) {
+                                    result.add(saveable);
+                                    foundRoot = true;
+                                }
+                            }
+						}
+					} else {
+						while (!foundRoot && element != null) {
+							if (roots.contains(element)) {
+								result.add(saveable);
+								foundRoot = true;
+							} else {
+								element = contentProvider.getParent(element);
+							}
+						}
+					}
+				}
+			}
+		}
+		return result.toArray(new Saveable[result.size()]);
+	}
+
+	@Override
+	public synchronized Saveable[] getActiveSaveables() {
+		if(!isDisposed()){
+			ITreeContentProvider contentProvider = (ITreeContentProvider) viewer
+				.getContentProvider();
+			IStructuredSelection selection = (IStructuredSelection) viewer
+					.getSelection();
+			if (selection instanceof ITreeSelection) {
+				return getActiveSaveablesFromTreeSelection((ITreeSelection) selection);
+			} else if (contentProvider instanceof ITreePathContentProvider) {
+				return getActiveSaveablesFromTreePathProvider(selection, (ITreePathContentProvider) contentProvider);
+			} else {
+				return getActiveSaveablesFromTreeProvider(selection, contentProvider);
+			}
+		}
+		return new Saveable[0];
+	}
+	
+	private Saveable[] getActiveSaveablesFromTreeSelection(
+			ITreeSelection selection) {
+		Set<Saveable> result = new HashSet<Saveable>();
+		TreePath[] paths = selection.getPaths();
+		for (int i = 0; i < paths.length; i++) {
+			TreePath path = paths[i];
+			Saveable saveable = findSaveable(path);
+			if (saveable != null) {
+				result.add(saveable);
+			}
+		}
+		return result.toArray(new Saveable[result.size()]);
+	}
+
+	private Saveable[] getActiveSaveablesFromTreePathProvider(
+			IStructuredSelection selection, ITreePathContentProvider provider) {
+		Set<Saveable> result = new HashSet<Saveable>();
+		for (Iterator it = selection.iterator(); it.hasNext();) {
+			Object element = it.next();
+			Saveable saveable = getSaveable(element);
+			if (saveable != null) {
+				result.add(saveable);
+			} else {
+				TreePath[] paths = provider.getParents(element);
+				saveable = findSaveable(paths);
+				if (saveable != null) {
+					result.add(saveable);
+				}
+			}
+		}
+		return result.toArray(new Saveable[result.size()]);
+	}
+
+	private Saveable[] getActiveSaveablesFromTreeProvider(
+			IStructuredSelection selection, ITreeContentProvider contentProvider) {
+		Set<Saveable> result = new HashSet<Saveable>();
+		for (Iterator it = selection.iterator(); it.hasNext();) {
+			Object element = it.next();
+			Saveable saveable = findSaveable(element, contentProvider);
+			if (saveable != null) {
+				result.add(saveable);
+			}
+		}
+		return result.toArray(new Saveable[result.size()]);
+	}
+
+	private Saveable findSaveable(Object element,
+			ITreeContentProvider contentProvider) {
+		while (element != null) {
+			Saveable saveable = getSaveable(element);
+			if (saveable != null) {
+				return saveable;
+			}
+			element = contentProvider.getParent(element);
+		}
+		return null;
+	}
+
+	private Saveable findSaveable(TreePath[] paths) {
+		for (int i = 0; i < paths.length; i++) {
+			Saveable saveable = findSaveable(paths[i]);
+			if (saveable != null) {
+				return saveable;
+			}
+		}
+		return null;
+	}
+	
+	private Saveable findSaveable(TreePath path) {
+		int count = path.getSegmentCount();
+		for (int j = count - 1; j >= 0; j--) {
+			Object parent = path.getSegment(j);
+			Saveable saveable = getSaveable(parent);
+			if (saveable != null) {
+				return saveable;
+			}
+		}
+		return null;
+	}
+
+	private Saveable getSaveable(Object element) {
+		if (saveablesProviderMap==null) {
+			getSaveablesProviders();
+		}
+        for(Iterator<NavigatorContentDescriptor> sItr = saveablesProviderMap.keySet().iterator(); sItr.hasNext();) {
+        	NavigatorContentDescriptor descriptor = sItr.next();
+                if(descriptor.isTriggerPoint(element) || descriptor.isPossibleChild(element)) {
+                	SaveablesProvider provider = saveablesProviderMap.get(descriptor);
+                	Saveable  saveable = provider.getSaveable(element);
+                        if(saveable != null) {
+                                return saveable;
+                        }
+                }
+        }
+        return null;
+	}
+
+	@Override
+	public synchronized Saveable[] getSaveables() {
+		return currentSaveables;
+	}
+
+	private SaveablesProvider[] getSaveablesProviders() {
+		if (saveablesProviders == null) {
+			inactivePluginsWithSaveablesProviders = new HashMap<String, List>();
+			saveablesProviderMap = new TreeMap<NavigatorContentDescriptor, SaveablesProvider>(ExtensionSequenceNumberComparator.INSTANCE);
+			INavigatorContentDescriptor[] descriptors = contentService
+					.getActiveDescriptorsWithSaveables();
+			List<SaveablesProvider> result = new ArrayList<SaveablesProvider>();
+			for (int i = 0; i < descriptors.length; i++) {
+				NavigatorContentDescriptor descriptor = (NavigatorContentDescriptor) descriptors[i];
+				String pluginId = ((NavigatorContentDescriptor) descriptor)
+						.getContribution().getPluginId();
+				if (Platform.getBundle(pluginId).getState() != Bundle.ACTIVE) {
+					List<NavigatorContentDescriptor> inactiveDescriptors = inactivePluginsWithSaveablesProviders
+							.get(pluginId);
+					if (inactiveDescriptors == null) {
+						inactiveDescriptors = new ArrayList<NavigatorContentDescriptor>();
+						inactivePluginsWithSaveablesProviders.put(pluginId,
+								inactiveDescriptors);
+					}
+					inactiveDescriptors.add(descriptor);
+				} else {
+					SaveablesProvider saveablesProvider = createSaveablesProvider(descriptor);
+					if (saveablesProvider != null) {
+						saveablesProvider.init(saveablesLifecycleListener);
+						result.add(saveablesProvider);
+						saveablesProviderMap.put(descriptor, saveablesProvider);
+					}
+				}
+			}
+			saveablesProviders = result
+					.toArray(new SaveablesProvider[result.size()]);
+		}
+		return saveablesProviders;
+	}
+
+	private SaveablesProvider createSaveablesProvider(NavigatorContentDescriptor descriptor) {
+		NavigatorContentExtension extension = contentService
+				.getExtension(descriptor, true);
+		ITreeContentProvider contentProvider = extension
+				.getContentProvider();
+        
+        return (SaveablesProvider)AdaptabilityUtility.getAdapter(contentProvider, SaveablesProvider.class);
+	}
+
+	private void recomputeSaveablesAndNotify(boolean recomputeProviders,
+			String startedBundleIdOrNull) {
+		if (recomputeProviders && startedBundleIdOrNull == null
+				&& saveablesProviders != null) {
+			for (int i = 0; i < saveablesProviders.length; i++) {
+				saveablesProviders[i].dispose();
+			}
+			saveablesProviders = null;
+		} else if (startedBundleIdOrNull != null){
+			if(inactivePluginsWithSaveablesProviders.containsKey(startedBundleIdOrNull)) {
+				updateSaveablesProviders(startedBundleIdOrNull);
+			}
+		}
+		Set<Saveable> oldSaveables = new HashSet<Saveable>(Arrays.asList(currentSaveables));
+		currentSaveables = computeSaveables();
+		Set<Saveable> newSaveables = new HashSet<Saveable>(Arrays.asList(currentSaveables));
+		final Set<Saveable> removedSaveables = new HashSet<Saveable>(oldSaveables);
+		removedSaveables.removeAll(newSaveables);
+		final Set<Saveable> addedSaveables = new HashSet<Saveable>(newSaveables);
+		addedSaveables.removeAll(oldSaveables);
+		if (addedSaveables.size() > 0) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (isDisposed()) {
+						return;
+					}
+					outsideListener.handleLifecycleEvent(new SaveablesLifecycleEvent(
+							saveablesSource, SaveablesLifecycleEvent.POST_OPEN,
+							addedSaveables
+							.toArray(new Saveable[addedSaveables.size()]),
+							false));
+				}
+			});
+		}
+		if (removedSaveables.size() > 0) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (isDisposed()) {
+						return;
+					}
+					outsideListener
+							.handleLifecycleEvent(new SaveablesLifecycleEvent(
+									saveablesSource,
+									SaveablesLifecycleEvent.PRE_CLOSE,
+									removedSaveables
+											.toArray(new Saveable[removedSaveables
+													.size()]), true));
+					outsideListener
+							.handleLifecycleEvent(new SaveablesLifecycleEvent(
+									saveablesSource,
+									SaveablesLifecycleEvent.POST_CLOSE,
+									removedSaveables
+											.toArray(new Saveable[removedSaveables
+													.size()]), false));
+				}
+			});
+		}
+	}
+
+	private void updateSaveablesProviders(String startedBundleId) {
+		List<SaveablesProvider> result = new ArrayList<SaveablesProvider>(Arrays.asList(saveablesProviders));
+		List descriptors = inactivePluginsWithSaveablesProviders
+				.get(startedBundleId);
+		for (Iterator it = descriptors.iterator(); it.hasNext();) {
+			NavigatorContentDescriptor descriptor = (NavigatorContentDescriptor) it
+					.next();
+			SaveablesProvider saveablesProvider = createSaveablesProvider(descriptor);
+			if (saveablesProvider != null) {
+				saveablesProvider.init(saveablesLifecycleListener);
+				result.add(saveablesProvider);
+				saveablesProviderMap.put(descriptor, saveablesProvider);
+			}
+		}
+		saveablesProviders = result
+				.toArray(new SaveablesProvider[result.size()]);
+	}
+
+	private synchronized void handleBundleStarted(String symbolicName) {
+		if (!isDisposed()) {
+			if (inactivePluginsWithSaveablesProviders.containsKey(symbolicName)) {
+				recomputeSaveablesAndNotify(true, symbolicName);
+			}
+		}
+	}
+
+	private synchronized void handleBundleStopped(String symbolicName) {
+		if (!isDisposed()) {
+			recomputeSaveablesAndNotify(true, null);
+		}
+	}
+
+	@Override
+	public synchronized void onVisibilityOrActivationChange() {
+		if (!isDisposed()) {
+			recomputeSaveablesAndNotify(true, null);
+		}
+	}
+
+}

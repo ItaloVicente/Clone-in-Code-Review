@@ -1,0 +1,29 @@
+			Repository repository = node.getRepository();
+			RemoteConfig config;
+			try {
+				config = new RemoteConfig(repository.getConfig(), remote
+						.getObject());
+			} catch (URISyntaxException e) {
+				throw new ExecutionException(e.getMessage(), e);
+			}
+			PushConfiguredRemoteAction op = new PushConfiguredRemoteAction(
+					repository, config, Activator.getDefault()
+							.getPreferenceStore().getInt(
+									UIPreferences.REMOTE_CONNECTION_TIMEOUT));
+			op.start();
+		} else if (treeNode instanceof RepositoryNode) {
+			Repository repository = treeNode.getRepository();
+			RemoteConfig config = SimpleConfigurePushWizard
+					.getConfiguredRemote(repository);
+			SimpleConfigurePushWizard wiz = SimpleConfigurePushWizard
+					.getWizard(repository, config);
+			if (config == null || wiz != null) {
+				new WizardDialog(getShell(event), wiz).open();
+			} else {
+				PushConfiguredRemoteAction op = new PushConfiguredRemoteAction(
+						repository, config,
+						Activator.getDefault().getPreferenceStore().getInt(
+								UIPreferences.REMOTE_CONNECTION_TIMEOUT));
+				op.start();
+			}
+		}

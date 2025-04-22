@@ -1,0 +1,52 @@
+
+package org.eclipse.jgit.storage.file;
+
+import static org.junit.Assert.*;
+import javaewah.EWAHCompressedBitmap;
+import javaewah.IntIterator;
+
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.storage.file.BasePackBitmapIndex.StoredBitmap;
+import org.junit.Test;
+
+public class StoredBitmapTest {
+
+	@Test
+	public void testGetBitmapWithoutXor() {
+		EWAHCompressedBitmap b = bitmapOf(100);
+		StoredBitmap sb = newStoredBitmap(bitmapOf(100));
+		assertEquals(b
+	}
+
+	@Test
+	public void testGetBitmapWithOneXor() {
+		StoredBitmap sb = newStoredBitmap(bitmapOf(100)
+		assertEquals(bitmapOf(101)
+	}
+
+	@Test
+	public void testGetBitmapWithThreeXor() {
+		StoredBitmap sb = newStoredBitmap(
+				bitmapOf(100)
+				bitmapOf(90
+				bitmapOf(100
+				bitmapOf(50));
+		assertEquals(bitmapOf(50
+		assertEquals(bitmapOf(50
+	}
+
+	private static final StoredBitmap newStoredBitmap(
+			EWAHCompressedBitmap... bitmaps) {
+		StoredBitmap sb = null;
+		for (EWAHCompressedBitmap bitmap : bitmaps)
+			sb = new StoredBitmap(ObjectId.zeroId()
+		return sb;
+	}
+
+	private static final EWAHCompressedBitmap bitmapOf(int... bits) {
+		EWAHCompressedBitmap b = new EWAHCompressedBitmap();
+		for (int bit : bits)
+			b.set(bit);
+		return b;
+	}
+}

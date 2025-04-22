@@ -1,0 +1,108 @@
+package org.eclipse.ui.internal.preferences;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.ui.internal.util.Util;
+
+public class PropertyMapUnion implements IPropertyMap {
+
+    private Map values;
+    
+    private final static class PropertyInfo {
+        Object value;
+        boolean commonAttribute;
+        
+        PropertyInfo(Object value, boolean commonAttribute) {
+            this.value = value;
+            this.commonAttribute = commonAttribute;
+        }
+    }
+    
+    @Override
+	public Set keySet() {
+        return values.keySet();
+    }
+
+    @Override
+	public Object getValue(String propertyId, Class propertyType) {
+        PropertyInfo info = (PropertyInfo)values.get(propertyId);
+        
+        if (info == null) {
+            return null;
+        }
+        
+        Object value = info.value;
+        
+        if (propertyType.isInstance(value)) {
+            return value;
+        }
+        
+        return null;        
+    }
+
+    @Override
+	public boolean isCommonProperty(String propertyId) {
+        PropertyInfo info = (PropertyInfo)values.get(propertyId);
+        
+        if (info == null) {
+            return false;
+        }
+        
+        return info.commonAttribute;
+    }
+
+    @Override
+	public boolean propertyExists(String propertyId) {
+        return values.get(propertyId) != null;
+    }
+
+    @Override
+	public void setValue(String propertyId, Object newValue) {
+        PropertyInfo info = new PropertyInfo(newValue, true);
+        
+        values.put(propertyId, info);
+    }
+
+    public void addMap(IPropertyMap toAdd) {
+        Set keySet = toAdd.keySet();
+
+        for (Iterator iter = keySet().iterator(); iter.hasNext();) {
+            String key = (String) iter.next();
+            
+            PropertyInfo localInfo = (PropertyInfo)values.get(key);
+            if (localInfo != null) {
+                if (toAdd.propertyExists(key)) {
+	                Object value = toAdd.getValue(key, Object.class);
+	                
+	                if (!Util.equals(value, toAdd.getValue(key, Object.class))) {
+	                    localInfo.value = null;
+	                }
+	                
+	                localInfo.commonAttribute = localInfo.commonAttribute && toAdd.isCommonProperty(key);
+                } else {
+                    localInfo.commonAttribute = false;
+                }
+            }
+        }
+        
+        for (Iterator iter = keySet.iterator(); iter.hasNext();) {
+            String element = (String) iter.next();
+            
+            PropertyInfo localInfo = (PropertyInfo)values.get(element);
+            if (localInfo == null) {
+                Object value = toAdd.getValue(element, Object.class);
+                
+                boolean isCommon = toAdd.isCommonProperty(element);
+                
+                localInfo = new PropertyInfo(value, isCommon);
+                values.put(element, localInfo);
+            }        
+        }        
+    }
+    
+    public void removeValue(String propertyId) {
+        values.remove(propertyId);
+    }
+}

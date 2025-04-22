@@ -1,0 +1,6 @@
+    /**
+     *
+     */
+    public EmptyView() {
+        super();
+    }

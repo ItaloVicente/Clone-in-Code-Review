@@ -1,0 +1,11 @@
+		toolName = rc.getString(CONFIG_MERGE_SECTION
+		guiToolName = rc.getString(CONFIG_MERGE_SECTION
+				CONFIG_KEY_GUITOOL);
+		prompt = rc.getBoolean(CONFIG_MERGETOOL_SECTION
+				CONFIG_KEY_PROMPT
+		keepBackup = rc.getBoolean(CONFIG_MERGETOOL_SECTION
+				CONFIG_KEY_KEEP_BACKUP
+		keepTemporaries = rc.getBoolean(CONFIG_MERGETOOL_SECTION
+				CONFIG_KEY_KEEP_TEMPORARIES
+		writeToTemp = rc.getBoolean(CONFIG_MERGETOOL_SECTION
+				CONFIG_KEY_WRITE_TO_TEMP

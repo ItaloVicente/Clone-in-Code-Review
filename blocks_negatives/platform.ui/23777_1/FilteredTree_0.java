@@ -1,0 +1,7 @@
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse
+			 * .swt.events.DisposeEvent)
+			 */

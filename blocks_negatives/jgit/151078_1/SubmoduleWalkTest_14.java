@@ -1,0 +1,12 @@
+		SubmoduleWalk gen = SubmoduleWalk.forIndex(db);
+		assertTrue(gen.next());
+		assertEquals(path, gen.getPath());
+		assertEquals(id, gen.getObjectId());
+		assertEquals(new File(db.getWorkTree(), path), gen.getDirectory());
+		assertNull(gen.getConfigUpdate());
+		assertNull(gen.getConfigUrl());
+		assertNull(gen.getModulesPath());
+		assertNull(gen.getModulesUpdate());
+		assertNull(gen.getModulesUrl());
+		assertNull(gen.getRepository());
+		assertFalse(gen.next());

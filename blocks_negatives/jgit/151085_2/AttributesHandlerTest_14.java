@@ -1,0 +1,14 @@
+		walk = beginWalk();
+		assertIteration(F, ".gitattributes");
+		assertIteration(D, "foo");
+		assertIteration(D, "foo/sub");
+		assertIteration(D, "foo/sub/new", attrs("bar"));
+		assertIteration(F, "foo/sub/new/foo.txt");
+		assertIteration(D, "sub");
+		assertIteration(F, "sub/a.txt");
+		assertIteration(D, "sub/new", attrs("bar"));
+		assertIteration(F, "sub/new/foo.txt");
+		assertIteration(D, "sub/sub");
+		assertIteration(D, "sub/sub/new", attrs("bar"));
+		assertIteration(F, "sub/sub/new/foo.txt");
+		endWalk();

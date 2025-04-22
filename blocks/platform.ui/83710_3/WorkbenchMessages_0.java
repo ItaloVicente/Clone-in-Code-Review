@@ -1,0 +1,10 @@
+	public static String ContentTypes_addRootContentTypeButton;
+	public static String ContentTypes_addChildContentTypeButton;
+	public static String ContentTypes_removeContentTypeButton;
+	public static String ContentTypes_newContentTypeDialog_title;
+	public static String ContentTypes_newContentTypeDialog_descritption;
+	public static String ContentTypes_newContentTypeDialog_nameLabel;
+	public static String ContentTypes_newContentTypeDialog_defaultNameNoParent;
+	public static String ContentTypes_newContentTypeDialog_defaultNameWithParent;
+	public static String ContentTypes_newContentTypeDialog_invalidContentTypeName;
+	public static String ContentTypes_failedAtEditingContentTypes;

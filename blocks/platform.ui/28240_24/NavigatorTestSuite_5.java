@@ -1,0 +1,98 @@
+package org.eclipse.ui.tests.navigator;
+
+import java.util.ArrayList;
+
+import org.eclipse.ui.internal.navigator.VisibilityAssistant;
+import org.eclipse.ui.internal.navigator.extensions.EvaluationCache;
+import org.eclipse.ui.internal.navigator.extensions.NavigatorContentDescriptor;
+import org.eclipse.ui.navigator.INavigatorActivationService;
+import org.eclipse.ui.navigator.INavigatorViewerDescriptor;
+import org.eclipse.ui.tests.navigator.util.TestNavigatorActivationService;
+import org.eclipse.ui.tests.navigator.util.TestNavigatorViewerDescriptor;
+import org.junit.Assert;
+
+public class EvaluationCacheTest extends NavigatorTestBase {
+	EvaluationCache cache;
+
+	public EvaluationCacheTest() {
+		_navigatorInstanceId = TEST_VIEWER_PROGRAMMATIC;
+	}
+
+	@Override
+	public void setUp() {
+		super.setUp();
+		INavigatorViewerDescriptor mockViewerDescript = new TestNavigatorViewerDescriptor();
+		INavigatorActivationService mockActivationService = new TestNavigatorActivationService();
+		VisibilityAssistant mockAssistant = new VisibilityAssistant(mockViewerDescript, mockActivationService);
+
+		cache = new EvaluationCache(mockAssistant);
+	}
+
+	private void doSimpleAddGet(boolean toComputeOverrides) {
+		Object key = new Object();
+		NavigatorContentDescriptor[] value = new NavigatorContentDescriptor[0];
+		cache.setDescriptors(key, value, toComputeOverrides);
+		Assert.assertSame(value, cache.getDescriptors(key, toComputeOverrides));
+		Assert.assertNull(cache.getDescriptors(key, !toComputeOverrides));
+	}
+
+	public void testSimpleAddGetNotOverrides() {
+		doSimpleAddGet(false);
+	}
+
+	public void testSimpleAddGetOverrides() {
+		doSimpleAddGet(true);
+	}
+
+	private void doNotSameInstEqual(boolean toComputeOverrides) {
+		java.util.List<String> key = new ArrayList<String>(2);
+		key.add("Hi");
+		key.add("There");
+		NavigatorContentDescriptor[] value = new NavigatorContentDescriptor[0];
+		cache.setDescriptors(key, value, toComputeOverrides);
+		java.util.List key2 = new ArrayList<String>(key);
+		Assert.assertSame(value, cache.getDescriptors(key2, toComputeOverrides));
+		Assert.assertNull(cache.getDescriptors(key, !toComputeOverrides));
+		Assert.assertNull(cache.getDescriptors(key2, !toComputeOverrides));
+	}
+
+	public void testNotSameInstEqualNotOverrides() {
+		doNotSameInstEqual(false);
+	}
+
+	public void testNotSameInstEqualOverrides() {
+		doNotSameInstEqual(true);
+	}
+
+	private void doTestReplace(boolean toComputeOverrides) {
+		Object key = new Object();
+		NavigatorContentDescriptor[] value1 = new NavigatorContentDescriptor[0];
+		cache.setDescriptors(key, value1, toComputeOverrides);
+		Assert.assertSame(value1, cache.getDescriptors(key, toComputeOverrides));
+		NavigatorContentDescriptor[] value2 = new NavigatorContentDescriptor[0];
+		cache.setDescriptors(key, value2, toComputeOverrides);
+		Assert.assertSame(value2, cache.getDescriptors(key, toComputeOverrides));
+	}
+
+	public void testReplaceNotOverrides() {
+		doTestReplace(false);
+	}
+
+	public void testReplaceOverrides() {
+		doTestReplace(true);
+	}
+
+	public void testOnVisibilityOrActivationChangeClearsCaches() {
+		Object key = new Object();
+		NavigatorContentDescriptor[] value1 = new NavigatorContentDescriptor[0];
+		cache.setDescriptors(key, value1, false);
+		Assert.assertSame(value1, cache.getDescriptors(key, false));
+		NavigatorContentDescriptor[] value2 = new NavigatorContentDescriptor[0];
+		cache.setDescriptors(key, value2, true);
+		Assert.assertSame(value2, cache.getDescriptors(key, true));
+		cache.onVisibilityOrActivationChange();
+		Assert.assertNull(cache.getDescriptors(key, false));
+		Assert.assertNull(cache.getDescriptors(key, true));
+	}
+
+}

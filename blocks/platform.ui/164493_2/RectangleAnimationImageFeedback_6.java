@@ -1,0 +1,85 @@
+package org.eclipse.ui.internal;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import org.eclipse.jface.util.Geometry;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
+public abstract class RectangleAnimationFeedbackBase extends AnimationFeedbackBase {
+
+	private List startRects = new ArrayList();
+	private List endRects = new ArrayList();
+
+	public RectangleAnimationFeedbackBase(Shell parentShell, Rectangle start, Rectangle end) {
+		super(parentShell);
+		addStartRect(start);
+		addEndRect(end);
+	}
+
+	@Override
+	public boolean jobInit(AnimationEngine engine) {
+		if (!super.jobInit(engine))
+			return false;
+
+		return startRects.size() > 0 && startRects.size() == endRects.size();
+	}
+
+	public void addStartRect(Rectangle rect) {
+		if (rect != null) {
+			startRects.add(rect);
+		}
+	}
+
+	public void addEndRect(Rectangle rect) {
+		if (rect != null) {
+			endRects.add(rect);
+		}
+	}
+
+	public void addStartRect(Control ctrl) {
+		Rectangle ctrlBounds = ctrl.getBounds();
+		Rectangle startRect = Geometry.toDisplay(ctrl.getParent(), ctrlBounds);
+		addStartRect(startRect);
+	}
+
+	public void addEndRect(Control ctrl) {
+		Rectangle ctrlBounds = ctrl.getBounds();
+		Rectangle endRect = Geometry.toDisplay(ctrl.getParent(), ctrlBounds);
+		addEndRect(endRect);
+	}
+
+	public static Rectangle interpolate(Rectangle start, Rectangle end, double amount) {
+		double initialWeight = 1.0 - amount;
+
+		return new Rectangle((int) (start.x * initialWeight + end.x * amount),
+				(int) (start.y * initialWeight + end.y * amount),
+				(int) (start.width * initialWeight + end.width * amount),
+				(int) (start.height * initialWeight + end.height * amount));
+	}
+
+	public List getStartRects() {
+		return startRects;
+	}
+
+	public List getEndRects() {
+		return endRects;
+	}
+
+	public List getCurrentRects(double amount) {
+		List currentRects = new ArrayList();
+		Iterator startIter = getStartRects().iterator();
+		Iterator endIter = getEndRects().iterator();
+		while (startIter.hasNext()) {
+			Rectangle start = (Rectangle) startIter.next();
+			Rectangle end = (Rectangle) endIter.next();
+
+			Rectangle curRect = interpolate(start, end, amount);
+			currentRects.add(curRect);
+		}
+		return currentRects;
+	}
+
+}

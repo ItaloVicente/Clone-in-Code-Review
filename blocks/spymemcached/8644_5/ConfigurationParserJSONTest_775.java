@@ -1,0 +1,17 @@
+  private static final String BUCKET_STRING =
+      "{\"name\":\"Administrator\",\"uri\":\"/pools/default/buckets/"
+          + "Administrator\",\"streamingUri\":\"/pools/default/buckets"
+          + "Streaming/Administrator\",\"nodes\":[{\"uptime\":\"24548\","
+          + "\"memoryTotal\":4290801664.0,\"memoryFree\":1292242944,\""
+          + "mcdMemoryReserved\":3273,\"mcdMemoryAllocated\":3273,\"cluster"
+          + "Membership\":\"active\",\"status\":\"healthy\",\"hostname\":\""
+          + "192.168.1.35:8080\",\"version\":\"1.6.0beta3\",\"os\":\"windows\""
+          + ",\"ports\":{\"proxy\":11211,\"direct\":11210}}],\"stats\":{\"uri"
+          + "\":\"/pools/default/buckets/Administrator/stats\"},\"vBucket"
+          + "ServerMap\":{\"user\":\"Administrator\",\"password\":\"password\""
+          + ",\"hashAlgorithm\":\"CRC\",\"numReplicas\":1,\"serverList\":[\""
+          + "192.168.1.35:11210\"],\"vBucketMap\":[[0,-1]]},\"replicaNumber\""
+          + ":1,\"quota\":{\"ram\":536870912,\"hdd\":307090161664.0},\"basic"
+          + "Stats\":{\"opsPerSec\":0,\"diskFetches\":0,\"quotaPercentUsed\":"
+          + "2.380473166704178,\"diskUsed\":94598,\"memUsed\":12780068,\"item"
+          + "Count\":0}}";

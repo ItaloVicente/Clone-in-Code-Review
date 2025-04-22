@@ -1,0 +1,6 @@
+	private static final String[] TEST_STRINGS = { "value",
+			" value with spaces ", "value.with.many.dots",
+			"value_with_underscores", "value<with<lessthan",
+			"value>with>greaterthan", "value&with&ampersand",
+			"value\"with\"quote", "value#with#hash", "",
+			"\nvalue\nwith\nnewlines\n", "\tvalue\twith\ttab\t",

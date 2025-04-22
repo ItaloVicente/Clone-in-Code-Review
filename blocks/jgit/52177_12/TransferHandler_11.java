@@ -1,0 +1,116 @@
+
+package org.eclipse.jgit.lfs.server;
+
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.eclipse.jgit.lfs.lib.LongObjectId;
+import org.eclipse.jgit.lfs.server.Response.Action;
+import org.eclipse.jgit.lfs.server.Response.Body;
+import org.eclipse.jgit.lfs.server.internal.LfsServerText;
+
+abstract class TransferHandler {
+
+
+
+
+	static TransferHandler forOperation(String operation
+			LargeFileRepository repository
+		switch (operation) {
+		case TransferHandler.UPLOAD:
+			return new Upload(repository
+		case TransferHandler.DOWNLOAD:
+			return new Download(repository
+		case TransferHandler.VERIFY:
+		default:
+			throw new UnsupportedOperationException(MessageFormat.format(
+					LfsServerText.get().unsupportedOperation
+		}
+	}
+
+	protected final LargeFileRepository repository;
+	protected final List<LfsObject> objects;
+
+	protected TransferHandler(LargeFileRepository repository
+			List<LfsObject> objects) {
+		this.repository = repository;
+		this.objects = objects;
+	}
+
+	protected abstract Response.Body process() throws IOException;
+
+	private static class Upload extends TransferHandler {
+
+		protected Upload(LargeFileRepository repository
+				List<LfsObject> objects) {
+			super(repository
+		}
+
+		@Override
+		protected Body process() throws IOException {
+			Response.Body body = new Response.Body();
+			if (objects.size() > 0) {
+				body.objects = new ArrayList<>();
+				for (LfsObject o : objects) {
+					Response.ObjectInfo info = new Response.ObjectInfo();
+					body.objects.add(info);
+					info.oid = o.oid;
+					info.size = o.size;
+
+					LongObjectId oid = LongObjectId.fromString(o.oid);
+					if (repository.getSize(oid) == -1) {
+						info.actions = new HashMap<>();
+						info.actions.put(UPLOAD
+								repository.getUploadAction(oid
+						Action verify = repository.getVerifyAction(oid);
+						if (verify != null) {
+							info.actions.put(VERIFY
+						}
+					}
+				}
+			}
+			return body;
+		}
+	}
+
+	private static class Download extends TransferHandler {
+
+		protected Download(LargeFileRepository repository
+				List<LfsObject> objects) {
+			super(repository
+		}
+
+		@Override
+		protected Body process() throws IOException {
+			Response.Body body = new Response.Body();
+			if (objects.size() > 0) {
+				body.objects = new ArrayList<>();
+				for (LfsObject o : objects) {
+					Response.ObjectInfo info = new Response.ObjectInfo();
+					body.objects.add(info);
+					info.oid = o.oid;
+					info.size = o.size;
+
+					LongObjectId oid = LongObjectId.fromString(o.oid);
+					if (repository.getSize(oid) >= 0) {
+						info.actions = new HashMap<>();
+						info.actions.put(DOWNLOAD
+								repository.getDownloadAction(oid));
+					} else {
+						info.error = new Response.Error();
+						info.error.code = SC_NOT_FOUND;
+						info.error.message = MessageFormat.format(
+								LfsServerText.get().objectNotFound
+								oid.getName());
+					}
+				}
+			}
+			return body;
+		}
+	}
+}

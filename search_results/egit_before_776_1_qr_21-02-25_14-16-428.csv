@@ -1,0 +1,5 @@
+block4.java_method#1#18,/home/gesad/PycharmProjects/Diff/befores/egit/before_776_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/repository/RepositoriesView.java_show#1907#1924
+block3.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/egit/before_776_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/repository/RepositoriesView.java_getAdapter#255#267
+block7.java_method#1#12,/home/gesad/PycharmProjects/Diff/befores/egit/before_776_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/repository/RepositoriesView.java_createPartControl#269#395
+block10.java_method#1#32,/home/gesad/PycharmProjects/Diff/befores/egit/before_776_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/repository/RepositoriesView.java_scheduleRefresh#1610#1697,/home/gesad/PycharmProjects/Diff/befores/egit/before_776_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/repository/RepositoriesView.java_run#1617#1685
+block8.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/egit/before_776_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/repository/RepositoriesView.java_dispose#1554#1567

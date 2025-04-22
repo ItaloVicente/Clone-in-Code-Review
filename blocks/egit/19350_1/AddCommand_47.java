@@ -1,0 +1,17 @@
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.egit.core.Activator;
+import org.eclipse.egit.core.GitCorePreferences;
+import org.eclipse.egit.core.JobFamilies;
+import org.eclipse.egit.core.internal.CoreText;
+import org.eclipse.egit.core.internal.job.JobUtil;
+import org.eclipse.egit.core.op.ConnectProviderOperation;
+import org.eclipse.egit.core.project.RepositoryFinder;
+import org.eclipse.egit.core.project.RepositoryMapping;

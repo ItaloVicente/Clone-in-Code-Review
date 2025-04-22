@@ -1,0 +1,10 @@
+    private static final byte QUERY_STATE_INITIAL = 0;
+    private static final byte QUERY_STATE_SIGNATURE = 1;
+    private static final byte QUERY_STATE_ROWS = 2;
+    private static final byte QUERY_STATE_ROWS_RAW = 20;
+    private static final byte QUERY_STATE_ROWS_DECIDE = 29;
+    private static final byte QUERY_STATE_ERROR = 3;
+    private static final byte QUERY_STATE_WARNING = 4;
+    private static final byte QUERY_STATE_STATUS = 5;
+    private static final byte QUERY_STATE_INFO = 6;
+    private static final byte QUERY_STATE_DONE = 8;

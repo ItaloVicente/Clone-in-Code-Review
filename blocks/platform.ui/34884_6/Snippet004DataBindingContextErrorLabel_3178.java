@@ -1,0 +1,152 @@
+
+package org.eclipse.jface.examples.databinding.snippets;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.property.Properties;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewerSupport;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+public class Snippet003UpdateComboBindUsingViewer {
+	public static void main(String[] args) {
+		final Display display = new Display();
+		Realm.runWithDefault(SWTObservables.getRealm(display), new Runnable() {
+			@Override
+			public void run() {
+				ViewModel viewModel = new ViewModel();
+				Shell shell = new View(viewModel).createShell();
+
+				while (!shell.isDisposed()) {
+					if (!display.readAndDispatch()) {
+						display.sleep();
+					}
+				}
+				System.out.println(viewModel.getText());
+			}
+		});
+		display.dispose();
+	}
+
+	public static abstract class AbstractModelObject {
+		private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
+				this);
+
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
+			propertyChangeSupport.addPropertyChangeListener(listener);
+		}
+
+		public void addPropertyChangeListener(String propertyName,
+				PropertyChangeListener listener) {
+			propertyChangeSupport.addPropertyChangeListener(propertyName,
+					listener);
+		}
+
+		public void removePropertyChangeListener(PropertyChangeListener listener) {
+			propertyChangeSupport.removePropertyChangeListener(listener);
+		}
+
+		public void removePropertyChangeListener(String propertyName,
+				PropertyChangeListener listener) {
+			propertyChangeSupport.removePropertyChangeListener(propertyName,
+					listener);
+		}
+
+		protected void firePropertyChange(String propertyName, Object oldValue,
+				Object newValue) {
+			propertyChangeSupport.firePropertyChange(propertyName, oldValue,
+					newValue);
+		}
+	}
+
+	public static class ViewModel extends AbstractModelObject {
+		private String text = "beef";
+
+		private List choices = new ArrayList();
+		{
+			choices.add("pork");
+			choices.add("beef");
+			choices.add("poultry");
+			choices.add("vegatables");
+		}
+
+		public List getChoices() {
+			return choices;
+		}
+
+		public void setChoices(List choices) {
+			this.choices = choices;
+			firePropertyChange("choices", null, null);
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public void setText(String text) {
+			String oldValue = this.text;
+			this.text = text;
+			firePropertyChange("text", oldValue, text);
+		}
+	}
+
+	static class View {
+		private ViewModel viewModel;
+
+		public View(ViewModel viewModel) {
+			this.viewModel = viewModel;
+		}
+
+		public Shell createShell() {
+			Shell shell = new Shell(Display.getCurrent());
+			shell.setLayout(new RowLayout(SWT.VERTICAL));
+
+			Combo combo = new Combo(shell, SWT.BORDER | SWT.READ_ONLY);
+			ComboViewer viewer = new ComboViewer(combo);
+			Button reset = new Button(shell, SWT.NULL);
+			reset.setText("reset collection");
+			reset.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					List newList = new ArrayList();
+					newList.add("Chocolate");
+					newList.add("Vanilla");
+					newList.add("Mango Parfait");
+					newList.add("beef");
+					newList.add("Cheesecake");
+					viewModel.setChoices(newList);
+				}
+			});
+
+			System.out.println(viewModel.getText());
+
+			DataBindingContext dbc = new DataBindingContext();
+			ViewerSupport.bind(viewer,
+					BeanProperties.list(viewModel.getClass(), "choices", String.class).observe(viewModel),
+					Properties
+					.selfValue(String.class));
+
+			dbc.bindValue(ViewersObservables.observeSingleSelection(viewer), BeanProperties.value(viewModel.getClass(), "text").observe(
+					viewModel));
+
+			shell.pack();
+			shell.open();
+			return shell;
+		}
+	}
+}

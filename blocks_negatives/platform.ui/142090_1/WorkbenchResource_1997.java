@@ -1,0 +1,129 @@
+        if (!(target instanceof IResource)) {
+            return false;
+        }
+        IResource res = (IResource) target;
+        if (name.equals(NAME)) {
+            return SimpleWildcardTester.testWildcardIgnoreCase(value, res
+                    .getName());
+        } else if (name.equals(PATH)) {
+            return SimpleWildcardTester.testWildcardIgnoreCase(value, res
+                    .getFullPath().toString());
+        } else if (name.equals(EXTENSION)) {
+            return SimpleWildcardTester.testWildcardIgnoreCase(value, res
+                    .getFileExtension());
+        } else if (name.equals(READ_ONLY)) {
+        } else if (name.equals(PROJECT_NATURE)) {
+            try {
+                IProject proj = res.getProject();
+                return proj.isAccessible() && proj.hasNature(value);
+            } catch (CoreException e) {
+                return false;
+            }
+        } else if (name.equals(PERSISTENT_PROPERTY)) {
+            return testProperty(res, true, false, value);
+        } else if (name.equals(PROJECT_PERSISTENT_PROPERTY)) {
+            return testProperty(res, true, true, value);
+        } else if (name.equals(SESSION_PROPERTY)) {
+            return testProperty(res, false, false, value);
+        } else if (name.equals(PROJECT_SESSION_PROPERTY)) {
+            return testProperty(res, false, true, value);
+        } else if (name.equals(CONTENT_TYPE_ID)) {
+            return testContentTypeProperty(res, value);
+        }
+        return false;
+    }
+
+    /**
+     * Tests whether the content type for <code>resource</code> matches the
+     * <code>contentTypeId</code>. It is possible that this method call could
+     * cause the resource to be read. It is also possible (through poor plug-in
+     * design) for this method to load plug-ins.
+     *
+     * @param resource
+     *            The resource for which the content type should be determined;
+     *            must not be <code>null</code>.
+     * @param contentTypeId
+     *            The expected content type; must not be <code>null</code>.
+     * @return <code>true</code> iff the best matching content type has an
+     *         identifier that matches <code>contentTypeId</code>;
+     *         <code>false</code> otherwise.
+     */
+    private final boolean testContentTypeProperty(final IResource resource,
+            final String contentTypeId) {
+        final String expectedValue = contentTypeId.trim();
+
+        if (!(resource instanceof IFile)) {
+            return false;
+        }
+
+        final IFile file = (IFile) resource;
+        String actualValue = null;
+
+        try {
+            final IContentDescription contentDescription = file
+                    .getContentDescription();
+
+            if (contentDescription != null) {
+                final IContentType contentType = contentDescription
+                        .getContentType();
+                actualValue = contentType.getId();
+            }
+        } catch (CoreException e) {
+        }
+
+        return expectedValue == null || expectedValue.equals(actualValue);
+    }
+
+    /**
+     * Tests whether a session or persistent property on the resource or its project
+     * matches the given value.
+     *
+     * @param resource
+     *            the resource to check
+     * @param persistentFlag
+     *            <code>true</code> for a persistent property, <code>false</code>
+     *            for a session property
+     * @param projectFlag
+     *            <code>true</code> to check the resource's project,
+     *            <code>false</code> to check the resource itself
+     * @param value
+     *            the attribute value, which has either the form "propertyName" or
+     *            "propertyName=propertyValue"
+     * @return whether there is a match
+     */
+    private boolean testProperty(IResource resource, boolean persistentFlag,
+            boolean projectFlag, String value) {
+        String propertyName;
+        String expectedVal;
+        int i = value.indexOf('=');
+        if (i != -1) {
+            propertyName = value.substring(0, i).trim();
+            expectedVal = value.substring(i + 1).trim();
+        } else {
+            propertyName = value.trim();
+            expectedVal = null;
+        }
+        try {
+            QualifiedName key;
+            int dot = propertyName.lastIndexOf('.');
+            if (dot != -1) {
+                key = new QualifiedName(propertyName.substring(0, dot),
+                        propertyName.substring(dot + 1));
+            } else {
+                key = new QualifiedName(null, propertyName);
+            }
+            IResource resToCheck = projectFlag ? resource.getProject()
+                    : resource;
+            if (resToCheck == null) {
+                return false;
+            }
+            if (persistentFlag) {
+                String actualVal = resToCheck.getPersistentProperty(key);
+                if (actualVal == null) {
+                    return false;
+                }
+                return expectedVal == null || expectedVal.equals(actualVal);
+            }
+
+            Object actualVal = resToCheck.getSessionProperty(key);
+             if (actualVal == null) {

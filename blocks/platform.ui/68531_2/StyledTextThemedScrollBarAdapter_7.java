@@ -1,0 +1,435 @@
+package org.eclipse.e4.ui.internal.css.swt.dom.scrollbar;
+
+import org.eclipse.e4.ui.internal.css.swt.CSSActivator;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Scrollable;
+import org.osgi.service.log.LogService;
+
+public class StyledTextThemedScrollBarAdapter extends AbstractThemedScrollBarAdapter {
+
+	private final int fInitialRightMargin;
+
+	private final int fInitialBottomMargin;
+
+	public StyledTextThemedScrollBarAdapter(StyledText styledText) {
+		this(styledText, new ScrollBarSettings());
+	}
+
+	private StyledTextThemedScrollBarAdapter(StyledText styledText, IScrollBarSettings scrollBarSettings) {
+		super(styledText, new StyledTextHorizontalScrollHandler(styledText, scrollBarSettings),
+				new StyledTextVerticalScrollHandler(styledText, scrollBarSettings), scrollBarSettings);
+
+		fInitialRightMargin = styledText.getRightMargin();
+		fInitialBottomMargin = styledText.getBottomMargin();
+	}
+
+	@Override
+	protected IScrollBarPainter createPaintListener() {
+		return new StyledTextPaintListener(fHorizontalScrollHandler, fVerticalScrollHandler, fScrollBarSettings,
+				fInitialBottomMargin, fInitialRightMargin);
+	}
+
+	@Override
+	protected Point computeHorizontalAndTopPixel() {
+		StyledText styledText = (StyledText) fScrollable;
+		return new Point(styledText.getHorizontalPixel(), styledText.getTopPixel());
+	}
+
+	static class StyledTextVerticalScrollHandler extends AbstractScrollHandler {
+
+		public StyledTextVerticalScrollHandler(StyledText styledText, IScrollBarSettings scrollBarSettings) {
+			super(styledText.getVerticalBar(), scrollBarSettings);
+		}
+
+		@Override
+		public void setPixel(Scrollable scrollable, int pixel) {
+			StyledText styledText = (StyledText) scrollable;
+			styledText.setTopPixel(pixel);
+		}
+
+		@Override
+		protected Rectangle getFullBackgroundRect(Scrollable scrollable, Rectangle currClientArea,
+				boolean considerMargins) {
+			StyledText styledText = (StyledText) scrollable;
+			int lineWidth = getCurrentScrollBarWidth();
+			int w = currClientArea.width;
+			int h = currClientArea.height;
+			if (considerMargins) {
+				h -= (styledText.getTopMargin() + styledText.getBottomMargin());
+			}
+			Rectangle rect = new Rectangle(w - lineWidth, considerMargins ? styledText.getTopMargin() : 0, lineWidth,
+					h);
+			return rect;
+		}
+
+		@Override
+		public Rectangle computeProximityRect(Rectangle currClientArea) {
+			if (this.fScrollBar == null || !this.getVisible()) {
+				return null;
+			}
+			int lineWidth = getMouseNearScrollScrollBarWidth();
+			int w = currClientArea.width;
+			int h = currClientArea.height;
+			Rectangle rect = new Rectangle(w - lineWidth, 0, lineWidth, h);
+			rect.width += 30;
+			rect.x -= 15;
+			return rect;
+		}
+
+		@Override
+		protected int getRelevantPositionFromPos(Point styledTextPos) {
+			return styledTextPos.y;
+		}
+
+		@Override
+		public boolean computePositions(Rectangle currClientArea, Scrollable scrollable) {
+			fHandleDrawnRect = null;
+			if (this.fScrollBar == null || this.fScrollBar.getMaximum() - this.fScrollBar.getMinimum() <= 1
+					|| !getVisible() || !this.fScrollBarSettings.getScrollBarThemed()) {
+				return false;
+			}
+			StyledText styledText = (StyledText) scrollable;
+			int lineWidth = getCurrentScrollBarWidth();
+			int w = currClientArea.width;
+			int h = currClientArea.height - (styledText.getTopMargin() + styledText.getBottomMargin());
+
+			this.fScrollBarPositions = new ScrollBarPositions.ScrollBarPositionsVertical(this.fScrollBar.getMinimum(),
+					this.fScrollBar.getMaximum(), styledText.getTopPixel(), h, w);
+			fHandleDrawnRect = fScrollBarPositions.getHandleDrawRect(lineWidth);
+			if (fHandleDrawnRect == null || h <= fHandleDrawnRect.height) {
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public void doPaintControl(GC gc, Rectangle currClientArea, Scrollable scrollable) {
+			if (fHandleDrawnRect != null) {
+				StyledText styledText = (StyledText) scrollable;
+				int lineWidth = getCurrentScrollBarWidth();
+				int w = currClientArea.width;
+				int h = currClientArea.height - (styledText.getTopMargin() + styledText.getBottomMargin());
+				int borderRadius = Math.min(fScrollBarSettings.getScrollBarBorderRadius(), lineWidth);
+				gc.fillRoundRectangle(w - lineWidth, styledText.getTopMargin(), lineWidth, h, borderRadius,
+						borderRadius);
+
+				Color foreground = gc.getForeground();
+				Color background = gc.getBackground();
+				gc.setBackground(foreground);
+				gc.fillRoundRectangle(fHandleDrawnRect.x, fHandleDrawnRect.y, fHandleDrawnRect.width,
+						fHandleDrawnRect.height, borderRadius, borderRadius);
+				gc.setBackground(background);
+			}
+		}
+	}
+
+
+		public StyledTextHorizontalScrollHandler(StyledText styledText, IScrollBarSettings scrollBarSettings) {
+			super(styledText.getHorizontalBar(), scrollBarSettings);
+		}
+
+		@Override
+		public void setPixel(Scrollable scrollable, int pixel) {
+			StyledText styledText = (StyledText) scrollable;
+			styledText.setHorizontalPixel(pixel);
+		}
+
+		@Override
+		protected Rectangle getFullBackgroundRect(Scrollable scrollable, Rectangle currClientArea,
+				boolean considerMargins) {
+			StyledText styledText = (StyledText) scrollable;
+			int lineWidth = getCurrentScrollBarWidth();
+			int w = currClientArea.width;
+			int h = currClientArea.height;
+			if (considerMargins) {
+				w -= (styledText.getLeftMargin() + styledText.getRightMargin());
+			}
+			Rectangle rect = new Rectangle(considerMargins ? styledText.getLeftMargin() : 0, h - lineWidth, w,
+					lineWidth);
+			return rect;
+		}
+
+		@Override
+		public Rectangle computeProximityRect(Rectangle currClientArea) {
+			if (this.fScrollBar == null || !this.getVisible()) {
+				return null;
+			}
+			int lineWidth = getMouseNearScrollScrollBarWidth();
+			int w = currClientArea.width;
+			int h = currClientArea.height;
+			Rectangle rect = new Rectangle(0, h - lineWidth, w, lineWidth);
+			rect.height += 30;
+			rect.y -= 15;
+			return rect;
+		}
+
+		@Override
+		protected int getRelevantPositionFromPos(Point styledTextPos) {
+			return styledTextPos.x;
+		}
+
+		@Override
+		public boolean computePositions(Rectangle currClientArea, Scrollable scrollable) {
+			fHandleDrawnRect = null;
+
+			if (this.fScrollBar == null || this.fScrollBar.getMaximum() - this.fScrollBar.getMinimum() <= 1
+					|| !getVisible() || !this.fScrollBarSettings.getScrollBarThemed()) {
+				return false;
+			}
+			StyledText styledText = (StyledText) scrollable;
+			int lineWidth = getCurrentScrollBarWidth();
+			int w = currClientArea.width - (styledText.getLeftMargin() + styledText.getRightMargin());
+			int h = currClientArea.height;
+
+			fScrollBarPositions = new ScrollBarPositions.ScrollBarPositionsHorizontal(this.fScrollBar.getMinimum(),
+					this.fScrollBar.getMaximum(), styledText.getHorizontalPixel(), h, w);
+			fHandleDrawnRect = fScrollBarPositions.getHandleDrawRect(lineWidth);
+			if (fHandleDrawnRect == null || w <= fHandleDrawnRect.width) {
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public void doPaintControl(GC gc, Rectangle currClientArea, Scrollable scrollable) {
+			if (fHandleDrawnRect != null) {
+				StyledText styledText = (StyledText) scrollable;
+				int lineWidth = getCurrentScrollBarWidth();
+				int w = currClientArea.width - (styledText.getLeftMargin() + styledText.getRightMargin());
+				int h = currClientArea.height;
+				int borderRadius = Math.min(fScrollBarSettings.getScrollBarBorderRadius(), lineWidth);
+
+				gc.fillRoundRectangle(styledText.getLeftMargin(), h - lineWidth, w, lineWidth, borderRadius,
+						borderRadius);
+
+				Color foreground = gc.getForeground();
+				Color background = gc.getBackground();
+				gc.setBackground(foreground);
+				gc.fillRoundRectangle(fHandleDrawnRect.x, fHandleDrawnRect.y, fHandleDrawnRect.width,
+						fHandleDrawnRect.height, borderRadius, borderRadius);
+				gc.setBackground(background);
+			}
+		}
+	}
+
+	public static class StyledTextPaintListener implements IScrollBarPainter {
+
+		private final int fInitialBottomMargin;
+		private final int fInitialRightMargin;
+		private StyledText fStyledText;
+		private boolean fInDraw;
+		private Rectangle fCurrClientArea;
+		private AbstractScrollHandler fHorizontalScrollHandler;
+		private AbstractScrollHandler fVerticalScrollHandler;
+		private IScrollBarSettings fScrollBarSettings;
+		private Rectangle fLastHorizontalHandleRect;
+		private Rectangle fLastVerticalHandleRect;
+
+		public StyledTextPaintListener(AbstractScrollHandler horizontalScrollHandler,
+				AbstractScrollHandler verticalScrollHandler, IScrollBarSettings colorProvider, int initialBottomMargin,
+				int initialRightMargin) {
+			this.fHorizontalScrollHandler = horizontalScrollHandler;
+			this.fVerticalScrollHandler = verticalScrollHandler;
+			this.fScrollBarSettings = colorProvider;
+			this.fInitialBottomMargin = initialBottomMargin;
+			this.fInitialRightMargin = initialRightMargin;
+		}
+
+		@Override
+		public void install(Scrollable scrollable) {
+			fStyledText = (StyledText) scrollable;
+		}
+
+		@Override
+		public void uninstall() {
+			fStyledText = null;
+			fCurrClientArea = null;
+		}
+
+		@SuppressWarnings("unused")
+		@Override
+		public void paintControl(PaintEvent e) {
+			if (fInDraw || fStyledText == null || fStyledText.isDisposed()) {
+				return;
+			}
+			try {
+				fInDraw = true;
+
+				boolean clientAreaChanged = clientAreaChangedFromLastCall();
+				int charCount = fStyledText.getCharCount();
+				if (charCount <= 1) {
+					return;
+				}
+				if (fCurrClientArea == null
+						|| fCurrClientArea.width < fVerticalScrollHandler.getMouseNearScrollScrollBarWidth()
+						|| fCurrClientArea.height < fHorizontalScrollHandler.getMouseNearScrollScrollBarWidth()) {
+					return;
+				}
+
+				boolean drawHorizontal = fHorizontalScrollHandler.computePositions(fCurrClientArea, fStyledText);
+				boolean drawVertical = fVerticalScrollHandler.computePositions(fCurrClientArea, fStyledText);
+
+				if (!drawHorizontal && !drawVertical) {
+					return;
+				}
+				fixMargins(drawHorizontal, drawVertical);
+
+				try (AutoCloseable temp = configGC(e.gc)) {
+					Rectangle clipping = e.gc.getClipping();
+					boolean redrawAsync = false;
+
+					if (drawHorizontal) {
+						Rectangle handleRect = fHorizontalScrollHandler.getHandleRect();
+						if (!handleRect.equals(fLastHorizontalHandleRect)) {
+							if (clipping.intersection(handleRect).height != handleRect.height) {
+								redrawAsync = true;
+							}
+						}
+
+						fLastHorizontalHandleRect = handleRect;
+						fHorizontalScrollHandler.paintControl(e.gc, fCurrClientArea, fStyledText);
+					}
+					if (drawVertical) {
+						Rectangle handleRect = fVerticalScrollHandler.getHandleRect();
+						if (!handleRect.equals(fLastVerticalHandleRect)) {
+							if (clipping.intersection(handleRect).width != handleRect.width) {
+								redrawAsync = true;
+							}
+						}
+						fLastVerticalHandleRect = handleRect;
+						fVerticalScrollHandler.paintControl(e.gc, fCurrClientArea, fStyledText);
+					}
+					if (redrawAsync) {
+						redrawAsync();
+					}
+				}
+			} catch (Exception e1) {
+				CSSActivator.getDefault().log(LogService.LOG_ERROR, "Error painting scrollbar", e1);
+			} finally {
+				fInDraw = false;
+			}
+		}
+
+		private void redrawAsync() {
+			Display.getCurrent().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					if (fStyledText != null && !fStyledText.isDisposed()) {
+						fStyledText.redraw();
+					}
+				}
+			});
+		}
+
+		private boolean fixMargins(boolean drawHorizontal, boolean drawVertical) {
+			int rightMargin;
+			if (!drawVertical) {
+				rightMargin = fInitialRightMargin;
+			} else {
+				int verticalLineWidth = fVerticalScrollHandler.getCurrentScrollBarWidth();
+				rightMargin = fInitialRightMargin < verticalLineWidth ? verticalLineWidth : fInitialRightMargin;
+				if (fVerticalScrollHandler.fScrollBar == null || !fVerticalScrollHandler.getVisible()) {
+					rightMargin = fStyledText.getRightMargin();
+				}
+			}
+
+			int bottomMargin;
+			if (!drawHorizontal) {
+				bottomMargin = fInitialBottomMargin;
+			} else {
+				int horizontalLineWidth = fHorizontalScrollHandler.getCurrentScrollBarWidth();
+				bottomMargin = fInitialBottomMargin < horizontalLineWidth ? horizontalLineWidth : fInitialBottomMargin;
+				if (fHorizontalScrollHandler.fScrollBar == null || !fHorizontalScrollHandler.getVisible()) {
+					bottomMargin = fStyledText.getBottomMargin();
+				}
+			}
+
+			if (fStyledText.getRightMargin() != rightMargin || fStyledText.getBottomMargin() != bottomMargin) {
+				final int applyRightMargin = rightMargin;
+				final int applyBottomMargin = bottomMargin;
+				Display.getDefault().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						if (fStyledText != null && !fStyledText.isDisposed()) {
+							fStyledText.setMargins(fStyledText.getLeftMargin(), fStyledText.getTopMargin(),
+									applyRightMargin, applyBottomMargin);
+						}
+					}
+				});
+				return true;
+			}
+			return false;
+		}
+
+		private AutoCloseable configGC(final GC gc) {
+			final int oldLineStyle = gc.getLineStyle();
+			final int oldAlpha = gc.getAlpha();
+
+			final Color oldForeground = gc.getForeground();
+			final Color oldBackground = gc.getBackground();
+			final int oldLineWidth = gc.getLineWidth();
+			final int oldAntialias = gc.getAntialias();
+
+			Color foreground = fScrollBarSettings.getForegroundColor();
+			if (foreground != null) {
+				gc.setForeground(foreground);
+			}
+			Color background = fScrollBarSettings.getBackgroundColor();
+			if (background != null) {
+				gc.setBackground(background);
+			}
+			gc.setLineStyle(SWT.LINE_SOLID);
+			gc.setAntialias(SWT.ON);
+			gc.setLineWidth(1);
+			return new AutoCloseable() {
+
+				@Override
+				public void close() throws Exception {
+					gc.setForeground(oldForeground);
+					gc.setBackground(oldBackground);
+					gc.setAlpha(oldAlpha);
+					gc.setLineStyle(oldLineStyle);
+					gc.setLineWidth(oldLineWidth);
+					gc.setAntialias(oldAntialias);
+				}
+			};
+		}
+
+		private boolean clientAreaChangedFromLastCall() {
+			Rectangle clientArea = fStyledText.getClientArea();
+			if (fCurrClientArea == null || !fCurrClientArea.equals(clientArea)) {
+				fCurrClientArea = clientArea;
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public void redrawScrollBars() {
+			if (Display.getCurrent() != null && fStyledText != null) {
+				if (!fStyledText.isDisposed() && fStyledText.isVisible()) {
+					Rectangle clientArea = fStyledText.getClientArea();
+					fStyledText.redraw(clientArea.x, clientArea.y, clientArea.width, clientArea.height, false);
+				}
+			}
+		}
+	}
+
+	public static StyledTextThemedScrollBarAdapter getScrollbarAdapter(StyledText styledText) {
+		if (styledText.getData("StyledTextThemedScrollBarAdapter") == null) {
+			StyledTextThemedScrollBarAdapter scrollbarOnlyWhenNeeded = new StyledTextThemedScrollBarAdapter(styledText);
+			styledText.setData("StyledTextThemedScrollBarAdapter", scrollbarOnlyWhenNeeded);
+		}
+		return (StyledTextThemedScrollBarAdapter) styledText.getData("StyledTextThemedScrollBarAdapter");
+	}
+
+}

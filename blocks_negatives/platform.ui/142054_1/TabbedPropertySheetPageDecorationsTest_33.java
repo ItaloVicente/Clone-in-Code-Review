@@ -1,0 +1,12 @@
+        decorationTestsView = (DecorationTestsView) view;
+
+        /**
+         * get the list of tree nodes from the view.
+         */
+        IContentProvider contentProvider = decorationTestsView.getViewer()
+            .getContentProvider();
+        assertTrue(contentProvider instanceof TestsViewContentProvider);
+        TestsViewContentProvider viewContentProvider = (TestsViewContentProvider) contentProvider;
+        treeNodes = viewContentProvider.getInvisibleRoot().getChildren();
+        assertEquals(treeNodes.length, 8);
+    }

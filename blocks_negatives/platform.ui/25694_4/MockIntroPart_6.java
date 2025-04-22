@@ -1,0 +1,6 @@
+    /**
+     * 
+     */
+    public MockIntroPart() {
+        super();
+    }

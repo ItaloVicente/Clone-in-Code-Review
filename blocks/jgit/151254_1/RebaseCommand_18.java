@@ -1,0 +1,10 @@
+			case APPLY:
+			case BARE:
+			case BISECTING:
+			case CHERRY_PICKING:
+			case CHERRY_PICKING_RESOLVED:
+			case MERGING:
+			case MERGING_RESOLVED:
+			case REVERTING:
+			case REVERTING_RESOLVED:
+			case SAFE:

@@ -1,0 +1,11 @@
+		node.put(IWorkbenchPreferenceConstants.DOCK_PERSPECTIVE_BAR,
+				IWorkbenchPreferenceConstants.TOP_LEFT);
+		node.putBoolean(
+				IWorkbenchPreferenceConstants.SHOW_TEXT_ON_PERSPECTIVE_BAR,
+				true);
+		node.putBoolean(
+				IWorkbenchPreferenceConstants.SHOW_OTHER_IN_PERSPECTIVE_MENU,
+				true);
+		node.putBoolean(
+				IWorkbenchPreferenceConstants.SHOW_OPEN_ON_PERSPECTIVE_BAR,
+				true);

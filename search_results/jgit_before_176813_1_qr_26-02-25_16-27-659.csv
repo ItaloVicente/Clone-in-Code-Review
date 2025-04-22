@@ -1,0 +1,6 @@
+block18.java_method#1#18,/home/gesad/PycharmProjects/Diff/befores/jgit/before_176813_1/org.eclipse.jgit.pgm.test/tst/org/eclipse/jgit/pgm/InitTest.java_testInitDirectory#42#55
+block32.java_method#1#14,/home/gesad/PycharmProjects/Diff/befores/jgit/before_176813_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/PackParserTest.java_test2#85#107
+block37.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/jgit/before_176813_1/org.eclipse.jgit/src/org/eclipse/jgit/api/TagCommand.java_processOptions#211#259
+block9.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_176813_1/org.eclipse.jgit/src/org/eclipse/jgit/api/CommitCommand.java_processOptions#524#594
+block28.java_method#1#17,/home/gesad/PycharmProjects/Diff/befores/jgit/before_176813_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/InitCommandTest.java_testInitBareRepository#64#76
+block31.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/jgit/before_176813_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/PackParserTest.java_test1#60#77,/home/gesad/PycharmProjects/Diff/befores/jgit/before_176813_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/internal/storage/file/PackIndexV2Test.java_testCRC32#49#70

@@ -1,0 +1,33 @@
+/*******************************************************************************
+ * Copyright (c) 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.ui.tests.operations;
+
+
+/**
+ * @since 3.1
+ */
+public class UnredoableTestOperation extends TestOperation {
+	UnredoableTestOperation(String name) {
+		super(name);
+	}
+
+	boolean disposed = false;
+
+	@Override
+	public boolean canRedo() {
+		return false;
+	}
+
+	@Override
+	public void dispose() {
+		disposed = true;
+	}
+
+}

@@ -1,0 +1,17 @@
+		if (removeAllWhenShown) {
+			return true;
+		}
+
+		IContributionItem[] childItems = getItems();
+		boolean visibleChildren = false;
+		for (int j = 0; j < childItems.length; j++) {
+			if (isChildVisible(childItems[j]) && !childItems[j].isSeparator()) {
+				visibleChildren = true;
+				break;
+			}
+		}
+
+		return visibleChildren;
+	}
+
+	@Override

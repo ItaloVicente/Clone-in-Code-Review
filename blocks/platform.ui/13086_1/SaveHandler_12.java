@@ -1,0 +1,62 @@
+package org.eclipse.ui.internal.handlers;
+
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.expressions.EvaluationResult;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.ui.ISaveablesLifecycleListener;
+import org.eclipse.ui.ISaveablesSource;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.Saveable;
+import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.internal.InternalHandlerUtil;
+import org.eclipse.ui.internal.SaveablesList;
+import org.eclipse.ui.internal.WorkbenchPage;
+
+public class SaveAllHandler extends AbstractSaveHandler {
+
+	public SaveAllHandler() {
+		registerEnablement();
+	}
+
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IWorkbenchWindow window = HandlerUtil
+				.getActiveWorkbenchWindowChecked(event);
+		IWorkbenchPage page = window.getActivePage();
+		if (page != null) {
+			((WorkbenchPage) page).saveAllEditors(false, false, true);
+		}
+
+		return null;
+	}
+
+	protected EvaluationResult evaluate(IEvaluationContext context) {
+
+		IWorkbenchWindow window = InternalHandlerUtil.getActiveWorkbenchWindow(context);
+		if (window == null)
+			return EvaluationResult.FALSE;
+		WorkbenchPage page = (WorkbenchPage) window.getActivePage();
+
+		if (page == null)
+			return EvaluationResult.FALSE;
+
+		if (page.getDirtyParts().length > 0)
+			return EvaluationResult.TRUE;
+
+		SaveablesList saveablesList = (SaveablesList) window.getWorkbench().getService(
+				ISaveablesLifecycleListener.class);
+		ISaveablesSource[] nonPartSources = saveablesList.getNonPartSources();
+		for (int i = 0; i < nonPartSources.length; i++) {
+			Saveable[] saveables = nonPartSources[i].getSaveables();
+			for (int j = 0; j < saveables.length; j++) {
+				if (saveables[j].isDirty()) {
+					return EvaluationResult.TRUE;
+				}
+			}
+		}
+
+		return EvaluationResult.FALSE;
+	}
+
+}

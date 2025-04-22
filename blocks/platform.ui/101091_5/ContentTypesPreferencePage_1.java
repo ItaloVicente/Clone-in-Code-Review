@@ -1,0 +1,12 @@
+		Composite detailsComposite = new Composite(composite, SWT.NONE);
+		detailsComposite.setLayout(new GridLayout(2, true));
+		detailsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Composite leftColumnComposite = new Composite(detailsComposite, SWT.NONE);
+		leftColumnComposite.setLayout(new GridLayout(1, false));
+		leftColumnComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		createFileAssociations(leftColumnComposite);
+		createCharset(leftColumnComposite);
+		Composite rightColumnComposite = new Composite(detailsComposite, SWT.NONE);
+		rightColumnComposite.setLayout(new GridLayout(1, false));
+		rightColumnComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		createEditors(rightColumnComposite);

@@ -1,0 +1,115 @@
+
+    private boolean animated = true;
+
+    private StackLayout layout;
+
+    private ProgressBar determinateProgressBar;
+
+    private ProgressBar indeterminateProgressBar;
+
+    private double totalWork;
+
+    private double sumWorked;
+
+    /**
+     * Create a ProgressIndicator as a child under the given parent.
+     *
+     * @param parent
+     *            The widgets parent
+     */
+    public ProgressIndicator(Composite parent) {
+        this(parent, SWT.NONE);
+    }
+
+    /**
+     * Create a ProgressIndicator as a child under the given parent.
+     *
+     * @param parent
+     *            The widgets parent
+     * @param style the SWT style constants for progress monitors created
+     * 	by the receiver.
+     * @since 3.4
+     */
+    public ProgressIndicator(Composite parent, int style) {
+    	super(parent, SWT.NULL);
+
+        if ((style & SWT.VERTICAL) == 0)
+            style |= SWT.HORIZONTAL;
+
+        determinateProgressBar = new ProgressBar(this, style);
+        indeterminateProgressBar = new ProgressBar(this, style
+                | SWT.INDETERMINATE);
+        layout = new StackLayout();
+        setLayout(layout);
+    }
+
+    /**
+     * Initialize the progress bar to be animated.
+     */
+    public void beginAnimatedTask() {
+        done();
+        layout.topControl = indeterminateProgressBar;
+		layout();
+        animated = true;
+    }
+
+    /**
+     * Initialize the progress bar.
+     *
+     * @param max
+     *            The maximum value.
+     */
+    public void beginTask(int max) {
+        done();
+        this.totalWork = max;
+        this.sumWorked = 0;
+        determinateProgressBar.setMinimum(0);
+        determinateProgressBar.setMaximum(PROGRESS_MAX);
+        determinateProgressBar.setSelection(0);
+        layout.topControl = determinateProgressBar;
+		layout();
+        animated = false;
+    }
+
+    /**
+     * Progress is done.
+     */
+    public void done() {
+        if (!animated) {
+            determinateProgressBar.setMinimum(0);
+            determinateProgressBar.setMaximum(0);
+            determinateProgressBar.setSelection(0);
+        }
+        layout.topControl = null;
+		layout();
+    }
+
+    /**
+     * Moves the progress indicator to the end.
+     */
+    public void sendRemainingWork() {
+        worked(totalWork - sumWorked);
+    }
+
+    /**
+     * Moves the progress indicator by the given amount of work units
+     * @param work the amount of work to increment by.
+     */
+    public void worked(double work) {
+        if (work == 0 || animated) {
+            return;
+        }
+        sumWorked += work;
+        if (sumWorked > totalWork) {
+            sumWorked = totalWork;
+        }
+        if (sumWorked < 0) {
+            sumWorked = 0;
+        }
+        int value = (int) (sumWorked / totalWork * PROGRESS_MAX);
+        if (determinateProgressBar.getSelection() < value) {
+            determinateProgressBar.setSelection(value);
+        }
+    }
+
+    /**

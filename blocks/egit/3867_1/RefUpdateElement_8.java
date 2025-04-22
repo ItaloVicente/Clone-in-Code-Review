@@ -1,0 +1,10 @@
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.UIIcons;
+import org.eclipse.egit.ui.UIText;
+import org.eclipse.egit.ui.internal.DecorationOverlayDescriptor;
+import org.eclipse.egit.ui.internal.commit.RepositoryCommit;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IDecoration;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectReader;

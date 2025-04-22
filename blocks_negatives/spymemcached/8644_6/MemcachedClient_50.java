@@ -1,0 +1,9 @@
+ *	<p>
+ *	 MemcachedClient may be processing a great deal of asynchronous messages or
+ *	 possibly dealing with an unreachable memcached, which may delay processing.
+ *	 If a memcached is disabled, for example, MemcachedConnection will continue
+ *	 to attempt to reconnect and replay pending operations until it comes back
+ *	 up.  To prevent this from causing your application to hang, you can use
+ *	 one of the asynchronous mechanisms to time out a request and cancel the
+ *	 operation to the server.
+ *	</p>

@@ -1,0 +1,41 @@
+    <T> T upsert(T document, PersistTo persistTo);
+    <T> T upsert(T document, PersistTo persistTo, long timeout, TimeUnit timeUnit);
+    <T> T upsert(T document, ReplicateTo replicateTo);
+    <T> T upsert(T document, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+    <T> T upsert(T document, PersistTo persistTo, ReplicateTo replicateTo);
+    <T> T upsert(T document, PersistTo persistTo, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+
+    <T> T insert(T document);
+    <T> T insert(T document, long timeout, TimeUnit timeUnit);
+    <T> T insert(T document, PersistTo persistTo);
+    <T> T insert(T document, PersistTo persistTo, long timeout, TimeUnit timeUnit);
+    <T> T insert(T document, ReplicateTo replicateTo);
+    <T> T insert(T document, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+    <T> T insert(T document, PersistTo persistTo, ReplicateTo replicateTo);
+    <T> T insert(T document, PersistTo persistTo, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+
+    <T> T replace(T document);
+    <T> T replace(T document, long timeout, TimeUnit timeUnit);
+    <T> T replace(T document, PersistTo persistTo);
+    <T> T replace(T document, PersistTo persistTo, long timeout, TimeUnit timeUnit);
+    <T> T replace(T document, ReplicateTo replicateTo);
+    <T> T replace(T document, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+    <T> T replace(T document, PersistTo persistTo, ReplicateTo replicateTo);
+    <T> T replace(T document, PersistTo persistTo, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+
+    <T> T remove(T document);
+    <T> T remove(T document, long timeout, TimeUnit timeUnit);
+    <T> T remove(T document, PersistTo persistTo);
+    <T> T remove(T document, PersistTo persistTo, long timeout, TimeUnit timeUnit);
+    <T> T remove(T document, ReplicateTo replicateTo);
+    <T> T remove(T document, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+    <T> T remove(T document, PersistTo persistTo, ReplicateTo replicateTo);
+    <T> T remove(T document, PersistTo persistTo, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+    <T> T remove(String id, Class<T> documentClass);
+    <T> T remove(String id, Class<T> documentClass, long timeout, TimeUnit timeUnit);
+    <T> T remove(String id, PersistTo persistTo, Class<T> documentClass);
+    <T> T remove(String id, PersistTo persistTo, Class<T> documentClass, long timeout, TimeUnit timeUnit);
+    <T> T remove(String id, ReplicateTo replicateTo, Class<T> documentClass);
+    <T> T remove(String id, ReplicateTo replicateTo, Class<T> documentClass, long timeout, TimeUnit timeUnit);
+    <T> T remove(String id, PersistTo persistTo, ReplicateTo replicateTo, Class<T> documentClass);
+    <T> T remove(String id, PersistTo persistTo, ReplicateTo replicateTo, Class<T> documentClass, long timeout, TimeUnit timeUnit);

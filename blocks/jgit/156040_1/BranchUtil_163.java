@@ -1,0 +1,22 @@
+	private BranchUtil() {
+
+	}
+
+	public static void deleteUnfilteredBranches(final Repository repository
+			throws GitAPIException {
+		if (branchesToKeep == null || branchesToKeep.isEmpty()) {
+			return;
+		}
+
+		final org.eclipse.jgit.api.Git git = org.eclipse.jgit.api.Git.wrap(repository);
+		final String[] toDelete = git.branchList().call().stream().map(Ref::getName)
+				.map(fullname -> fullname.substring(fullname.lastIndexOf('/') + 1))
+				.filter(name -> !branchesToKeep.contains(name)).toArray(String[]::new);
+		git.branchDelete().setBranchNames(toDelete).setForce(true).call();
+	}
+
+	public static void existsBranch(final Git git
+		if (git.getRef(branch) == null) {
+			throw new GitException(String.format("Branch <<%s>> does not exist"
+		}
+	}

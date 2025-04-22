@@ -1,0 +1,10 @@
+		GitProjectData.detachFromWorkspace();
+		repositoryCache.clear();
+		repositoryCache = null;
+		indexDiffCache.dispose();
+		indexDiffCache = null;
+		repositoryUtil.dispose();
+		repositoryUtil = null;
+		secureStore = null;
+		super.stop(context);
+		plugin = null;

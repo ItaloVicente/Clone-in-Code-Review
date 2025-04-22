@@ -1,0 +1,8 @@
+		boolean autoBuild = ResourcesPlugin.getPlugin().getPluginPreferences()
+				.getDefaultBoolean(ResourcesPlugin.PREF_AUTO_BUILDING);
+		autoBuildButton.setSelection(autoBuild);
+
+		int simultaneousBuilds = ResourcesPlugin.getPlugin().getPluginPreferences()
+				.getDefaultInt(ResourcesPlugin.PREF_MAX_CONCURRENT_BUILDS);
+		maxSimultaneousBuilds.setStringValue(Integer.toString(simultaneousBuilds));
+

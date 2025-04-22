@@ -1,0 +1,46 @@
+package org.eclipse.egit.ui.internal.push;
+
+import org.eclipse.egit.ui.internal.components.RefSpecPage;
+import org.eclipse.egit.ui.internal.components.RepositorySelection;
+import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.transport.RemoteConfig;
+
+public class RefSpecWizard extends Wizard {
+	private final boolean pushMode;
+
+	private final RemoteConfig config;
+
+	private RefSpecPage page;
+
+	public RefSpecWizard(Repository repository, RemoteConfig config,
+			boolean pushMode) {
+		setNeedsProgressMonitor(true);
+		this.pushMode = pushMode;
+		this.config = config;
+		page = new RefSpecPage(repository, pushMode);
+	}
+
+	@Override
+	public void addPages() {
+		addPage(page);
+	}
+
+	@Override
+	public IWizardPage getStartingPage() {
+		page.setSelection(new RepositorySelection(null, config));
+		return super.getStartingPage();
+	}
+
+	@Override
+	public boolean performFinish() {
+		if (pushMode) {
+			config.setPushRefSpecs(page.getRefSpecs());
+		} else {
+			config.setFetchRefSpecs(page.getRefSpecs());
+			config.setTagOpt(page.getTagOpt());
+		}
+		return true;
+	}
+}

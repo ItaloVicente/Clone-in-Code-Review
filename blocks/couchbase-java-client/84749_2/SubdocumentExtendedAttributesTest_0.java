@@ -1,0 +1,6 @@
+                .arrayAddUnique("spring.refs", "id1", new SubdocOptionsBuilder().createPath(true).xattr(true))
+                .arrayAppend("spring.refs", "id0", new SubdocOptionsBuilder().createPath(false).xattr(true))
+                .arrayPrepend("spring.refs", "id2", new SubdocOptionsBuilder().createPath(false).xattr(true))
+                .arrayInsert("spring.refs[0]", "id3", new SubdocOptionsBuilder().createPath(false).xattr(true))
+                .remove("spring.refs[0]", new SubdocOptionsBuilder().createPath(false).xattr(true))
+                .remove("spring.refs", new SubdocOptionsBuilder().createPath(false).xattr(true))

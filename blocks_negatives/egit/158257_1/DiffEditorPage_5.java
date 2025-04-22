@@ -1,0 +1,11 @@
+import org.eclipse.ui.part.IShowInSource;
+import org.eclipse.ui.part.IShowInTargetList;
+import org.eclipse.ui.part.ShowInContext;
+import org.eclipse.ui.progress.UIJob;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
+import org.eclipse.ui.texteditor.AbstractDocumentProvider;
+import org.eclipse.ui.texteditor.ChainedPreferenceStore;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditorActionConstants;
+import org.eclipse.ui.themes.IThemeManager;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;

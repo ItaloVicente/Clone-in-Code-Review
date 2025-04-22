@@ -1,0 +1,10 @@
+    /**
+     * Get all PropertyDescriptors.
+     * @return PropertyDescriptor[]
+     */
+    protected synchronized EStructuralFeature[] getPropertyDescriptors() {
+        if (propertyDescriptors == null) {
+            propertyDescriptors = beanInfo.getPropertyDescriptors();
+        }
+        return propertyDescriptors;
+    }

@@ -1,0 +1,10 @@
+import org.eclipse.egit.ui.internal.repository.tree.BranchesNode;
+import org.eclipse.egit.ui.internal.repository.tree.LocalBranchesNode;
+import org.eclipse.egit.ui.internal.repository.tree.RemoteBranchesNode;
+import org.eclipse.egit.ui.internal.repository.tree.RemotesNode;
+import org.eclipse.egit.ui.internal.repository.tree.RepositoryNode;
+import org.eclipse.egit.ui.internal.repository.tree.SymbolicRefsNode;
+import org.eclipse.egit.ui.internal.repository.tree.TagsNode;
+import org.eclipse.egit.ui.internal.repository.tree.WorkingDirNode;
+import org.eclipse.egit.ui.test.ContextMenuHelper;
+import org.eclipse.egit.ui.test.Eclipse;

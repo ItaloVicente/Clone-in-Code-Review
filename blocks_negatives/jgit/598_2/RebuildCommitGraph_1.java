@@ -1,0 +1,17 @@
+			final StringBuilder m = new StringBuilder();
+			m.append("fatal: ");
+			m.append("This program will destroy the repository:");
+			m.append("\n");
+			m.append("fatal:\n");
+			m.append("fatal:    ");
+			m.append(db.getDirectory().getAbsolutePath());
+			m.append("\n");
+			m.append("fatal:\n");
+			m.append("fatal: ");
+			m.append("To continue, add ");
+			m.append(REALLY);
+			m.append(" to the command line");
+			m.append("\n");
+			m.append("fatal:");
+			System.err.println(m);
+			throw die("Need approval to destroy current repository");

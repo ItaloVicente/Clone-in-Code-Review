@@ -1,0 +1,6 @@
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.ui.IWorkbenchPart)
+	 */

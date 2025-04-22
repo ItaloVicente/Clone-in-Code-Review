@@ -1,0 +1,20 @@
+
+	public boolean isOnDevelop(@NonNull RevCommit selectedCommit) throws IOException {
+		String develop = config.getDevelopFull();
+		return isOnBranch(selectedCommit, develop);
+	}
+
+	private boolean isOnBranch(RevCommit commit, String fullBranch)
+			throws IOException {
+		Ref branchRef = repository.exactRef(fullBranch);
+		if (branchRef == null) {
+			return false;
+		}
+		try {
+			List<Ref> list = Git.wrap(repository).branchList().setContains(commit.name()).call();
+
+			return list.contains(branchRef);
+		} catch (GitAPIException e) {
+			throw new IOException(e);
+		}
+	}

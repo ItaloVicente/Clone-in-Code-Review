@@ -1,0 +1,10 @@
+import org.eclipse.egit.core.AdapterUtils;
+import org.eclipse.egit.core.project.GitProjectData;
+import org.eclipse.egit.core.project.RepositoryMapping;
+import org.eclipse.egit.core.synchronize.GitResourceVariantTreeSubscriber;
+import org.eclipse.egit.core.synchronize.GitSubscriberMergeContext;
+import org.eclipse.egit.core.synchronize.GitSubscriberResourceMappingContext;
+import org.eclipse.egit.core.synchronize.dto.GitSynchronizeData;
+import org.eclipse.egit.core.synchronize.dto.GitSynchronizeDataSet;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.UIPreferences;

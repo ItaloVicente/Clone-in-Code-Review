@@ -1,0 +1,3 @@
+block4.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/jgit/before_171300_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/UploadPack.java_processHaveLines#1686#1786
+block3.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/jgit/before_171300_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/UploadPack.java_processHaveLines#1686#1786
+block0.java_method#1#29,/home/gesad/PycharmProjects/Diff/befores/jgit/before_171300_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/UploadPackTest.java_testFetchParentOfShallowCommit#102#127

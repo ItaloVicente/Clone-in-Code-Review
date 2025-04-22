@@ -1,0 +1,12 @@
+		assertEquals("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1",db.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4~1").name());
+		assertNull(db.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4~~"));
+		assertNull(db.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4^^"));
+		assertNull(db.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4~2"));
+		assertNull(db.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4~99"));
+		assertNull(db.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1~~"));
+		assertNull(db.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1^^"));
+		assertNull(db.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1~2"));
+		assertNull(db.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1~99"));
+		assertEquals("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1",db.resolve("master~6").name());
+		assertNull(db.resolve("master~7"));
+		assertNull(db.resolve("master~6~"));

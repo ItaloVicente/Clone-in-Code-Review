@@ -1,0 +1,16 @@
+import net.spy.memcached.protocol.couch.DocsOperation.DocsCallback;
+import net.spy.memcached.protocol.couch.DocsOperationImpl;
+import net.spy.memcached.protocol.couch.HttpOperation;
+import net.spy.memcached.protocol.couch.NoDocsOperation.NoDocsCallback;
+import net.spy.memcached.protocol.couch.NoDocsOperationImpl;
+import net.spy.memcached.protocol.couch.ReducedOperation.ReducedCallback;
+import net.spy.memcached.protocol.couch.ReducedOperationImpl;
+import net.spy.memcached.protocol.couch.RowError;
+import net.spy.memcached.protocol.couch.RowWithDocs;
+import net.spy.memcached.protocol.couch.ViewResponseNoDocs;
+import net.spy.memcached.protocol.couch.Query;
+import net.spy.memcached.protocol.couch.ViewResponseReduced;
+import net.spy.memcached.protocol.couch.RowReduced;
+import net.spy.memcached.protocol.couch.RowNoDocs;
+import net.spy.memcached.protocol.couch.View;
+import net.spy.memcached.protocol.couch.ViewResponseWithDocs;

@@ -1,0 +1,4 @@
+block9.java_method#1#38,/home/gesad/PycharmProjects/Diff/befores/egit/before_2287_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/clone/GitProjectsImportPage.java_createProjectsList#168#256
+block25.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/egit/before_2287_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/synchronize/SelectSynchronizeResourceDialog.java_createDialogArea#103#155
+block2.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/egit/before_2287_1/org.eclipse.egit.ui.test/src/org/eclipse/egit/ui/wizards/clone/GitCloneWizardTestBase.java_cloneRepo#48#86
+block6.java_method#1#22,/home/gesad/PycharmProjects/Diff/befores/egit/before_2287_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/repository/RepositoriesViewLabelProvider.java_getDecoratedImage#152#177

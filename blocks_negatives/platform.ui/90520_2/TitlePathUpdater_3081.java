@@ -1,0 +1,106 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2016 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *     Lars Vogel <Lars.Vogel@vogella.com> - Bug 472654
+ *     Patrik Suzzi <psuzzi@gmail.com> - Bug 490700
+ ******************************************************************************/
+
+package org.eclipse.ui.internal.tweaklets;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.internal.IPreferenceConstants;
+import org.eclipse.ui.internal.WorkbenchPage;
+import org.eclipse.ui.internal.WorkbenchPlugin;
+import org.eclipse.ui.internal.e4.compatibility.E4Util;
+import org.eclipse.ui.internal.registry.EditorDescriptor;
+
+/**
+ * @since 3.3
+ *
+ */
+public class TabBehaviourMRU extends TabBehaviour {
+
+	@Override
+	public boolean alwaysShowPinAction() {
+		return false;
+	}
+
+	@Override
+	public IEditorReference findReusableEditor(WorkbenchPage page) {
+		boolean reuse = WorkbenchPlugin.getDefault().getPreferenceStore()
+				.getBoolean(IPreferenceConstants.REUSE_EDITORS_BOOLEAN);
+		if (!reuse) {
+			return null;
+		}
+
+		IEditorReference editors[] = page.getSortedEditors();
+		int length = editors.length;
+		if (length < page.getEditorReuseThreshold()) {
+			return null;
+		} else if (length > page.getEditorReuseThreshold()) {
+			List<IEditorReference> refs = new ArrayList<>();
+			List<IEditorReference> keep = new ArrayList<>(Arrays.asList(editors));
+			int extra = length - page.getEditorReuseThreshold();
+			for (IEditorReference editor : editors) {
+				if (extra == 0) {
+					break;
+				}
+
+				if (editor.isPinned() || editor.isDirty()) {
+					continue;
+				}
+
+				refs.add(editor);
+				extra--;
+			}
+
+			for (IEditorReference ref : refs) {
+				page.closeEditor(ref, false);
+				keep.remove(ref);
+			}
+
+			editors = keep.toArray(new IEditorReference[keep.size()]);
+		}
+
+		IEditorReference dirtyEditor = null;
+
+		for (int i = editors.length - 1; i > -1; i--) {
+			IEditorReference editor = editors[i];
+			if (editor.isPinned()) {
+				continue;
+			}
+			if (editor.isDirty()) {
+				if (dirtyEditor == null) {
+					dirtyEditor = editor;
+				}
+				continue;
+			}
+			return editor;
+		}
+		if (dirtyEditor == null) {
+			return null;
+		}
+
+		return null;
+
+	}
+
+	@Override
+	public IEditorReference reuseInternalEditor(WorkbenchPage page,
+ Object manager,
+			Object editorPresentation,
+			EditorDescriptor desc, IEditorInput input,
+			IEditorReference reusableEditorRef) {
+		return reusableEditorRef;
+	}
+
+}

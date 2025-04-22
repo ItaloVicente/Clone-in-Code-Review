@@ -1,0 +1,9 @@
+block19.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit/src/org/eclipse/jgit/internal/storage/reftable/ReftableDatabase.java_nextUpdateIndex#48#55
+block3.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit.lfs/src/org/eclipse/jgit/lfs/BuiltinLFS.java_getPrePushHook#99#107
+block7.java_method#1#31,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/BlameCommandTest.java_testConflictingMerge2#430#462,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/BlameCommandTest.java_testConflictingMerge1#394#426
+block17.java_method#1#20,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit/src/org/eclipse/jgit/hooks/Hooks.java_prePush#112#129
+block28.java_method#1#74,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/ReceivePack.java_sendStatusReport#1852#1934
+block12.java_method#1#11,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit/src/org/eclipse/jgit/api/CommitCommand.java_setHookOutputStream#905#916
+block6.java_method#1#23,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit.pgm/src/org/eclipse/jgit/pgm/Blame.java_abbreviate#391#421
+block26.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/ReceivePack.java_service#2165#2235
+block27.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/jgit/before_154097_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/ReceivePack.java_sendStatusReport#1852#1934

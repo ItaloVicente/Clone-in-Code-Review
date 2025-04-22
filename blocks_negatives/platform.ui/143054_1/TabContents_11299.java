@@ -1,0 +1,6 @@
+    /**
+     *
+     */
+    public TabContents() {
+        controlsCreated = false;
+    }

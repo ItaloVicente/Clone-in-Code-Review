@@ -1,0 +1,13 @@
+import static org.eclipse.egit.gitflow.GitFlowConfig.BRANCH_SECTION;
+import static org.eclipse.egit.gitflow.GitFlowConfig.DEVELOP_KEY;
+import static org.eclipse.egit.gitflow.GitFlowConfig.FEATURE_KEY;
+import static org.eclipse.egit.gitflow.GitFlowConfig.GITFLOW_SECTION;
+import static org.eclipse.egit.gitflow.GitFlowConfig.HOTFIX_KEY;
+import static org.eclipse.egit.gitflow.GitFlowConfig.MASTER_KEY;
+import static org.eclipse.egit.gitflow.GitFlowConfig.PREFIX_SECTION;
+import static org.eclipse.egit.gitflow.GitFlowConfig.RELEASE_KEY;
+import static org.eclipse.egit.gitflow.GitFlowDefaults.DEVELOP;
+import static org.eclipse.egit.gitflow.GitFlowDefaults.FEATURE_PREFIX;
+import static org.eclipse.egit.gitflow.GitFlowDefaults.HOTFIX_PREFIX;
+import static org.eclipse.egit.gitflow.GitFlowDefaults.MASTER;
+import static org.eclipse.egit.gitflow.GitFlowDefaults.RELEASE_PREFIX;

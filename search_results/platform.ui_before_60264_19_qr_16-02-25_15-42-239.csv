@@ -1,0 +1,4 @@
+block5.java_method#1#16,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_60264_19/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/forms/widgets/SizeCache.java_flush#144#166
+block7.java_method#1#17,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_60264_19/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/forms/widgets/SizeCache.java_computeMaximumWidth#438#454,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_60264_19/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/forms/widgets/SizeCache.java_computeMinimumWidth#418#436
+block8.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_60264_19/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/forms/widgets/SizeCache.java_layoutIfNecessary#523#531
+block6.java_method#1#15,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_60264_19/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/forms/widgets/SizeCache.java_computeMinimumWidth#418#436

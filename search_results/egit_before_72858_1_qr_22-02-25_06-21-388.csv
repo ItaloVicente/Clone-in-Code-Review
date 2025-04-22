@@ -1,0 +1,4 @@
+block7.java_method#1#16,/home/gesad/PycharmProjects/Diff/befores/egit/before_72858_1/org.eclipse.egit.core/src/org/eclipse/egit/core/op/RemoveFromIndexOperation.java_prepareCommand#95#111
+block8.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/egit/before_72858_1/org.eclipse.egit.core/src/org/eclipse/egit/core/op/RevertCommitOperation.java_run#84#111,/home/gesad/PycharmProjects/Diff/befores/egit/before_72858_1/org.eclipse.egit.core/src/org/eclipse/egit/core/op/RevertCommitOperation.java_execute#80#115
+block2.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/egit/before_72858_1/org.eclipse.egit.core/src/org/eclipse/egit/core/op/CommitOperation.java_addUntracked#212#228
+block6.java_method#1#26,/home/gesad/PycharmProjects/Diff/befores/egit/before_72858_1/org.eclipse.egit.core/src/org/eclipse/egit/core/op/PushOperation.java_run#139#234

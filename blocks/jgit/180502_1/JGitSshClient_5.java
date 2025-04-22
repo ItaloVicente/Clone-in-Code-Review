@@ -1,0 +1,188 @@
+package org.eclipse.jgit.internal.transport.sshd;
+
+import java.io.IOException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.text.MessageFormat;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.sshd.client.auth.pubkey.UserAuthPublicKey;
+import org.apache.sshd.client.session.ClientSession;
+import org.apache.sshd.common.NamedFactory;
+import org.apache.sshd.common.NamedResource;
+import org.apache.sshd.common.RuntimeSshException;
+import org.apache.sshd.common.SshConstants;
+import org.apache.sshd.common.config.keys.KeyUtils;
+import org.apache.sshd.common.signature.Signature;
+import org.apache.sshd.common.signature.SignatureFactoriesHolder;
+import org.apache.sshd.common.util.buffer.Buffer;
+
+public class JGitPublicKeyAuthentication extends UserAuthPublicKey {
+
+	private final Deque<String> currentAlgorithms = new LinkedList<>();
+
+	private String chosenAlgorithm;
+
+	JGitPublicKeyAuthentication(List<NamedFactory<Signature>> factories) {
+		super(factories);
+	}
+
+	@Override
+	protected boolean sendAuthDataRequest(ClientSession session
+			throws Exception {
+		if (current == null) {
+			currentAlgorithms.clear();
+			chosenAlgorithm = null;
+		}
+		String currentAlgorithm = null;
+		if (current != null && !currentAlgorithms.isEmpty()) {
+			currentAlgorithm = currentAlgorithms.poll();
+			if (chosenAlgorithm != null) {
+				Set<String> knownServerAlgorithms = session.getAttribute(
+						JGitKexExtensionHandler.SERVER_ALGORITHMS);
+				if (knownServerAlgorithms != null
+						&& knownServerAlgorithms.contains(chosenAlgorithm)) {
+					currentAlgorithm = null;
+				}
+			}
+		}
+		if (currentAlgorithm == null) {
+			try {
+				if (keys == null || !keys.hasNext()) {
+					if (log.isDebugEnabled()) {
+						log.debug(
+								"sendAuthDataRequest({})[{}] no more keys to send"
+								session
+					}
+					current = null;
+					return false;
+				}
+				current = keys.next();
+				currentAlgorithms.clear();
+				chosenAlgorithm = null;
+				throw new RuntimeSshException(e);
+			}
+		}
+		PublicKey key;
+		try {
+			key = current.getPublicKey();
+			throw new RuntimeSshException(e);
+		}
+		if (currentAlgorithm == null) {
+			String keyType = KeyUtils.getKeyType(key);
+			Set<String> aliases = new HashSet<>(
+					KeyUtils.getAllEquivalentKeyTypes(keyType));
+			aliases.add(keyType);
+			List<NamedFactory<Signature>> existingFactories;
+			if (current instanceof SignatureFactoriesHolder) {
+				existingFactories = ((SignatureFactoriesHolder) current)
+						.getSignatureFactories();
+			} else {
+				existingFactories = getSignatureFactories();
+			}
+			if (existingFactories != null) {
+				if (log.isDebugEnabled()) {
+					log.debug(
+							"sendAuthDataRequest({})[{}] selecting from PubKeyAcceptedAlgorithms {}"
+							session
+							NamedResource.getNames(existingFactories));
+				}
+				existingFactories.forEach(f -> {
+					if (aliases.contains(f.getName())) {
+						currentAlgorithms.add(f.getName());
+					}
+				});
+			}
+			currentAlgorithm = currentAlgorithms.isEmpty() ? keyType
+					: currentAlgorithms.poll();
+		}
+		String name = getName();
+		if (log.isDebugEnabled()) {
+			log.debug(
+					"sendAuthDataRequest({})[{}] send SSH_MSG_USERAUTH_REQUEST request {} type={} - fingerprint={}"
+					session
+					KeyUtils.getFingerPrint(key));
+		}
+
+		chosenAlgorithm = currentAlgorithm;
+		Buffer buffer = session
+				.createBuffer(SshConstants.SSH_MSG_USERAUTH_REQUEST);
+		buffer.putString(session.getUsername());
+		buffer.putString(service);
+		buffer.putString(name);
+		buffer.putBoolean(false);
+		buffer.putString(currentAlgorithm);
+		buffer.putPublicKey(key);
+		session.writePacket(buffer);
+		return true;
+	}
+
+	@Override
+	protected boolean processAuthDataRequest(ClientSession session
+			String service
+		String name = getName();
+		int cmd = buffer.getUByte();
+		if (cmd != SshConstants.SSH_MSG_USERAUTH_PK_OK) {
+			throw new IllegalStateException(MessageFormat.format(
+					SshdText.get().pubkeyAuthWrongCommand
+					SshConstants.getCommandMessageName(cmd)
+					session.getConnectAddress()
+		}
+		PublicKey key;
+		try {
+			key = current.getPublicKey();
+			throw new RuntimeSshException(e);
+		}
+		String rspKeyAlgorithm = buffer.getString();
+		PublicKey rspKey = buffer.getPublicKey();
+		if (log.isDebugEnabled()) {
+			log.debug(
+					"processAuthDataRequest({})[{}][{}] SSH_MSG_USERAUTH_PK_OK type={}
+					session
+					KeyUtils.getFingerPrint(rspKey));
+		}
+		if (!KeyUtils.compareKeys(rspKey
+			throw new InvalidKeySpecException(MessageFormat.format(
+					SshdText.get().pubkeyAuthWrongKey
+					KeyUtils.getFingerPrint(key)
+					KeyUtils.getFingerPrint(rspKey)
+					session.getConnectAddress()
+		}
+		if (!chosenAlgorithm.equalsIgnoreCase(rspKeyAlgorithm)) {
+			log.warn(MessageFormat.format(
+					SshdText.get().pubkeyAuthWrongSignatureAlgorithm
+					chosenAlgorithm
+					session.getServerVersion()));
+		}
+		String username = session.getUsername();
+		Buffer out = session
+				.createBuffer(SshConstants.SSH_MSG_USERAUTH_REQUEST);
+		out.putString(username);
+		out.putString(service);
+		out.putString(name);
+		out.putBoolean(true);
+		out.putString(chosenAlgorithm);
+		out.putPublicKey(key);
+		if (log.isDebugEnabled()) {
+			log.debug(
+					"processAuthDataRequest({})[{}][{}]: signing with algorithm {}"
+					session
+		}
+		appendSignature(session
+				out);
+		session.writePacket(out);
+		return true;
+	}
+
+	@Override
+	protected void releaseKeys() throws IOException {
+		currentAlgorithms.clear();
+		current = null;
+		chosenAlgorithm = null;
+		super.releaseKeys();
+	}
+}

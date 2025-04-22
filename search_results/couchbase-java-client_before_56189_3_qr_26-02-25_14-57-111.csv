@@ -1,0 +1,3 @@
+block1.java_method#1#29,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_56189_3/src/main/java/com/couchbase/client/java/CouchbaseAsyncCluster.java_assembleSeedNodes#125#162
+block6.java_method#1#15,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_56189_3/src/main/java/com/couchbase/client/java/CouchbaseCluster.java_openBucket#110#140,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_56189_3/src/main/java/com/couchbase/client/java/CouchbaseAsyncCluster.java_openBucket#179#240
+block5.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_56189_3/src/main/java/com/couchbase/client/java/CouchbaseCluster.java_CouchbaseCluster#68#73

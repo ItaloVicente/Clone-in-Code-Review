@@ -1,0 +1,11 @@
+    protected static final byte QUERY_STATE_INITIAL = 0;
+    protected static final byte QUERY_STATE_SIGNATURE = 1;
+    protected static final byte QUERY_STATE_ROWS = 2;
+    protected static final byte QUERY_STATE_ROWS_RAW = 20;
+    protected static final byte QUERY_STATE_ROWS_DECIDE = 29;
+    protected static final byte QUERY_STATE_ERROR = 3;
+    protected static final byte QUERY_STATE_WARNING = 4;
+    protected static final byte QUERY_STATE_STATUS = 5;
+    protected static final byte QUERY_STATE_INFO = 6;
+    protected static final byte QUERY_STATE_NO_INFO = 7; //alternate case where there's nothing after status
+    protected static final byte QUERY_STATE_DONE = 8;

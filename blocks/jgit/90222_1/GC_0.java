@@ -1,0 +1,15 @@
+		if (fanout == null || fanout.length == 0) {
+			return;
+		}
+		pm.beginTask(JGitText.get().pruneLooseUnreferencedObjects
+				fanout.length);
+		try {
+			for (String d : fanout) {
+				checkCancelled();
+				pm.update(1);
+				if (d.length() != 2)
+					continue;
+				File[] entries = new File(objects
+				if (entries == null)
+					continue;
+				for (File f : entries) {

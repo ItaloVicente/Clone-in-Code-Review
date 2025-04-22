@@ -1,0 +1,120 @@
+package org.eclipse.e4.ui.tests.css.core.parser;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+
+import junit.framework.TestCase;
+
+import org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler;
+import org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandlerProvider;
+import org.eclipse.e4.ui.css.core.engine.CSSEngine;
+import org.eclipse.e4.ui.css.core.impl.dom.DocumentCSSImpl;
+import org.eclipse.e4.ui.css.core.impl.engine.CSSEngineImpl;
+import org.eclipse.e4.ui.tests.css.core.util.ParserTestUtil;
+import org.eclipse.e4.ui.tests.css.core.util.TestElement;
+import org.w3c.dom.Element;
+import org.w3c.dom.css.CSSStyleDeclaration;
+import org.w3c.dom.css.CSSStyleSheet;
+import org.w3c.dom.css.CSSValue;
+
+public class InitialTest extends TestCase {
+
+	public void testInitialAttributeValue() throws Exception {
+		String css = "* { property: myValue; }\n" + "Button { property: initial; }\n";
+
+		CSSEngine engine = createEngine(css);
+		final TestElement canvas = new TestElement("Canvas", engine);
+		final TestElement button = new TestElement("Button", canvas, engine);
+
+		engine.applyStyles(canvas, true);
+
+		assertTrue(button.getAttribute("property").isEmpty());
+	}
+
+	private CSSEngine createEngine(String css) throws IOException {
+		CSSStyleSheet styleSheet = ParserTestUtil.parseCss(css);
+		DocumentCSSImpl docCss = new DocumentCSSImpl();
+		docCss.addStyleSheet(styleSheet);
+
+		CSSEngineImpl engine = new CSSEngineImpl(docCss) {
+			{
+				registerCSSPropertyHandlerProvider(new TestHandlerProvider());
+			}
+
+			@Override
+			public void reapply() {
+			}
+
+			@Override
+			public Element getElement(Object element) {
+				if (element instanceof TestElement) {
+					return (TestElement) element;
+				}
+
+				return super.getElement(element);
+			}
+		};
+
+		return engine;
+	}
+
+	private static class PropertyToAttributeMapper implements
+	ICSSPropertyHandler {
+
+		@Override
+		public boolean applyCSSProperty(Object element, String property,
+				CSSValue value, String pseudo, CSSEngine engine)
+						throws Exception {
+
+			if ("property".equals(property)) {
+				TestElement testElement = (TestElement) element;
+				testElement.setAttribute("property", value.getCssText());
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String retrieveCSSProperty(Object element, String property,
+				String pseudo, CSSEngine engine) throws Exception {
+			if ("property".equals(property)) {
+				TestElement testElement = (TestElement) element;
+				return testElement.getAttribute("property");
+			}
+			return null;
+		}
+	}
+
+	private static class TestHandlerProvider implements
+	ICSSPropertyHandlerProvider {
+
+		private PropertyToAttributeMapper propertyToAttributeMapper = new PropertyToAttributeMapper();
+
+		@Override
+		public CSSStyleDeclaration getDefaultCSSStyleDeclaration(
+				CSSEngine engine, Object element, CSSStyleDeclaration newStyle,
+				String pseudoE) throws Exception {
+			return null;
+		}
+
+		@Override
+		public Collection<ICSSPropertyHandler> getCSSPropertyHandlers(
+				Object element, String property) throws Exception {
+			return Collections
+					.singleton((ICSSPropertyHandler) propertyToAttributeMapper);
+		}
+
+		@Override
+		public Collection<ICSSPropertyHandler> getCSSPropertyHandlers(
+				String property) throws Exception {
+			return Collections
+					.singleton((ICSSPropertyHandler) propertyToAttributeMapper);
+		}
+
+		@Override
+		public Collection<String> getCSSProperties(Object element) {
+			return Collections.singleton("property");
+		}
+	};
+}

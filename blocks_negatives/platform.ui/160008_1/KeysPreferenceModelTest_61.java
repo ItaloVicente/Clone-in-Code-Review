@@ -1,0 +1,13 @@
+				new PropertyChangeEvent(conflict1, BindingElement.PROP_TRIGGER,
+						oldKeySequence, null),
+				new PropertyChangeEvent(conflict3, BindingElement.PROP_CONTEXT,
+						dialog, null),
+				new PropertyChangeEvent(conflict3,
+						ModelElement.PROP_MODEL_OBJECT, c3model,
+						c3parameterized),
+				new PropertyChangeEvent(conflict3,
+						BindingElement.PROP_TRIGGER, oldKeySequence, null),
+				new PropertyChangeEvent(bm,
+						BindingModel.PROP_CONFLICT_ELEMENT_MAP, null, conflict3),
+				new PropertyChangeEvent(conflict2, BindingElement.PROP_TRIGGER,
+						oldKeySequence, ctrl5), };

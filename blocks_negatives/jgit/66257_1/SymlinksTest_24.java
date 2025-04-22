@@ -1,0 +1,11 @@
+		Git git = new Git(db);
+		writeTrashFile("c", "Hello world c");
+		FileUtils.createSymLink(new File(db.getWorkTree(), "a"), "c");
+		git.add().addFilepattern(".").call();
+		git.commit().setMessage("add symlink a").call();
+		Ref branch_1 = git.branchCreate().setName("branch_1").call();
+		git.rm().addFilepattern("a").call();
+		FileUtils.mkdirs(new File(db.getWorkTree(), "a"));
+		writeTrashFile("a/b", "Hello world b");
+		git.add().addFilepattern("a").call();
+		git.commit().setMessage("add folder a").call();

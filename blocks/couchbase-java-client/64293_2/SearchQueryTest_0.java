@@ -1,0 +1,14 @@
+import com.couchbase.client.java.search.HighlightStyle;
+import com.couchbase.client.java.search.SearchParams;
+import com.couchbase.client.java.search.SearchQuery;
+import com.couchbase.client.java.search.facet.SearchFacet;
+import com.couchbase.client.java.search.queries.AbstractFtsQuery;
+import com.couchbase.client.java.search.result.SearchQueryResult;
+import com.couchbase.client.java.search.result.SearchQueryRow;
+import com.couchbase.client.java.search.result.facets.DateRange;
+import com.couchbase.client.java.search.result.facets.DateRangeFacetResult;
+import com.couchbase.client.java.search.result.facets.FacetResult;
+import com.couchbase.client.java.search.result.facets.NumericRange;
+import com.couchbase.client.java.search.result.facets.NumericRangeFacetResult;
+import com.couchbase.client.java.search.result.facets.TermFacetResult;
+import com.couchbase.client.java.search.result.facets.TermRange;

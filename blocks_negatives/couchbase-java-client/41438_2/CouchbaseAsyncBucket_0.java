@@ -1,0 +1,11 @@
+import com.couchbase.client.java.transcoder.BinaryTranscoder;
+import com.couchbase.client.java.transcoder.JsonArrayTranscoder;
+import com.couchbase.client.java.transcoder.JsonBooleanTranscoder;
+import com.couchbase.client.java.transcoder.JsonDoubleTranscoder;
+import com.couchbase.client.java.transcoder.JsonLongTranscoder;
+import com.couchbase.client.java.transcoder.JsonStringTranscoder;
+import com.couchbase.client.java.transcoder.JsonTranscoder;
+import com.couchbase.client.java.transcoder.LegacyTranscoder;
+import com.couchbase.client.java.transcoder.SerializableTranscoder;
+import com.couchbase.client.java.transcoder.StringTranscoder;
+import com.couchbase.client.java.transcoder.Transcoder;

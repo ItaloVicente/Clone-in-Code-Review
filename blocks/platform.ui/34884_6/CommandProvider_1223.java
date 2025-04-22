@@ -1,0 +1,143 @@
+
+package org.eclipse.ui.internal.quickaccess;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.jface.bindings.TriggerSequence;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.internal.keys.BindingService;
+import org.eclipse.ui.internal.menus.CommandMessages;
+import org.eclipse.ui.internal.misc.StatusUtil;
+import org.eclipse.ui.keys.IBindingService;
+import org.eclipse.ui.statushandlers.StatusManager;
+
+public class CommandElement extends QuickAccessElement {
+
+	private ParameterizedCommand command;
+
+	private String id;
+
+			CommandProvider commandProvider) {
+		super(commandProvider);
+		this.id = id;
+		this.command = command;
+	}
+
+	@Override
+	public void execute() {
+		Object o = getProvider();
+		if (o instanceof CommandProvider) {
+			CommandProvider provider = (CommandProvider) o;
+			if (provider.getHandlerService() != null && provider.getContextSnapshot() != null) {
+				try {
+					provider.getHandlerService().executeCommandInContext(command, null,
+							provider.getContextSnapshot());
+				} catch (Exception ex) {
+					StatusUtil.handleStatus(ex, StatusManager.SHOW
+							| StatusManager.LOG);
+				}
+				return;
+			}
+		}
+		
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		if (window != null) {
+			IHandlerService handlerService = window
+					.getWorkbench().getService(IHandlerService.class);
+			try {
+				handlerService.executeCommand(command, null);
+			} catch (Exception ex) {
+				StatusUtil.handleStatus(ex, StatusManager.SHOW
+						| StatusManager.LOG);
+			}
+		}
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	@Override
+	public ImageDescriptor getImageDescriptor() {
+		return null;
+	}
+
+	public String getCommand() {
+		final StringBuilder label = new StringBuilder();
+
+		try {
+			Command nestedCommand = command.getCommand();
+			label.append(command.getName());
+			if (nestedCommand != null && nestedCommand.getDescription() != null
+					&& nestedCommand.getDescription().length() != 0) {
+				label.append(separator).append(nestedCommand.getDescription());
+			}
+		} catch (NotDefinedException e) {
+			label.append(command.toString());
+		}
+
+		return label.toString();
+	}
+
+	@Override
+	public String getLabel() {
+		String command = getCommand();
+		String binding = getBinding();
+		if (binding != null) {
+			return NLS.bind(CommandMessages.Tooltip_Accelerator, command, binding);
+		}
+		return command;
+	}
+
+	public String getBinding() {
+		BindingService service = (BindingService) PlatformUI.getWorkbench().getService(
+				IBindingService.class);
+		TriggerSequence[] triggerSeq = service.getBindingManager()
+				.getActiveBindingsDisregardingContextFor(command);
+		if (triggerSeq != null && triggerSeq.length > 0) {
+			return triggerSeq[0].format();
+		}
+		return null;
+	}
+
+	@Override
+	public String getSortLabel() {
+		try {
+			return command.getName();
+		} catch (NotDefinedException e) {
+			return command.toString();
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((command == null) ? 0 : command.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final CommandElement other = (CommandElement) obj;
+		if (command == null) {
+			if (other.command != null)
+				return false;
+		} else if (!command.equals(other.command))
+			return false;
+		return true;
+	}
+}

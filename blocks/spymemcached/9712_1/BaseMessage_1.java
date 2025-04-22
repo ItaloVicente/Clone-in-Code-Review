@@ -1,0 +1,10 @@
+public abstract class BaseMessage extends SpyObject {
+	protected static final int MAGIC_OFFSET = 0;
+	protected static final int OPCODE_OFFSET = 1;
+	protected static final int KEYLENGTH_OFFSET = 2;
+	protected static final int EXTRALENGTH_OFFSET = 4;
+	protected static final int DATATYPE_OFFSET = 5;
+	protected static final int VBUCKET_OFFSET = 6;
+	protected static final int TOTALBODY_OFFSET = 8;
+	protected static final int OPAQUE_OFFSET = 12;
+	protected static final int CAS_OFFSET = 16;

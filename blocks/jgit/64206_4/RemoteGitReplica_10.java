@@ -1,0 +1,210 @@
+
+package org.eclipse.jgit.internal.ketch;
+
+import static org.eclipse.jgit.internal.ketch.Proposal.State.RUNNING;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.jgit.annotations.Nullable;
+import org.eclipse.jgit.internal.storage.reftree.Command;
+import org.eclipse.jgit.internal.storage.reftree.RefTree;
+import org.eclipse.jgit.lib.CommitBuilder;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectInserter;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.ReceiveCommand;
+
+class ProposalRound extends Round {
+	private final List<Proposal> todo;
+	private RefTree queuedTree;
+
+	ProposalRound(KetchLeader leader
+			@Nullable RefTree tree) {
+		super(leader
+		this.todo = todo;
+		this.queuedTree = tree;
+	}
+
+	void start() throws IOException {
+		for (Proposal p : todo) {
+			p.notifyState(RUNNING);
+		}
+		try {
+			ObjectId id;
+			try (Repository git = leader.openRepository()) {
+				id = insertProposals(git);
+			}
+			runAsync(id);
+		} catch (NoOp e) {
+			for (Proposal p : todo) {
+				p.success();
+			}
+			leader.lock.lock();
+			try {
+				leader.nextRound();
+			} finally {
+				leader.lock.unlock();
+			}
+		} catch (IOException e) {
+			abort();
+			throw e;
+		}
+	}
+
+	private ObjectId insertProposals(Repository git)
+			throws IOException
+		ObjectId id;
+		try (ObjectInserter inserter = git.newObjectInserter()) {
+
+			if (queuedTree != null && todo.size() == 1) {
+				id = insertSingleProposal(git
+			} else {
+				if (queuedTree != null) {
+					queuedTree = null;
+					leader.roundHoldsReferenceToRefTree = false;
+				}
+				id = insertMultiProposal(git
+			}
+
+			stageCommands = makeStageList(git
+			inserter.flush();
+		}
+		return id;
+	}
+
+	private ObjectId insertSingleProposal(Repository git
+			ObjectInserter inserter) throws IOException
+		ObjectId treeId = queuedTree.writeTree(inserter);
+		queuedTree = null;
+		leader.roundHoldsReferenceToRefTree = false;
+
+		if (!ObjectId.zeroId().equals(acceptedOldIndex)) {
+			try (RevWalk rw = new RevWalk(git)) {
+				RevCommit c = rw.parseCommit(acceptedOldIndex);
+				if (treeId.equals(c.getTree())) {
+					throw new NoOp();
+				}
+			}
+		}
+
+		Proposal p = todo.get(0);
+		CommitBuilder b = new CommitBuilder();
+		b.setTreeId(treeId);
+		if (!ObjectId.zeroId().equals(acceptedOldIndex)) {
+			b.setParentId(acceptedOldIndex);
+		}
+		b.setCommitter(leader.getSystem().newCommitter());
+		b.setAuthor(p.getAuthor() != null ? p.getAuthor() : b.getCommitter());
+		b.setMessage(message(p));
+		return inserter.insert(b);
+	}
+
+	private ObjectId insertMultiProposal(Repository git
+			ObjectInserter inserter)
+			throws IOException
+		ObjectId lastIndex = acceptedOldIndex;
+		ObjectId oldTreeId;
+		RefTree tree;
+		if (ObjectId.zeroId().equals(lastIndex)) {
+			oldTreeId = ObjectId.zeroId();
+			tree = RefTree.newEmptyTree();
+		} else {
+			try (RevWalk rw = new RevWalk(git)) {
+				RevCommit c = rw.parseCommit(lastIndex);
+				oldTreeId = c.getTree();
+				tree = RefTree.read(rw.getObjectReader()
+			}
+		}
+
+		PersonIdent committer = leader.getSystem().newCommitter();
+		for (Proposal p : todo) {
+			if (!tree.apply(p.getCommands())) {
+				throw new IOException(
+						KetchText.get().queuedProposalFailedToApply);
+			}
+
+			ObjectId treeId = tree.writeTree(inserter);
+			if (treeId.equals(oldTreeId)) {
+				continue;
+			}
+
+			CommitBuilder b = new CommitBuilder();
+			b.setTreeId(treeId);
+			if (!ObjectId.zeroId().equals(lastIndex)) {
+				b.setParentId(lastIndex);
+			}
+			b.setAuthor(p.getAuthor() != null ? p.getAuthor() : committer);
+			b.setCommitter(committer);
+			b.setMessage(message(p));
+			lastIndex = inserter.insert(b);
+		}
+		if (lastIndex.equals(acceptedOldIndex)) {
+			throw new NoOp();
+		}
+		return lastIndex;
+	}
+
+	private String message(Proposal p) {
+		StringBuilder m = new StringBuilder();
+		String msg = p.getMessage();
+		if (msg != null && !msg.isEmpty()) {
+			m.append(msg);
+			while (m.length() < 2 || m.charAt(m.length() - 2) != '\n'
+					|| m.charAt(m.length() - 1) != '\n') {
+				m.append('\n');
+			}
+		}
+		m.append(KetchConstants.TERM.getName())
+				.append(leader.getTerm());
+		return m.toString();
+	}
+
+	void abort() {
+		for (Proposal p : todo) {
+			p.abort();
+		}
+	}
+
+	void success() {
+		for (Proposal p : todo) {
+			p.success();
+		}
+	}
+
+	private List<ReceiveCommand> makeStageList(Repository git
+			ObjectInserter inserter) throws IOException {
+		Map<String
+		for (Proposal p : todo) {
+			for (Command c : p.getCommands()) {
+				Ref n = c.getNewRef();
+				if (n != null && !n.isSymbolic()) {
+					byRef.put(n.getName()
+				}
+			}
+		}
+		if (byRef.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		Set<ObjectId> newObjs = new HashSet<>(byRef.values());
+		StageBuilder b = new StageBuilder(
+				leader.getSystem().getTxnStage()
+				acceptedNewIndex);
+		return b.makeStageList(newObjs
+	}
+
+
+	private static class NoOp extends Exception {
+		private static final long serialVersionUID = 1L;
+	}
+}

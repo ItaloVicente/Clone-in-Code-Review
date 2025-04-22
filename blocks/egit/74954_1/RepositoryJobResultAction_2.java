@@ -1,0 +1,64 @@
+package org.eclipse.egit.ui.internal.jobs;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.jface.action.Action;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.IProgressConstants;
+
+public abstract class RepositoryJob extends Job {
+
+	public RepositoryJob(String name) {
+		super(name);
+	}
+
+	@Override
+	protected final IStatus run(IProgressMonitor monitor) {
+		IStatus status = performJob(monitor);
+		if (status == null || !status.isOK()) {
+			return status;
+		}
+		Action action = getAction();
+		if (action != null) {
+			if (isModal()) {
+				showResult(action);
+			} else {
+				setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
+				setProperty(IProgressConstants.ACTION_PROPERTY, action);
+				return new Status(IStatus.OK, Activator.getPluginId(),
+						IStatus.OK, action.getText(), null);
+
+			}
+		}
+		return status;
+	}
+
+	abstract protected IStatus performJob(IProgressMonitor monitor);
+
+	abstract protected Action getAction();
+
+	private boolean isModal() {
+		Boolean modal = (Boolean) getProperty(
+				IProgressConstants.PROPERTY_IN_DIALOG);
+		return modal != null && modal.booleanValue();
+	}
+
+	private void showResult(final Action action) {
+		final Display display = PlatformUI.getWorkbench().getDisplay();
+		if (display != null) {
+			display.asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					if (!display.isDisposed()) {
+						action.run();
+					}
+				}
+			});
+		}
+	}
+}

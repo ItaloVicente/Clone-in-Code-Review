@@ -1,0 +1,9 @@
+		assertEquals(0
+				a
+				b
+		assertEquals(0
+				a
+				b
+		assertEquals(0
+				a
+				b

@@ -1,0 +1,365 @@
+
+package org.eclipse.jgit.transport;
+
+import static org.eclipse.jgit.transport.RemoteRefUpdate.Status.REJECTED_OTHER_REASON;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.internal.storage.dfs.DfsRepositoryDescription;
+import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
+import org.eclipse.jgit.junit.RepositoryTestCase;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.NullProgressMonitor;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectInserter;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.StoredConfig;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.transport.resolver.ReceivePackFactory;
+import org.eclipse.jgit.transport.resolver.ServiceNotAuthorizedException;
+import org.eclipse.jgit.transport.resolver.ServiceNotEnabledException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+	private URIish uri;
+	private TestProtocol<Object> testProtocol;
+	private Object ctx = new Object();
+	private InMemoryRepository server;
+	private InMemoryRepository client;
+	private ObjectId obj1;
+	private ObjectId obj2;
+	private ObjectId obj3;
+	private String refName = "refs/tags/blob";
+
+	private ReceivePack receivePack;
+
+
+	public void setUp() throws Exception {
+		super.setUp();
+		server = newRepo("server");
+		client = newRepo("client");
+		receivePack = new ReceivePack(server);
+		testProtocol = new TestProtocol<>(null
+				new ReceivePackFactory<Object>() {
+					@Override
+					public ReceivePack create(Object req
+							throws ServiceNotEnabledException
+							ServiceNotAuthorizedException {
+						return receivePack;
+					}
+				});
+		uri = testProtocol.register(ctx
+	}
+
+	@Before
+	public void setUpOld() throws Exception {
+		super.setUp();
+
+		server = newRepo("server");
+		client = newRepo("client");
+		testProtocol = new TestProtocol<>(null
+				new ReceivePackFactory<Object>() {
+					@Override
+					public ReceivePack create(Object req
+							throws ServiceNotEnabledException
+							ServiceNotAuthorizedException {
+						return new ReceivePack(database);
+					}
+				});
+		uri = testProtocol.register(ctx
+
+		try (ObjectInserter ins = client.newObjectInserter()) {
+			obj1 = ins.insert(Constants.OBJ_BLOB
+			obj2 = ins.insert(Constants.OBJ_BLOB
+			ins.flush();
+		}
+
+	}
+
+	@After
+	public void tearDown() {
+		Transport.unregister(testProtocol);
+	}
+
+	private static InMemoryRepository newRepo(String name) {
+		return new InMemoryRepository(new DfsRepositoryDescription(name));
+	}
+
+	public void testPushWithoutOptions() throws Exception {
+		try (Git git = new Git(db);
+				Git git2 = new Git(createBareRepository())) {
+			final StoredConfig config = git.getRepository().getConfig();
+			RemoteConfig remoteConfig = new RemoteConfig(config
+			remoteConfig.addURI(new URIish(
+					git2.getRepository().getDirectory().toURI().toURL()));
+			remoteConfig.addFetchRefSpec(
+			remoteConfig.update(config);
+			config.save();
+
+			final StoredConfig config2 = git2.getRepository().getConfig();
+			config2.setBoolean("receive"
+			config2.save();
+
+			writeTrashFile("f"
+			git.add().addFilepattern("f").call();
+			RevCommit commit = git.commit().setMessage("adding f").call();
+
+			git.checkout().setName("not-pushed").setCreateBranch(true).call();
+			git.checkout().setName("branchtopush").setCreateBranch(true).call();
+
+			assertNull(git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(git2.getRepository().resolve("refs/heads/master"));
+
+			PushCommand pushCommand = git.push().setRemote("test");
+			pushCommand.call();
+
+			assertEquals(commit.getId()
+					git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(git2.getRepository().resolve("refs/heads/master"));
+		}
+	}
+
+	@Test
+	public void testPushWithOptions() throws Exception {
+		try (Git git = new Git(db);
+				Git git2 = new Git(createBareRepository())) {
+			System.out.println("PushOptionsTest: git2 = " + git2);
+
+			final StoredConfig config = git.getRepository().getConfig();
+			RemoteConfig remoteConfig = new RemoteConfig(config
+			remoteConfig.addURI(new URIish(
+					git2.getRepository().getDirectory().toURI().toURL()));
+			remoteConfig.addFetchRefSpec(
+			remoteConfig.update(config);
+			config.save();
+
+			final StoredConfig config2 = git2.getRepository().getConfig();
+			config2.setBoolean("receive"
+			config2.save();
+
+			writeTrashFile("f"
+			git.add().addFilepattern("f").call();
+			RevCommit commit = git.commit().setMessage("adding f").call();
+
+			git.checkout().setName("not-pushed").setCreateBranch(true).call();
+			git.checkout().setName("branchtopush").setCreateBranch(true).call();
+
+			List<String> pushOptions = Arrays.asList("Hello"
+			PushCommand pushCommand = git.push().setRemote("test")
+					.setPushOptions(pushOptions);
+			pushCommand.call();
+			assertEquals(commit.getId()
+					git2.getRepository().resolve("refs/heads/branchtopush"));
+			Map<Long
+					.getTimedPushOptions();
+			assertEquals(0
+		}
+	}
+
+	public void testPushWithEmptyOptions() throws Exception {
+		try (Git git = new Git(db);
+				Git git2 = new Git(createBareRepository())) {
+			final StoredConfig config = git.getRepository().getConfig();
+			RemoteConfig remoteConfig = new RemoteConfig(config
+			remoteConfig.addURI(new URIish(
+					git2.getRepository().getDirectory().toURI().toURL()));
+			remoteConfig.addFetchRefSpec(
+			remoteConfig.update(config);
+			config.save();
+
+			final StoredConfig config2 = git2.getRepository().getConfig();
+			config2.setBoolean("receive"
+			config2.save();
+
+			writeTrashFile("f"
+			git.add().addFilepattern("f").call();
+			RevCommit commit = git.commit().setMessage("adding f").call();
+
+			git.checkout().setName("not-pushed").setCreateBranch(true).call();
+			git.checkout().setName("branchtopush").setCreateBranch(true).call();
+			assertNull(git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(git2.getRepository().resolve("refs/heads/master"));
+
+			List<String> pushOptions = new ArrayList<>();
+			PushCommand pushCommand = git.push().setRemote("test")
+					.setPushOptions(pushOptions);
+			pushCommand.call();
+
+
+			assertEquals(commit.getId()
+					git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(git2.getRepository().resolve("refs/heads/master"));
+		}
+	}
+
+	public void testPushWithUnsupportedOptions() throws Exception {
+		try (Git git = new Git(db);
+				Git git2 = new Git(createBareRepository())) {
+			final StoredConfig config = git.getRepository().getConfig();
+			RemoteConfig remoteConfig = new RemoteConfig(config
+			remoteConfig.addURI(new URIish(
+					git2.getRepository().getDirectory().toURI().toURL()));
+			remoteConfig.addFetchRefSpec(
+			remoteConfig.update(config);
+			config.save();
+
+			writeTrashFile("f"
+			git.add().addFilepattern("f").call();
+			RevCommit commit = git.commit().setMessage("adding f").call();
+
+			git.checkout().setName("not-pushed").setCreateBranch(true).call();
+			git.checkout().setName("branchtopush").setCreateBranch(true).call();
+
+			assertNull(
+					git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(
+					git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(
+					git2.getRepository().resolve("refs/heads/master"));
+
+			List<String> pushOptions = new ArrayList<>();
+			PushCommand pushCommand = git.push().setRemote("test")
+					.setPushOptions(pushOptions);
+			pushCommand.call();
+
+			assertEquals(commit.getId()
+					git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(git2.getRepository().resolve("refs/heads/master"));
+		}
+	}
+
+	public void testPushWithNullOptions() throws Exception {
+		try (Git git = new Git(db);
+				Git git2 = new Git(createBareRepository())) {
+			final StoredConfig config = git.getRepository().getConfig();
+			RemoteConfig remoteConfig = new RemoteConfig(config
+			remoteConfig.addURI(new URIish(
+					git2.getRepository().getDirectory().toURI().toURL()));
+			remoteConfig.addFetchRefSpec(
+			remoteConfig.update(config);
+			config.save();
+
+			final StoredConfig config2 = git2.getRepository().getConfig();
+			config2.setBoolean("receive"
+			config2.save();
+
+			writeTrashFile("f"
+			git.add().addFilepattern("f").call();
+			RevCommit commit = git.commit().setMessage("adding f").call();
+
+			git.checkout().setName("not-pushed").setCreateBranch(true).call();
+			git.checkout().setName("branchtopush").setCreateBranch(true).call();
+
+			assertNull(
+					git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(
+					git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(
+					git2.getRepository().resolve("refs/heads/master"));
+
+			PushCommand pushCommand = git.push().setRemote("test")
+					.setPushOptions(null);
+			pushCommand.call();
+
+			assertEquals(commit.getId()
+					git2.getRepository().resolve("refs/heads/branchtopush"));
+			assertNull(git2.getRepository().resolve("refs/heads/not-pushed"));
+			assertNull(git2.getRepository().resolve("refs/heads/master"));
+		}
+		server = newRepo("server");
+		client = newRepo("client");
+		testProtocol = new TestProtocol<>(null
+				new ReceivePackFactory<Object>() {
+					@Override
+					public ReceivePack create(Object req
+							throws ServiceNotEnabledException
+							ServiceNotAuthorizedException {
+						return new ReceivePack(database);
+					}
+				});
+		uri = testProtocol.register(ctx
+	}
+
+	public static class NullOutputStream extends OutputStream {
+		@Override
+		public void write(int b) throws IOException {
+		}
+	}
+
+	public void testWrongOldIdDoesNotReplace() throws IOException {
+		RemoteRefUpdate rru = new RemoteRefUpdate(null
+				false
+
+		Map<String
+		updates.put(rru.getRemoteName()
+
+		Transport tn = testProtocol.open(uri
+		try {
+			PushConnection connection = tn.openPush();
+			try {
+				connection.push(NullProgressMonitor.INSTANCE
+			} finally {
+				connection.close();
+			}
+		} finally {
+			tn.close();
+		}
+
+		assertEquals(REJECTED_OTHER_REASON
+		assertEquals("invalid old id sent"
+	}
+
+	public static PacketLineIn newPacketLineIn(String input) {
+		return new PacketLineIn(
+				new ByteArrayInputStream(Constants.encode(input)));
+	}
+
+	@Test
+	public void testNonAtomicPushWithOptions() throws Exception {
+		PushResult r;
+		server.setPerformsAtomicTransactions(false);
+		List<String> pushOptions = Arrays.asList("Hello"
+		try (Transport tn = testProtocol.open(uri
+			tn.setPushAtomic(false);
+			tn.setCapablePushOptions(true);
+			tn.setPushOptions(pushOptions);
+			r = tn.push(NullProgressMonitor.INSTANCE
+		}
+
+		RemoteRefUpdate one = r.getRemoteUpdate("refs/heads/one");
+		RemoteRefUpdate two = r.getRemoteUpdate("refs/heads/two");
+		System.out.println("PushOptionsTest: receivePack.getPushOptions() = "
+				+ receivePack.getPushOptions());
+		assertSame(pushOptions
+		assertSame(RemoteRefUpdate.Status.OK
+		assertSame(RemoteRefUpdate.Status.REJECTED_REMOTE_CHANGED
+				two.getStatus());
+	}
+
+	private List<RemoteRefUpdate> commands() throws IOException {
+		List<RemoteRefUpdate> cmds = new ArrayList<>();
+		cmds.add(new RemoteRefUpdate(null
+				ObjectId.zeroId()));
+		cmds.add(new RemoteRefUpdate(null
+				obj1));
+		return cmds;
+	}
+}

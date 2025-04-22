@@ -1,0 +1,2 @@
+block0.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_61170_1/src/main/java/com/couchbase/client/core/endpoint/AbstractGenericHandler.java_publishResponse#304#316
+block1.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_61170_1/src/main/java/com/couchbase/client/core/endpoint/AbstractGenericHandler.java_scheduleDirect#324#338,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_61170_1/src/main/java/com/couchbase/client/core/endpoint/AbstractGenericHandler.java_scheduleWorker#343#360

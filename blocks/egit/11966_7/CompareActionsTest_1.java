@@ -1,0 +1,6 @@
+		jobJoiner.join();
+
+		closeFirstEmptySynchronizeDialog();
+
+		assertSynchronizeNoChange();
+

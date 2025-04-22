@@ -1,0 +1,15 @@
+		WindowCacheStats s = cache.getStats();
+		assertEquals(6, s.openFileCount());
+		assertEquals(17346, s.openByteCount());
+		assertEquals(0, s.evictionCount());
+		assertEquals(90, s.hitCount());
+		assertTrue(s.hitRatio() > 0.0 && s.hitRatio() < 1.0);
+		assertEquals(6, s.loadCount());
+		assertEquals(0, s.loadFailureCount());
+		assertEquals(0, s.loadFailureRatio(), 0.001);
+		assertEquals(6, s.loadSuccessCount());
+		assertEquals(6, s.missCount());
+		assertTrue(s.missRatio() > 0.0 && s.missRatio() < 1.0);
+		assertEquals(96, s.requestCount());
+		assertTrue(s.averageLoadTime() > 0.0);
+		assertTrue(s.totalLoadTime() > 0.0);

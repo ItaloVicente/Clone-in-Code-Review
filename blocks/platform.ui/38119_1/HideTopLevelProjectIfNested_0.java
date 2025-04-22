@@ -1,0 +1,19 @@
+package org.eclipse.ui.internal.navigator.nestor;
+
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+
+public class HideFolderWhenProjectIsShownAsNested extends ViewerFilter {
+
+	@Override
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		if (element instanceof IFolder) {
+			if (NestedProjectManager.isShownAsProject((IFolder)element)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+}

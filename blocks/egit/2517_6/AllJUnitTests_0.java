@@ -1,0 +1,297 @@
+package org.eclipse.egit.ui.internal.synchronize.mapping;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.eclipse.egit.ui.internal.synchronize.model.GitModelBlob;
+import org.eclipse.egit.ui.internal.synchronize.model.GitModelCache;
+import org.eclipse.egit.ui.internal.synchronize.model.GitModelCommit;
+import org.eclipse.egit.ui.internal.synchronize.model.GitModelTree;
+import org.eclipse.egit.ui.internal.synchronize.model.GitModelWorkingTree;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jgit.revwalk.MockRevCommit;
+import org.eclipse.ui.navigator.CommonViewer;
+import org.junit.Test;
+
+public class GitChangeSetSorterTest {
+
+
+	@Test public void workingTreeShouldBeLessThanCacheTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCache cache = mock(GitModelCache.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, workingTree, cache);
+
+		assertTrue(actual < 0);
+	}
+
+	@Test public void workingTreeShouldBeLessThanCommit() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCommit commit = mock(GitModelCommit.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, workingTree, commit);
+
+		assertTrue(actual < 0);
+	}
+
+	@Test public void workingTreeShouldBeLessThanTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, workingTree, tree);
+
+		assertTrue(actual < 0);
+	}
+
+	@Test public void workingTreeShouldBeLessThanBlob() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, workingTree, blob);
+
+		assertTrue(actual < 0);
+	}
+
+
+	@Test public void cacheTreeShouldBeGreaterThenWorkingTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCache cache = mock(GitModelCache.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, cache, workingTree);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void cacheTreeShouldBeLessThenCommit() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCache cache = mock(GitModelCache.class);
+		GitModelCommit commit = mock(GitModelCommit.class);
+
+		int actual = sorter.compare(viewer, cache, commit);
+
+		assertTrue(actual < 0);
+	}
+
+	@Test public void cacheTreeShouldBeLessThenTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCache cache = mock(GitModelCache.class);
+		GitModelTree tree = mock(GitModelTree.class);
+
+		int actual = sorter.compare(viewer, cache, tree);
+
+		assertTrue(actual < 0);
+	}
+
+	@Test public void cacheTreeShouldBeLessThenBlob() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCache cache = mock(GitModelCache.class);
+		GitModelBlob blob = mock(GitModelBlob.class);
+
+		int actual = sorter.compare(viewer, cache, blob);
+
+		assertTrue(actual < 0);
+	}
+
+
+	@Test public void commitTreeShouldBeGreaterThenWorkingTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCommit commit = mock(GitModelCommit.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, commit, workingTree);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void commitTreeShouldBeGreaterThenCache() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCommit commit = mock(GitModelCommit.class);
+		GitModelCache cache = mock(GitModelCache.class);
+
+		int actual = sorter.compare(viewer, commit, cache);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void commitTreeShouldBeLessThenTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelBlob blob = mock(GitModelBlob.class);
+
+		int actual = sorter.compare(viewer, tree, blob);
+
+		assertTrue(actual < 0);
+	}
+
+	@Test public void commitTreeShouldBeLessThenBlob() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCommit commit = mock(GitModelCommit.class);
+		GitModelBlob blob = mock(GitModelBlob.class);
+
+		int actual = sorter.compare(viewer, commit, blob);
+
+		assertTrue(actual < 0);
+	}
+
+
+	@Test public void treeShouldBeGreaterThenWorkingTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, tree, workingTree);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void treeShouldBeGreaterThenCache() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelCache cache = mock(GitModelCache.class);
+
+		int actual = sorter.compare(viewer, tree, cache);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void treeShouldBeGreaterThenCommit() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelCommit commit = mock(GitModelCommit.class);
+
+		int actual = sorter.compare(viewer, tree, commit);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void treeShouldBeLessThenBlob() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelBlob blob = mock(GitModelBlob.class);
+
+		int actual = sorter.compare(viewer, tree, blob);
+
+		assertTrue(actual < 0);
+	}
+
+
+	@Test public void blobShouldBeGreaterThenWorkingTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		int actual = sorter.compare(viewer, blob, workingTree);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void blobShouldBeGreaterThenCache() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelCache cache = mock(GitModelCache.class);
+
+		int actual = sorter.compare(viewer, blob, cache);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void blobShouldBeGreaterThenCommit() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelCommit commit = mock(GitModelCommit.class);
+
+		int actual = sorter.compare(viewer, blob, commit);
+
+		assertTrue(actual > 0);
+	}
+
+	@Test public void blobShouldBeGreaterThenTree() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelTree tree = mock(GitModelTree.class);
+
+		int actual = sorter.compare(viewer, blob, tree);
+
+		assertTrue(actual > 0);
+	}
+
+
+	@Test
+	public void shouldOrderTreesAlphabetically() {
+		CommonViewer viewer = mock(CommonViewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree1 = mock(GitModelTree.class);
+		GitModelTree tree2 = mock(GitModelTree.class);
+		ILabelProvider labelProvider = mock(ILabelProvider.class);
+		when(labelProvider.getText(tree1)).thenReturn("aaa");
+		when(labelProvider.getText(tree2)).thenReturn("zzz");
+		when(viewer.getLabelProvider()).thenReturn(labelProvider);
+
+		int actual1 = sorter.compare(viewer, tree1, tree2);
+		int actual2 = sorter.compare(viewer, tree2, tree1);
+
+		assertTrue(actual1 < 0);
+		assertTrue(actual2 > 0);
+	}
+
+	@Test public void shouldOrderBlobsAlphabetically() {
+		CommonViewer viewer = mock(CommonViewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob1 = mock(GitModelBlob.class);
+		GitModelBlob blob2 = mock(GitModelBlob.class);
+		ILabelProvider labelProvider = mock(ILabelProvider.class);
+		when(labelProvider.getText(blob1)).thenReturn("aaa");
+		when(labelProvider.getText(blob2)).thenReturn("zzz");
+		when(viewer.getLabelProvider()).thenReturn(labelProvider);
+
+		int actual1 = sorter.compare(viewer, blob1, blob2);
+		int actual2 = sorter.compare(viewer, blob2, blob1);
+
+		assertTrue(actual1 < 0);
+		assertTrue(actual2 > 0);
+	}
+
+
+	@Test public void shouldOrderCommitsByCommitDate() {
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCommit commit1 = mock(GitModelCommit.class);
+		GitModelCommit commit2 = mock(GitModelCommit.class);
+		when(commit1.getBaseCommit()).thenReturn(new MockRevCommit(100));
+		when(commit2.getBaseCommit()).thenReturn(new MockRevCommit(200));
+
+		int actual1 = sorter.compare(viewer, commit1, commit2);
+		int actual2 = sorter.compare(viewer, commit2, commit1);
+
+		assertTrue(actual1 > 0);
+		assertTrue(actual2 < 0);
+	}
+
+}

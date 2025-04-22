@@ -1,0 +1,64 @@
+package com.couchbase.client.java.fts.queries;
+
+import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.fts.SearchParams;
+import com.couchbase.client.java.fts.SearchQuery;
+
+public class MatchQuery extends SearchQuery {
+
+    private final String match;
+    private String field;
+    private String analyzer;
+    private Integer prefixLength;
+    private Integer fuzziness;
+
+    public MatchQuery(String match, SearchParams searchParams) {
+        super(searchParams);
+        this.match = match;
+    }
+
+    @Override
+    public MatchQuery boost(double boost) {
+        super.boost(boost);
+        return this;
+    }
+
+    public MatchQuery field(String field) {
+        this.field = field;
+        return this;
+    }
+
+    public MatchQuery analyzer(String analyzer) {
+        this.analyzer = analyzer;
+        return this;
+    }
+
+    public MatchQuery prefixLength(int prefixLength) {
+        this.prefixLength = prefixLength;
+        return this;
+    }
+
+    public MatchQuery fuzziness(int fuzziness) {
+        this.fuzziness = fuzziness;
+        return this;
+    }
+
+    @Override
+    protected void injectParams(JsonObject input) {
+        super.injectParams(input);
+
+        input.put("match", match);
+        if (field != null) {
+            input.put("field", field);
+        }
+        if (analyzer != null) {
+            input.put("analyzer", analyzer);
+        }
+        if (prefixLength != null) {
+            input.put("prefix_length", prefixLength);
+        }
+        if (fuzziness != null) {
+            input.put("fuzziness", fuzziness);
+        }
+    }
+}

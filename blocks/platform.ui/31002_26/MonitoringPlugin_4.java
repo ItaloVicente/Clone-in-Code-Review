@@ -1,0 +1,37 @@
+package org.eclipse.ui.internal.monitoring;
+
+import org.eclipse.osgi.util.NLS;
+
+public final class Messages extends NLS {
+	public static String DefaultUiFreezeEventLogger_holding_1;
+	public static String DefaultUiFreezeEventLogger_lock_owner_2;
+	public static String DefaultUiFreezeEventLogger_sample_header_2;
+	public static String DefaultUiFreezeEventLogger_stack_trace_header;
+	public static String DefaultUiFreezeEventLogger_thread_details;
+	public static String DefaultUiFreezeEventLogger_thread_header_2;
+	public static String DefaultUiFreezeEventLogger_ui_delay_header_non_running_2;
+	public static String DefaultUiFreezeEventLogger_ui_delay_header_running_2;
+	public static String DefaultUiFreezeEventLogger_waiting_for_1;
+	public static String EventLoopMonitorThread_capture_threshold_error_1;
+	public static String EventLoopMonitorThread_deadlock_error_1;
+	public static String EventLoopMonitorThread_display_was_null;
+	public static String EventLoopMonitorThread_external_exception_error_1;
+	public static String EventLoopMonitorThread_invalid_argument_error;
+	public static String EventLoopMonitorThread_invalid_parameters_error;
+	public static String EventLoopMonitorThread_invalid_threshold_error;
+	public static String EventLoopMonitorThread_logging_disabled_error;
+	public static String EventLoopMonitorThread_logging_threshold_error_1;
+	public static String EventLoopMonitorThread_max_log_count_error_1;
+	public static String EventLoopMonitorThread_invalid_logger_type_error_4;
+	public static String EventLoopMonitorThread_sample_interval_error_1;
+	public static String EventLoopMonitorThread_workbench_was_null;
+	public static String FilterHandler_missing_thread_error;
+	public static String MonitoringStartup_initialization_error;
+
+	private Messages() {
+	}
+
+	static {
+		NLS.initializeMessages(Messages.class.getName(), Messages.class);
+	}
+}

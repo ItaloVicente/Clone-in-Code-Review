@@ -1,0 +1,11 @@
+			reader.getObjectSize(src
+			return;
+		}
+
+
+		if (type == OBJ_BLOB)
+			treeDepth++;
+
+		if (filterSpec.getTreeDepthLimit() >= 0 &&
+			treeDepth > filterSpec.getTreeDepthLimit()) {
+			return;

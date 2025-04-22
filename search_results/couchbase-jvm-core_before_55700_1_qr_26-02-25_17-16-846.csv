@@ -1,0 +1,2 @@
+block0.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_55700_1/src/main/java/com/couchbase/client/core/endpoint/AbstractEndpoint.java_operationComplete#268#332,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_55700_1/src/main/java/com/couchbase/client/core/endpoint/AbstractEndpoint.java_doConnect#266#334
+block1.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_55700_1/src/main/java/com/couchbase/client/core/endpoint/kv/KeyValueAuthHandler.java_connect#293#307

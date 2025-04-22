@@ -1,0 +1,131 @@
+	@Test
+	public void testHorizontalSpacing() {
+		layout.horizontalSpacing = 1000;
+		ControlFactory.create(inner, 20, 20, 30);
+		Composite secondControl = ControlFactory.create(inner, 20, 20, 30);
+		Point size = inner.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		assertEquals(1040, size.x);
+		inner.pack(true);
+		assertEquals(new Rectangle(1020, 0, 20, 30), secondControl.getBounds());
+	}
+
+	@Test
+	public void testHorizontalMargins() {
+		layout.leftMargin = 100;
+		layout.rightMargin = 10;
+		Control leftControl = ControlFactory.create(inner, 20, 20, 30);
+		Control rightControl = ControlFactory.create(inner, 20, 20, 40);
+		Point size = inner.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		assertEquals(150, size.x);
+		inner.pack(true);
+		assertEquals(new Rectangle(100, 0, 20, 30), leftControl.getBounds());
+		assertEquals(new Rectangle(120, 0, 20, 40), rightControl.getBounds());
+		assertEquals(new Rectangle(0, 0, 150, 40), inner.getBounds());
+	}
+
+	@Test
+	public void testVerticalSpacingHasNoEffectWhenOnlyOneColumn() {
+		layout.verticalSpacing = 1000;
+		Composite control = ControlFactory.create(inner, 20, 20, 30);
+		Point size = inner.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		assertEquals(20, size.x);
+		inner.pack(true);
+		assertEquals(new Rectangle(0, 0, 20, 30), control.getBounds());
+	}
+
+	@Test
+	public void testVerticalSpacing() {
+		layout.verticalSpacing = 1000;
+		layout.maxNumColumns = 1;
+		ControlFactory.create(inner, 20, 20, 30);
+		Composite secondControl = ControlFactory.create(inner, 20, 20, 30);
+		Point size = inner.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		assertEquals(1040, size.y);
+		inner.pack(true);
+		assertEquals(new Rectangle(0, 1020, 20, 30), secondControl.getBounds());
+	}
+
+	@Test
+	public void testVerticalMargins() {
+		layout.topMargin = 100;
+		layout.bottomMargin = 10;
+		layout.maxNumColumns = 1;
+		Control leftControl = ControlFactory.create(inner, 20, 20, 30);
+		Control rightControl = ControlFactory.create(inner, 20, 20, 40);
+		Point size = inner.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		assertEquals(150, size.x);
+		inner.pack(true);
+		assertEquals(new Rectangle(100, 0, 20, 30), leftControl.getBounds());
+		assertEquals(new Rectangle(120, 0, 20, 40), rightControl.getBounds());
+		assertEquals(new Rectangle(0, 0, 150, 40), inner.getBounds());
+	}
+
+	@Test
+	public void testSelectsCorrectNumberOfColumns() {
+		layout.horizontalSpacing = 10;
+		layout.leftMargin = 10;
+		layout.rightMargin = 10;
+
+		ControlFactory.create(inner, 21, 30, 50);
+		ControlFactory.create(inner, 22, 40, 50);
+		ControlFactory.create(inner, 23, 50, 50);
+
+		Point size = inner.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		assertEquals(190, size.x);
+		assertEquals(50, size.y);
+
+		size = inner.computeSize(109, SWT.DEFAULT);
+		assertEquals(109, size.x);
+		assertEquals(108, size.y);
+
+		inner.pack(true);
+		assertAllChildrenHaveWidth(50);
+
+		for (Control next : inner.getChildren()) {
+			assertEquals(0, next.getBounds().y);
+		}
+
+		size = inner.computeSize(108, SWT.DEFAULT);
+		assertEquals(108, size.x);
+		assertEquals(89, size.y);
+
+		int minWidth = layout.computeMinimumWidth(inner, false);
+		assertEquals(43, minWidth);
+	}
+
+	@Test
+	public void testFillAlignment() {
+		layout.maxNumColumns = 1;
+
+		Composite control1 = ControlFactory.create(inner, 100, 800, 200);
+		ColumnLayoutData data1 = new ColumnLayoutData();
+		data1.widthHint = 400;
+		control1.setLayoutData(data1);
+
+		Composite control2 = ControlFactory.create(inner, 50, 100, 1200);
+		ColumnLayoutData data2 = new ColumnLayoutData();
+		data2.widthHint = 200;
+		control2.setLayoutData(data2);
+
+		Point size = inner.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+
+		assertEquals(400, size.x);
+
+		assertEquals(700, size.y);
+
+		inner.pack();
+
+		assertEquals(new Rectangle(0, 0, 400, 400), control1.getBounds());
+		assertEquals(new Rectangle(0, 200, 400, 300), control2.getBounds());
+	}
+
+	private void assertAllChildrenHaveWidth(int desiredWidth) {
+		Control[] children = inner.getChildren();
+
+		for (int idx = 0; idx < children.length; idx++) {
+			Control next = children[idx];
+
+			Rectangle bounds = next.getBounds();
+			assertEquals("Child " + idx + " should have the correct width", desiredWidth, bounds.width);
+		}
+	}

@@ -1,0 +1,9 @@
+			case IO_FAILURE:
+			case LOCK_FAILURE:
+			case NEW:
+			case NOT_ATTEMPTED:
+			case REJECTED:
+			case REJECTED_CURRENT_BRANCH:
+			case REJECTED_MISSING_OBJECT:
+			case REJECTED_OTHER_REASON:
+			case RENAMED:

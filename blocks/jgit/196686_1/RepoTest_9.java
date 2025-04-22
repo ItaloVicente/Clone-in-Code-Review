@@ -1,0 +1,11 @@
+				.append("<manifest>")
+				.append("<remote name=\"remote1\" fetch=\".\" />")
+				.append("<default revision=\"master\" remote=\"remote1\" />")
+				.append("<project path=\"foo\" name=\"").append(defaultUri)
+				.append("\" groups=\"a
+				.append("<project path=\"bar\" name=\"").append(notDefaultUri)
+				.append("\" groups=\"notdefault\" />")
+				.append("<project path=\"a\" name=\"").append(groupAUri)
+				.append("\" groups=\"a\" />")
+				.append("<project path=\"b\" name=\"").append(groupBUri)
+				.append("\" groups=\"b\" />").append("</manifest>");

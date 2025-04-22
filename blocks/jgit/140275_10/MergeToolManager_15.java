@@ -1,0 +1,58 @@
+    public MergeToolManager(Repository db) {
+        this(db.getFS()
+    }
+
+    public MergeToolManager(FS fs
+            StoredConfig userConfig) {
+        this.fs = fs;
+        this.gitDir = gitDir;
+        this.workTree = workTree;
+        this.config = userConfig.get(MergeToolConfig.KEY);
+        predefinedTools = setupPredefinedTools();
+        userDefinedTools = setupUserDefinedTools(config
+    }
+
+    public Optional<ExecutionResult> merge(FileElement localFile
+            FileElement remoteFile
+            FileElement baseFile
+            Optional<Boolean> prompt
+            PromptContinueHandler promptHandler
+            InformNoToolHandler noToolHandler) throws ToolException {
+
+        String toolNameToUse;
+
+        if (toolName.isPresent()) {
+            toolNameToUse = toolName.get();
+        } else {
+            toolNameToUse = getDefaultToolName(gui);
+
+            if (toolNameToUse == null || toolNameToUse.isEmpty()) {
+                noToolHandler.inform(new ArrayList<>(predefinedTools.keySet()));
+                toolNameToUse = getFirstAvailableTool();
+            }
+        }
+
+        @SuppressWarnings("boxing")
+        boolean doPrompt = prompt.orElse(isPrompt());
+
+        if (doPrompt) {
+            if (!promptHandler.prompt(toolNameToUse)) {
+                return Optional.empty();
+            }
+        }
+
+        return Optional.of(
+                merge(localFile
+                        getTool(toolNameToUse)));
+    }
+
+    public ExecutionResult merge(FileElement localFile
+            FileElement remoteFile
+			FileElement baseFile
+            throws ToolException {
+        FileElement backup = null;
+        ExecutionResult result = null;
+        try {
+            File workingDir = workTree;
+            backup = createBackupFile(mergedFile
+                    tempDir != null ? tempDir : workingDir);

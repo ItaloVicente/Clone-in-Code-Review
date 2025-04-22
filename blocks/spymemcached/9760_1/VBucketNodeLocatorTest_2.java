@@ -1,0 +1,6 @@
+      + "\"nodes\": [\n"
+      + "{\n"
+      + "\"clusterCompatibility\": 1,\n"
+      + "\"clusterMembership\": \"active\"\n"
+      + "}\n"
+      + "],\n"

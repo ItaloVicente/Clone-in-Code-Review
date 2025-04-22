@@ -1,0 +1,14 @@
+			modulesConfig.load();
+			assertEquals(path1
+					ConfigConstants.CONFIG_SUBMODULE_SECTION
+					ConfigConstants.CONFIG_KEY_PATH));
+			assertEquals(url1
+					ConfigConstants.CONFIG_SUBMODULE_SECTION
+					ConfigConstants.CONFIG_KEY_URL));
+			assertEquals(path2
+					ConfigConstants.CONFIG_SUBMODULE_SECTION
+					ConfigConstants.CONFIG_KEY_PATH));
+			assertEquals(url2
+					ConfigConstants.CONFIG_SUBMODULE_SECTION
+					ConfigConstants.CONFIG_KEY_URL));
+		}

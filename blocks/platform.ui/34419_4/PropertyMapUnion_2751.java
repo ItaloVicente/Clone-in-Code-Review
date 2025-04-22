@@ -1,0 +1,97 @@
+package org.eclipse.ui.internal.preferences;
+
+import java.util.ArrayList;
+
+public abstract class PropertyMapAdapter implements IDynamicPropertyMap {
+
+    private PropertyListenerList listeners;
+    private int ignoreCount = 0;
+    private ArrayList queuedEvents = new ArrayList();
+    
+    @Override
+	public final void addListener(IPropertyMapListener listener) {
+        if (listeners == null) {
+            listeners = new PropertyListenerList();
+            attachListener();
+        }
+        listeners.add(listener);
+    }
+    
+    @Override
+	public final void removeListener(IPropertyMapListener listener) {
+        if (listeners != null) {
+            listeners.remove(listener);
+            if (listeners.isEmpty()) {
+                detachListener();
+                listeners = null;
+            }
+        }
+    }
+
+    @Override
+	public final boolean isCommonProperty(String propertyId) {
+        return true;
+    }
+
+    public void dispose() {
+        if (listeners != null) {
+            detachListener();
+            listeners = null;
+        }
+    }
+    
+    protected final void firePropertyChange(String prefId) {
+        if (ignoreCount > 0) {
+            queuedEvents.add(prefId);
+            return;
+        }
+        
+        if (listeners != null) {
+            listeners.firePropertyChange(prefId);
+        }
+    }
+    
+    @Override
+	public final void addListener(String[] eventsOfInterest, IPropertyMapListener listener) {
+        if (listeners == null) {
+            listeners = new PropertyListenerList();
+            attachListener();
+        }
+        listeners.add(eventsOfInterest, listener);
+    }
+    
+    protected final void firePropertyChange(String[] prefIds) {
+        if (ignoreCount > 0) {
+            for (int i = 0; i < prefIds.length; i++) {
+                queuedEvents.add(prefIds[i]);
+            }
+            return;
+        }
+
+        if (listeners != null) {
+            listeners.firePropertyChange(prefIds);
+        }
+    }
+    
+    public final void startTransaction() {
+        ignoreCount++;
+    }
+    
+    public final void endTransaction() {
+        ignoreCount--;
+        if (ignoreCount == 0 && !queuedEvents.isEmpty()) {
+            if (listeners != null) {
+                listeners.firePropertyChange((String[]) queuedEvents.toArray(new String[queuedEvents.size()]));
+            }
+            queuedEvents.clear();
+        }
+    }
+    
+    @Override
+	public boolean equals(Object toCompare) {
+        return toCompare instanceof IPropertyMap && PropertyUtil.isEqual(this, (IPropertyMap)toCompare);
+    }
+    
+    protected abstract void attachListener();
+    protected abstract void detachListener();
+}

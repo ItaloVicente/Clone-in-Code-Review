@@ -1,0 +1,10 @@
+		InputStream in = (stdinArgs == null) ? null : new ByteArrayInputStream(
+				stdinArgs.getBytes(Constants.CHARACTER_ENCODING));
+		return runProcess(processBuilder
+				false);
+	}
+
+	public int runProcess(ProcessBuilder processBuilder
+			OutputStream outRedirect
+			InputStream inRedirect
+			InterruptedException {

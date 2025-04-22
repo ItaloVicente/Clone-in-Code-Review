@@ -1,0 +1,32 @@
+package org.eclipse.jgit.util.fs;
+
+import java.io.File;
+
+import org.eclipse.jgit.util.FS;
+
+public class FSAccessNative extends FSAccess {
+
+	static {
+		System.loadLibrary("jgitnative");
+	}
+
+	FSAccessNative() {
+	}
+
+	private static final native int[] lstatImpl(String path);
+
+	public LStat lstat(FS fs
+			NotDirectoryException {
+		String path = file.getAbsolutePath();
+		int[] rawlstat = lstatImpl(path);
+		if (rawlstat.length != 11)
+			throw new IllegalArgumentException("lstat() didn't return int[11]");
+
+		return new LStat(rawlstat);
+	}
+
+	@Override
+	public boolean isNativeImplementation() {
+		return true;
+	}
+}

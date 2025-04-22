@@ -1,0 +1,13 @@
+		setPackedGitUseStrongRefs(rc.getBoolean(CONFIG_CORE_SECTION
+				CONFIG_KEY_PACKED_GIT_USE_STRONGREFS
+				isPackedGitUseStrongRefs()));
+		setPackedGitOpenFiles(rc.getInt(CONFIG_CORE_SECTION
+				CONFIG_KEY_PACKED_GIT_OPENFILES
+		setPackedGitLimit(rc.getLong(CONFIG_CORE_SECTION
+				CONFIG_KEY_PACKED_GIT_LIMIT
+		setPackedGitWindowSize(rc.getInt(CONFIG_CORE_SECTION
+				CONFIG_KEY_PACKED_GIT_WINDOWSIZE
+		setPackedGitMMAP(rc.getBoolean(CONFIG_CORE_SECTION
+				CONFIG_KEY_PACKED_GIT_MMAP
+		setDeltaBaseCacheLimit(rc.getInt(CONFIG_CORE_SECTION
+				CONFIG_KEY_DELTA_BASE_CACHE_LIMIT

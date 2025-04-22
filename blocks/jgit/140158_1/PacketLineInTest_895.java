@@ -1,0 +1,436 @@
+
+package org.eclipse.jgit.transport;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.text.MessageFormat;
+import java.util.zip.Deflater;
+
+import org.eclipse.jgit.errors.TooLargeObjectInPackException;
+import org.eclipse.jgit.internal.JGitText;
+import org.eclipse.jgit.internal.storage.file.ObjectDirectoryPackParser;
+import org.eclipse.jgit.internal.storage.file.PackFile;
+import org.eclipse.jgit.junit.JGitTestUtil;
+import org.eclipse.jgit.junit.RepositoryTestCase;
+import org.eclipse.jgit.junit.TestRepository;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.NullProgressMonitor;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectInserter;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevBlob;
+import org.eclipse.jgit.util.NB;
+import org.eclipse.jgit.util.TemporaryBuffer;
+import org.eclipse.jgit.util.io.UnionInputStream;
+import org.junit.After;
+import org.junit.Test;
+
+public class PackParserTest extends RepositoryTestCase {
+	@Test
+	public void test1() throws  IOException {
+		File packFile = JGitTestUtil.getTestResourceFile("pack-34be9032ac282b11fa9babdc2b2a93ca996c9c2f.pack");
+		try (InputStream is = new FileInputStream(packFile)) {
+			ObjectDirectoryPackParser p = (ObjectDirectoryPackParser) index(is);
+			p.parse(NullProgressMonitor.INSTANCE);
+			PackFile file = p.getPackFile();
+
+			assertTrue(file.hasObject(ObjectId.fromString("4b825dc642cb6eb9a060e54bf8d69288fbee4904")));
+			assertTrue(file.hasObject(ObjectId.fromString("540a36d136cf413e4b064c2b0e0a4db60f77feab")));
+			assertTrue(file.hasObject(ObjectId.fromString("5b6e7c66c276e7610d4a73c70ec1a1f7c1003259")));
+			assertTrue(file.hasObject(ObjectId.fromString("6ff87c4664981e4397625791c8ea3bbb5f2279a3")));
+			assertTrue(file.hasObject(ObjectId.fromString("82c6b885ff600be425b4ea96dee75dca255b69e7")));
+			assertTrue(file.hasObject(ObjectId.fromString("902d5476fa249b7abc9d84c611577a81381f0327")));
+			assertTrue(file.hasObject(ObjectId.fromString("aabf2ffaec9b497f0950352b3e582d73035c2035")));
+			assertTrue(file.hasObject(ObjectId.fromString("c59759f143fb1fe21c197981df75a7ee00290799")));
+		}
+	}
+
+	@Test
+	public void test2() throws  IOException {
+		File packFile = JGitTestUtil.getTestResourceFile("pack-df2982f284bbabb6bdb59ee3fcc6eb0983e20371.pack");
+		try (InputStream is = new FileInputStream(packFile)) {
+			ObjectDirectoryPackParser p = (ObjectDirectoryPackParser) index(is);
+			p.parse(NullProgressMonitor.INSTANCE);
+			PackFile file = p.getPackFile();
+
+			assertTrue(file.hasObject(ObjectId.fromString("02ba32d3649e510002c21651936b7077aa75ffa9")));
+			assertTrue(file.hasObject(ObjectId.fromString("0966a434eb1a025db6b71485ab63a3bfbea520b6")));
+			assertTrue(file.hasObject(ObjectId.fromString("09efc7e59a839528ac7bda9fa020dc9101278680")));
+			assertTrue(file.hasObject(ObjectId.fromString("0a3d7772488b6b106fb62813c4d6d627918d9181")));
+			assertTrue(file.hasObject(ObjectId.fromString("1004d0d7ac26fbf63050a234c9b88a46075719d3")));
+			assertTrue(file.hasObject(ObjectId.fromString("10da5895682013006950e7da534b705252b03be6")));
+			assertTrue(file.hasObject(ObjectId.fromString("1203b03dc816ccbb67773f28b3c19318654b0bc8")));
+			assertTrue(file.hasObject(ObjectId.fromString("15fae9e651043de0fd1deef588aa3fbf5a7a41c6")));
+			assertTrue(file.hasObject(ObjectId.fromString("16f9ec009e5568c435f473ba3a1df732d49ce8c3")));
+			assertTrue(file.hasObject(ObjectId.fromString("1fd7d579fb6ae3fe942dc09c2c783443d04cf21e")));
+			assertTrue(file.hasObject(ObjectId.fromString("20a8ade77639491ea0bd667bf95de8abf3a434c8")));
+			assertTrue(file.hasObject(ObjectId.fromString("2675188fd86978d5bc4d7211698b2118ae3bf658")));
+		}
+	}
+
+	@Test
+	public void testTinyThinPack() throws Exception {
+		RevBlob a;
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			a = d.blob("a");
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(1024);
+
+		packHeader(pack
+
+		pack.write((Constants.OBJ_REF_DELTA) << 4 | 4);
+		a.copyRawTo(pack);
+		deflate(pack
+
+		digest(pack);
+
+		PackParser p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setAllowThin(true);
+		p.parse(NullProgressMonitor.INSTANCE);
+	}
+
+	@Test
+	public void testPackWithDuplicateBlob() throws Exception {
+		final byte[] data = Constants.encode("0123456789abcdefg");
+		try (TestRepository<Repository> d = new TestRepository<>(db)) {
+			assertTrue(db.getObjectDatabase().has(d.blob(data)));
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(1024);
+		packHeader(pack
+		pack.write((Constants.OBJ_BLOB) << 4 | 0x80 | 1);
+		pack.write(1);
+		deflate(pack
+		digest(pack);
+
+		PackParser p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setAllowThin(false);
+		p.parse(NullProgressMonitor.INSTANCE);
+	}
+
+	@Test
+	public void testPackWithTrailingGarbage() throws Exception {
+		RevBlob a;
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			a = d.blob("a");
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(1024);
+		packHeader(pack
+		pack.write((Constants.OBJ_REF_DELTA) << 4 | 4);
+		a.copyRawTo(pack);
+		deflate(pack
+		digest(pack);
+
+		PackParser p = index(new UnionInputStream(
+				new ByteArrayInputStream(pack.toByteArray())
+				new ByteArrayInputStream(new byte[] { 0x7e })));
+		p.setAllowThin(true);
+		p.setCheckEofAfterPackFooter(true);
+		try {
+			p.parse(NullProgressMonitor.INSTANCE);
+			fail("Pack with trailing garbage was accepted");
+		} catch (IOException err) {
+			assertEquals(
+					MessageFormat.format(JGitText.get().expectedEOFReceived
+					err.getMessage());
+		}
+	}
+
+	@Test
+	public void testMaxObjectSizeFullBlob() throws Exception {
+		final byte[] data = Constants.encode("0123456789");
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			d.blob(data);
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(1024);
+
+		packHeader(pack
+		pack.write((Constants.OBJ_BLOB) << 4 | 10);
+		deflate(pack
+		digest(pack);
+
+		PackParser p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setMaxObjectSizeLimit(11);
+		p.parse(NullProgressMonitor.INSTANCE);
+
+		p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setMaxObjectSizeLimit(10);
+		p.parse(NullProgressMonitor.INSTANCE);
+
+		p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setMaxObjectSizeLimit(9);
+		try {
+			p.parse(NullProgressMonitor.INSTANCE);
+			fail("PackParser should have failed");
+		} catch (TooLargeObjectInPackException e) {
+		}
+	}
+
+	@Test
+	public void testMaxObjectSizeDeltaBlock() throws Exception {
+		RevBlob a;
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			a = d.blob("a");
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(1024);
+
+		packHeader(pack
+		pack.write((Constants.OBJ_REF_DELTA) << 4 | 14);
+		a.copyRawTo(pack);
+		deflate(pack
+				'5'
+		digest(pack);
+
+		PackParser p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setAllowThin(true);
+		p.setMaxObjectSizeLimit(14);
+		p.parse(NullProgressMonitor.INSTANCE);
+
+		p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setAllowThin(true);
+		p.setMaxObjectSizeLimit(13);
+		try {
+			p.parse(NullProgressMonitor.INSTANCE);
+			fail("PackParser should have failed");
+		} catch (TooLargeObjectInPackException e) {
+		}
+	}
+
+	@Test
+	public void testMaxObjectSizeDeltaResultSize() throws Exception {
+		RevBlob a;
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			a = d.blob("0123456789");
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(1024);
+
+		packHeader(pack
+		pack.write((Constants.OBJ_REF_DELTA) << 4 | 4);
+		a.copyRawTo(pack);
+		deflate(pack
+		digest(pack);
+
+		PackParser p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setAllowThin(true);
+		p.setMaxObjectSizeLimit(11);
+		p.parse(NullProgressMonitor.INSTANCE);
+
+		p = index(new ByteArrayInputStream(pack.toByteArray()));
+		p.setAllowThin(true);
+		p.setMaxObjectSizeLimit(10);
+		try {
+			p.parse(NullProgressMonitor.INSTANCE);
+			fail("PackParser should have failed");
+		} catch (TooLargeObjectInPackException e) {
+		}
+	}
+
+	@Test
+	public void testNonMarkingInputStream() throws Exception {
+		RevBlob a;
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			a = d.blob("a");
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(1024);
+		packHeader(pack
+		pack.write((Constants.OBJ_REF_DELTA) << 4 | 4);
+		a.copyRawTo(pack);
+		deflate(pack
+		digest(pack);
+
+		InputStream in = new ByteArrayInputStream(pack.toByteArray()) {
+			@Override
+			public boolean markSupported() {
+				return false;
+			}
+
+			@Override
+			public void mark(int maxlength) {
+				fail("Mark should not be called");
+			}
+		};
+
+		PackParser p = index(in);
+		p.setAllowThin(true);
+		p.setCheckEofAfterPackFooter(false);
+		p.setExpectDataAfterPackFooter(true);
+
+		try {
+			p.parse(NullProgressMonitor.INSTANCE);
+			fail("PackParser should have failed");
+		} catch (IOException e) {
+			assertEquals(e.getMessage()
+					JGitText.get().inputStreamMustSupportMark);
+		}
+	}
+
+	@Test
+	public void testDataAfterPackFooterSingleRead() throws Exception {
+		RevBlob a;
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			a = d.blob("a");
+		}
+
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(32*1024);
+		packHeader(pack
+		pack.write((Constants.OBJ_REF_DELTA) << 4 | 4);
+		a.copyRawTo(pack);
+		deflate(pack
+		digest(pack);
+
+		byte packData[] = pack.toByteArray();
+		byte streamData[] = new byte[packData.length + 1];
+		System.arraycopy(packData
+		streamData[packData.length] = 0x7e;
+
+		InputStream in = new ByteArrayInputStream(streamData);
+		PackParser p = index(in);
+		p.setAllowThin(true);
+		p.setCheckEofAfterPackFooter(false);
+		p.setExpectDataAfterPackFooter(true);
+
+		p.parse(NullProgressMonitor.INSTANCE);
+
+		assertEquals(0x7e
+	}
+
+	@Test
+	public void testDataAfterPackFooterSplitObjectRead() throws Exception {
+		final byte[] data = Constants.encode("0123456789");
+
+		int objects = 900;
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(32 * 1024);
+		packHeader(pack
+
+		for (int i = 0; i < objects; i++) {
+			pack.write((Constants.OBJ_BLOB) << 4 | 10);
+			deflate(pack
+		}
+		digest(pack);
+
+		byte packData[] = pack.toByteArray();
+		byte streamData[] = new byte[packData.length + 1];
+		System.arraycopy(packData
+		streamData[packData.length] = 0x7e;
+		InputStream in = new ByteArrayInputStream(streamData);
+		PackParser p = index(in);
+		p.setAllowThin(true);
+		p.setCheckEofAfterPackFooter(false);
+		p.setExpectDataAfterPackFooter(true);
+
+		p.parse(NullProgressMonitor.INSTANCE);
+
+		assertEquals(0x7e
+	}
+
+	@Test
+	public void testDataAfterPackFooterSplitHeaderRead() throws Exception {
+		final byte[] data = Constants.encode("a");
+		RevBlob b;
+		try (TestRepository d = new TestRepository<Repository>(db)) {
+			b = d.blob(data);
+		}
+
+		int objects = 248;
+		TemporaryBuffer.Heap pack = new TemporaryBuffer.Heap(32 * 1024);
+		packHeader(pack
+		int offset = 13;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < offset; i++)
+			sb.append(i);
+		offset = sb.toString().length();
+		int lenByte = (Constants.OBJ_BLOB) << 4 | (offset & 0x0F);
+		offset >>= 4;
+		if (offset > 0)
+			lenByte |= 1 << 7;
+		pack.write(lenByte);
+		while (offset > 0) {
+			lenByte = offset & 0x7F;
+			offset >>= 6;
+			if (offset > 0)
+				lenByte |= 1 << 7;
+			pack.write(lenByte);
+		}
+		deflate(pack
+
+		for (int i = 0; i < objects; i++) {
+			pack.write((Constants.OBJ_REF_DELTA) << 4 | 4);
+			b.copyRawTo(pack);
+			deflate(pack
+		}
+		digest(pack);
+
+		byte packData[] = pack.toByteArray();
+		byte streamData[] = new byte[packData.length + 1];
+		System.arraycopy(packData
+		streamData[packData.length] = 0x7e;
+		InputStream in = new ByteArrayInputStream(streamData);
+		PackParser p = index(in);
+		p.setAllowThin(true);
+		p.setCheckEofAfterPackFooter(false);
+		p.setExpectDataAfterPackFooter(true);
+
+		p.parse(NullProgressMonitor.INSTANCE);
+
+		assertEquals(0x7e
+	}
+
+	private static void packHeader(TemporaryBuffer.Heap tinyPack
+			throws IOException {
+		final byte[] hdr = new byte[8];
+		NB.encodeInt32(hdr
+		NB.encodeInt32(hdr
+
+		tinyPack.write(Constants.PACK_SIGNATURE);
+		tinyPack.write(hdr
+	}
+
+	private static void deflate(TemporaryBuffer.Heap tinyPack
+			final byte[] content)
+			throws IOException {
+		final Deflater deflater = new Deflater();
+		final byte[] buf = new byte[128];
+		deflater.setInput(content
+		deflater.finish();
+		do {
+			final int n = deflater.deflate(buf
+			if (n > 0)
+				tinyPack.write(buf
+		} while (!deflater.finished());
+	}
+
+	private static void digest(TemporaryBuffer.Heap buf) throws IOException {
+		MessageDigest md = Constants.newMessageDigest();
+		md.update(buf.toByteArray());
+		buf.write(md.digest());
+	}
+
+	private ObjectInserter inserter;
+
+	@After
+	public void release() {
+		if (inserter != null) {
+			inserter.close();
+		}
+	}
+
+	private PackParser index(InputStream in) throws IOException {
+		if (inserter == null)
+			inserter = db.newObjectInserter();
+		return inserter.newPackParser(in);
+	}
+}

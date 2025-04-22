@@ -1,0 +1,32 @@
+    /**
+     * Construct the test suite.
+     */
+    public InternalTestSuite() {
+        addTest(new TestSuite(AnimationEngineTest.class));
+        addTest(new TestSuite(EditorActionBarsTest.class));
+        addTest(new TestSuite(ActionSetExpressionTest.class));
+        addTest(new TestSuite(PopupMenuExpressionTest.class));
+        addTest(new TestSuite(Bug41931Test.class));
+        addTest(Bug75909Test.suite());
+        addTest(new TestSuite(Bug78470Test.class));
+        addTest(new TestSuite(DeclarativeFilterActivityTest.class));
+        addTest(new TestSuite(DeclarativeFilterDeclarationTest.class));
+        addTest(new TestSuite(ResourceMappingMarkersTest.class));
+        addTest(new TestSuite(MarkerSupportRegistryTests.class));
+        addTest(new TestSuite(MarkerSortUtilTest.class));
+        addTest(new TestSuite(MarkerViewTests.class));
+		addTest(new TestSuite(MarkerViewUtilTest.class));
+        addTest(Bug99858Test.suite());
+        addTest(new TestSuite(WorkbenchWindowSubordinateSourcesTests.class));
+        addTest(new TestSuite(ReopenMenuTest.class));
+        addTest(new TestSuite(UtilTest.class));
+		addTest(new TestSuite(MarkerTesterTest.class));
+		addTest(new TestSuite(TextHandlerTest.class));
+        addTest(new TestSuite(PerspectiveSwitcherTest.class));
+        addTest(new TestSuite(StickyViewManagerTest.class));
+        addTest(new TestSuite(FileEditorMappingTest.class));
+        addTest(new TestSuite(WorkbenchSiteProgressServiceModelTagsTest.class));
+		addTest(new TestSuite(WorkbenchPageTest.class));
+		addTest(new TestSuite(SaveablesListTest.class));
+    }
+}

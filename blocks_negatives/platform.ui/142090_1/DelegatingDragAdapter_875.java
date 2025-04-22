@@ -1,0 +1,6 @@
+                }
+            }
+        });
+        currentListener = null;
+        activeListeners.clear();
+    }

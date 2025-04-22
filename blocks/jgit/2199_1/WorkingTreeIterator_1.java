@@ -1,0 +1,12 @@
+		if (fileLastModified != cacheLastModified)
+			return MetadataDiff.DIFFER_BY_TIMESTAMP;
+		else if (!entry.isSmudged())
+			return MetadataDiff.EQUAL;
+		else
+			return MetadataDiff.SMUDGED;
+	}
+
+	public boolean isModified(DirCacheEntry entry
+		switch (compareMetadata(entry)) {
+		case DIFFER_BY_TIMESTAMP:
+			if (forceContentCheck)

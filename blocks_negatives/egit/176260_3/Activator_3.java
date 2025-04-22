@@ -1,0 +1,11 @@
+import org.eclipse.egit.core.internal.ResourceRefreshHandler;
+import org.eclipse.egit.core.internal.SshPreferencesMirror;
+import org.eclipse.egit.core.internal.indexdiff.IndexDiffCache;
+import org.eclipse.egit.core.internal.job.JobUtil;
+import org.eclipse.egit.core.internal.trace.GitTraceLocation;
+import org.eclipse.egit.core.internal.util.ResourceUtil;
+import org.eclipse.egit.core.op.ConnectProviderOperation;
+import org.eclipse.egit.core.op.IgnoreOperation;
+import org.eclipse.egit.core.project.GitProjectData;
+import org.eclipse.egit.core.project.RepositoryFinder;
+import org.eclipse.egit.core.project.RepositoryMapping;

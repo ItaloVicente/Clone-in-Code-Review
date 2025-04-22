@@ -1,0 +1,10 @@
+			next = rw.next();
+			assertEquals(t2.getShortMessage(), next.getShortMessage());
+			next = rw.next();
+			assertEquals(t1.getShortMessage(), next.getShortMessage());
+			next = rw.next();
+			assertEquals(sourceCommit, next);
+			next = rw.next();
+			assertEquals("Initial commit for source", next.getShortMessage());
+			next = rw.next();
+			assertNull(next);

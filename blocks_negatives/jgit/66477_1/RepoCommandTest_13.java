@@ -1,0 +1,11 @@
+		Git git = new Git(defaultDb);
+		JGitTestUtil.writeTrashFile(defaultDb, "hello.txt", "branch world");
+		git.add().addFilepattern("hello.txt").call();
+		oldCommitId = git.commit().setMessage("Initial commit").call().getId();
+		git.checkout().setName(BRANCH).setCreateBranch(true).call();
+		git.checkout().setName("master").call();
+		git.tag().setName(TAG).call();
+		JGitTestUtil.writeTrashFile(defaultDb, "hello.txt", "master world");
+		git.add().addFilepattern("hello.txt").call();
+		git.commit().setMessage("Second commit").call();
+		addRepoToClose(defaultDb);

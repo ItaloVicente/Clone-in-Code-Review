@@ -1,0 +1,69 @@
+                                            manager = window
+                                                    .getToolBarManager2();
+                                            if (manager != null) {
+												updateManager(manager);
+											}
+                                            manager = window
+                                                    .getStatusLineManager();
+                                            if (manager != null) {
+												updateManager(manager);
+											}
+                                        }
+
+                                        /**
+                                         * Update the given manager in the UI thread.
+                                         * This may also open the progress dialog if
+                                         * the operation is taking too long.
+                                         *
+                                         * @param manager the manager to update
+                                         */
+                                        private void updateManager(
+                                                final IContributionManager manager) {
+                                            if (!dialogOpened
+                                                    && System
+                                                            .currentTimeMillis() > openTime) {
+                                                dialog.open();
+                                                dialogOpened = true;
+                                            }
+
+                                            manager.update(true);
+                                        }
+                                    };
+
+                                    dialog.setOpenOnRun(false);
+                                    workbench.getDisplay().asyncExec(
+                                            () -> BusyIndicator
+											        .showWhile(
+											                workbench
+											                        .getDisplay(),
+											                () -> {
+															    try {
+															        dialog
+															                .run(
+															                        false,
+															                        false,
+															                        runnable);
+															    } catch (InvocationTargetException e1) {
+															        log(e1);
+															    } catch (InterruptedException e2) {
+															        log(e2);
+															    }
+															}));
+                                }
+                            }
+                        }
+                    }
+
+                    /**
+                     * Logs an error message to the workbench log.
+                     *
+                     * @param e the exception to log
+                     */
+                    private void log(Exception e) {
+                        StatusUtil.newStatus(IStatus.ERROR,
+                                "Could not update contribution managers", e); //$NON-NLS-1$
+                    }
+                });
+    }
+
+    @Override

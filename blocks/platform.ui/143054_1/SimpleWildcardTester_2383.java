@@ -1,0 +1,9 @@
+				return str.contains(pattern.substring(1, pattern.length() - 1));
+			}
+			return str.endsWith(pattern.substring(1));
+		} else if (pattern.endsWith("*")) {//$NON-NLS-1$
+			return str.startsWith(pattern.substring(0, pattern.length() - 1));
+		} else {
+			return str.equals(pattern);
+		}
+	}

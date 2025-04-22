@@ -1,0 +1,6 @@
+        sourceNameField.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				entryChanged = true;
+			}
+		});

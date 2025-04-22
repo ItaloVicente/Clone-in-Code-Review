@@ -1,0 +1,11 @@
+		RevCommit c2 = tr.commit().parent(c1).create();
+		RevCommit c3 = tr.commit().parent(c1).create();
+		RevCommit c4 = tr.commit().parent(c2).parent(c3).create();
+		RevCommit c5 = tr.commit().parent(c0).create();
+		RevCommit c6 = tr.commit().parent(c5).create();
+		RevCommit c7 = tr.commit().parent(c6).create();
+		RevCommit c8 = tr.commit().parent(c7).create();
+		RevCommit c9 = tr.commit().parent(c8).create();
+		tr.update("master", c4);
+		tr.update("branch", c9);
+		assertOneResult("branch~5", c0);

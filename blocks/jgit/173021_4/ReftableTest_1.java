@@ -1,0 +1,58 @@
+	@Test
+	public void seekPastRefWithRefcursor() throws IOException {
+		Ref exp = ref(MASTER
+		Ref next = ref(NEXT
+		Ref afterNext = ref(AFTER_NEXT
+		Ref afterNextNext = ref(LAST
+		ReftableReader t = read(write(exp
+		try (RefCursor rc = t.seekRefsWithPrefix("")) {
+			assertTrue(rc.next());
+			assertEquals(MASTER
+
+			rc.seekPastPrefix("refs/heads/next/");
+
+			assertTrue(rc.next());
+			assertEquals(AFTER_NEXT
+			assertTrue(rc.next());
+			assertEquals(LAST
+
+			assertFalse(rc.next());
+		}
+	}
+
+	@Test
+	public void seekPastToNonExistentPrefixToTheMiddle() throws IOException {
+		Ref exp = ref(MASTER
+		Ref next = ref(NEXT
+		Ref afterNext = ref(AFTER_NEXT
+		Ref afterNextNext = ref(LAST
+		ReftableReader t = read(write(exp
+		try (RefCursor rc = t.seekRefsWithPrefix("")) {
+			rc.seekPastPrefix("refs/heads/master_non_existent");
+
+			assertTrue(rc.next());
+			assertEquals(NEXT
+
+			assertTrue(rc.next());
+			assertEquals(AFTER_NEXT
+
+			assertTrue(rc.next());
+			assertEquals(LAST
+
+			assertFalse(rc.next());
+		}
+	}
+
+	@Test
+	public void seekPastToNonExistentPrefixToTheEnd() throws IOException {
+		Ref exp = ref(MASTER
+		Ref next = ref(NEXT
+		Ref afterNext = ref(AFTER_NEXT
+		Ref afterNextNext = ref(LAST
+		ReftableReader t = read(write(exp
+		try (RefCursor rc = t.seekRefsWithPrefix("")) {
+			rc.seekPastPrefix("refs/heads/nextnon_existent_end");
+			assertFalse(rc.next());
+		}
+	}
+

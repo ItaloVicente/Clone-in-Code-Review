@@ -1,0 +1,9 @@
+import static org.eclipse.jgit.lib.Constants.encodedTypeString;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_BOTH_NO_CONFLICT;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_BOTH_SIDES_CONFLICT;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_IN_OURS;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_IN_THEIRS;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_OURS_ADD_THEIRS_CONFLICT;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_OURS_REMOVE_THEIRS_CONFLICT;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_THEIRS_ADD_OURS_CONFLICT;
+import static org.eclipse.jgit.merge.ResolveMerger.RenameType.RENAME_THEIRS_REMOVE_OURS_CONFLICT;

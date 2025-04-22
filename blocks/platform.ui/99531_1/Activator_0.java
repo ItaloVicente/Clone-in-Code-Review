@@ -1,0 +1,14 @@
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_CMDS;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_CMDS_FLAG;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_CONTEXTS;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_CONTEXTS_FLAG;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_CONTEXTS_VERBOSE;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_CONTEXTS_VERBOSE_FLAG;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_FLAG;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_MENUS;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_MENUS_FLAG;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_RENDERER;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_RENDERER_FLAG;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_WORKBENCH;
+import static org.eclipse.e4.ui.internal.workbench.Policy.DEBUG_WORKBENCH_FLAG;

@@ -1,0 +1,9 @@
+		addPropertyChangeListener(new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (event.getSource() == fSchemeModel
+						&& CommonModel.PROP_SELECTED_ELEMENT.equals(event
+								.getProperty())) {
+					changeScheme((SchemeElement) event.getOldValue(),
+							(SchemeElement) event.getNewValue());
+				}

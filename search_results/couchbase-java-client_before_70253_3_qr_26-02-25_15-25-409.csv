@@ -1,0 +1,4 @@
+block1.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_70253_3/src/test/java/com/couchbase/client/java/CouchbaseAsyncBucketTest.java_shouldNotCallIntoObserveOnInsertWhenNotNeeded#54#70
+block4.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_70253_3/src/test/java/com/couchbase/client/java/CouchbaseAsyncBucketTest.java_shouldNotCallIntoObserveOnRemoveWhenNotNeeded#108#124
+block2.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_70253_3/src/test/java/com/couchbase/client/java/CouchbaseAsyncBucketTest.java_shouldNotCallIntoObserveOnUpsertWhenNotNeeded#72#88
+block3.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_70253_3/src/test/java/com/couchbase/client/java/CouchbaseAsyncBucketTest.java_shouldNotCallIntoObserveOnReplaceWhenNotNeeded#90#106

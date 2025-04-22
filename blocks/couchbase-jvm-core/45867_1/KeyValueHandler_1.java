@@ -1,0 +1,14 @@
+    public static final byte SUCCESS = 0x00;
+    public static final byte ERR_NOT_FOUND = 0x01;
+    public static final byte ERR_EXISTS = 0x02;
+    public static final byte ERR_2BIG = 0x03;
+    public static final byte ERR_INVAL = 0x04;
+    public static final byte ERR_NOT_STORED = 0x05;
+    public static final byte ERR_DELTA_BADVAL = 0x06;
+    public static final byte ERR_NOT_MY_VBUCKET = 0x07;
+    public static final byte ERR_UNKNOWN_COMMAND = (byte) 0x81;
+    public static final byte ERR_NO_MEM = (byte) 0x82;
+    public static final byte ERR_NOT_SUPPORTED = (byte) 0x83;
+    public static final byte ERR_INTERNAL = (byte) 0x84;
+    public static final byte ERR_BUSY = (byte) 0x85;
+    public static final byte ERR_TEMP_FAIL = (byte) 0x86;

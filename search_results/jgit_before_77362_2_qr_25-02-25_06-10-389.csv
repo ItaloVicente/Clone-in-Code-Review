@@ -1,0 +1,3 @@
+block1.java_method#1#16,/home/gesad/PycharmProjects/Diff/befores/jgit/before_77362_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/ResetCommandTest.java_assertReflog#541#563
+block0.java_method#1#18,/home/gesad/PycharmProjects/Diff/befores/jgit/before_77362_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/ResetCommandTest.java_testHardReset#138#157,/home/gesad/PycharmProjects/Diff/befores/jgit/before_77362_2/org.eclipse.jgit.test/tst/org/eclipse/jgit/api/ResetCommandTest.java_testMixedReset#224#244
+block2.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_77362_2/org.eclipse.jgit/src/org/eclipse/jgit/api/ResetCommand.java_call#142#232

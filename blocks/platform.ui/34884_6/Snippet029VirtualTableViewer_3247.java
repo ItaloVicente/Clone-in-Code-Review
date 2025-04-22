@@ -1,0 +1,105 @@
+
+package org.eclipse.jface.snippets.viewers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
+import org.eclipse.jface.viewers.ICellModifier;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+
+public class Snippet027ComboBoxCellEditors {
+	private class MyCellModifier implements ICellModifier {
+
+		private TableViewer viewer;
+
+		public MyCellModifier(TableViewer viewer) {
+			this.viewer = viewer;
+		}
+
+		@Override
+		public boolean canModify(Object element, String property) {
+			return true;
+		}
+
+		@Override
+		public Object getValue(Object element, String property) {
+			return new Integer(((MyModel) element).counter / 10);
+		}
+
+		@Override
+		public void modify(Object element, String property, Object value) {
+			TableItem item = (TableItem) element;
+			((MyModel) item.getData()).counter = ((Integer) value).intValue() * 10;
+			viewer.update(item.getData(), null);
+		}
+	}
+
+	public class MyModel {
+		public int counter;
+
+		public MyModel(int counter) {
+			this.counter = counter;
+		}
+
+		@Override
+		public String toString() {
+			return "Item " + this.counter;
+		}
+	}
+
+	public Snippet027ComboBoxCellEditors(Shell shell) {
+		final Table table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer v = new TableViewer(table);
+		final MyCellModifier modifier = new MyCellModifier(v);
+
+		TableColumn column = new TableColumn(table, SWT.NONE);
+		column.setWidth(200);
+
+		v.setLabelProvider(new LabelProvider());
+		v.setContentProvider(ArrayContentProvider.getInstance());
+		v.setCellModifier(modifier);
+		v.setColumnProperties(new String[] { "column1" });
+		v.setCellEditors(new CellEditor[] { new ComboBoxCellEditor(
+				v.getTable(), new String[] { "Zero", "Ten", "Twenty", "Thirty",
+						"Fourty", "Fifty", "Sixty", "Seventy", "Eighty",
+						"Ninety" }) });
+
+		v.setInput(createModel());
+		v.getTable().setLinesVisible(true);
+	}
+
+	private List<MyModel> createModel() {
+		List<MyModel> elements = new ArrayList<MyModel>();
+
+		for (int i = 0; i < 10; i++) {
+			elements.add(new MyModel(i * 10));
+		}
+		return elements;
+	}
+
+	public static void main(String[] args) {
+		Display display = new Display();
+		Shell shell = new Shell(display);
+		shell.setLayout(new FillLayout());
+		new Snippet027ComboBoxCellEditors(shell);
+		shell.open();
+
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+		display.dispose();
+	}
+
+}

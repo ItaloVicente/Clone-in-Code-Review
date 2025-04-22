@@ -1,0 +1,10 @@
+		setBitmapExcessiveBranchCount(rc.getInt(CONFIG_PACK_SECTION
+				CONFIG_KEY_BITMAP_EXCESSIVE_BRANCH_COUNT
+				getBitmapExcessiveBranchCount()));
+		setBitmapInactiveBranchAgeInDays(rc.getInt(CONFIG_PACK_SECTION
+				CONFIG_KEY_BITMAP_INACTIVE_BRANCH_AGE_INDAYS
+				getBitmapInactiveBranchAgeInDays()));
+		setWaitPreventRacyPack(rc.getBoolean(CONFIG_PACK_SECTION
+				CONFIG_KEY_WAIT_PREVENT_RACYPACK
+		setMinSizePreventRacyPack(rc.getLong(CONFIG_PACK_SECTION
+				CONFIG_KEY_MIN_SIZE_PREVENT_RACYPACK

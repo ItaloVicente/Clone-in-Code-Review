@@ -1,0 +1,43 @@
+	@Test
+	public void hasObjMapRefs() throws IOException {
+		ArrayList<Ref> refs = new ArrayList<>();
+		refs.add(ref(MASTER
+		byte[] table = write(refs);
+		ReftableReader t = read(table);
+		assertTrue(t.hasObjectMap());
+	}
+
+	@Test
+	public void hasObjLogs() throws IOException {
+		PersonIdent who = new PersonIdent("Log"
+		String msg = "test";
+		ReftableConfig cfg = new ReftableConfig();
+		cfg.setIndexObjects(false);
+
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		ReftableWriter writer = new ReftableWriter(buffer)
+			.setMinUpdateIndex(1)
+			.setConfig(cfg)
+			.setMaxUpdateIndex(1)
+			.begin();
+
+		writer.writeLog("master"
+		writer.finish();
+		byte[] table = buffer.toByteArray();
+
+		ReftableReader t = read(table);
+		assertTrue(t.hasObjectMap());
+	}
+
+	@Test
+	public void hasObjMapRefsNoIndexObjects() throws IOException {
+		ArrayList<Ref> refs = new ArrayList<>();
+		refs.add(ref(MASTER
+		ReftableConfig cfg = new ReftableConfig();
+		cfg.setIndexObjects(false);
+		byte[] table = write(refs
+
+		ReftableReader t = read(table);
+		assertFalse(t.hasObjectMap());
+	}
+

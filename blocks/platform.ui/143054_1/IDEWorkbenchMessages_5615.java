@@ -1,0 +1,20 @@
+	public static String UriHandlerPreferencePage_Warning_OtherApp;
+	public static String UriHandlerPreferencePage_Warning_OtherApp_Description;
+
+	public static String UriHandlerPreferencePage_Warning_OtherApp_Confirmation;
+	public static String UriHandlerPreferencePage_Warning_OtherApp_Confirmation_Description;
+
+	public static String UrlHandlerPreferencePage_Handler_Label;
+	public static String UrlHandlerPreferencePage_Handler_Text_No_Application;
+	public static String UrlHandlerPreferencePage_Page_Description;
+	public static String UrlHandlerPreferencePage_ColumnName_SchemeName;
+	public static String UrlHandlerPreferencePage_ColumnName_SchemeDescription;
+	public static String UrlHandlerPreferencePage_ColumnName_Handler;
+	public static String UrlHandlerPreferencePage_Column_Handler_Text_Current_Application;
+	public static String UrlHandlerPreferencePage_Column_Handler_Text_Other_Application;
+	public static String UriHandlerPreferencePage_Confirm_Handle;
+	public static String UrlHandlerPreferencePage_Error_Reading_Scheme;
+	public static String UrlHandlerPreferencePage_Error_Writing_Scheme;
+	public static String UrlHandlerPreferencePage_UnsupportedOperatingSystem;
+	public static String UrlHandlerPreferencePage_LauncherCannotBeDetermined;
+

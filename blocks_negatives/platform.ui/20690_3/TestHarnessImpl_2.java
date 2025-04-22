@@ -1,0 +1,10 @@
+			case MTestPackage.TEST_HARNESS___GET_LOCALIZED_LABEL:
+				return getLocalizedLabel();
+			case MTestPackage.TEST_HARNESS___GET_LOCALIZED_TOOLTIP:
+				return getLocalizedTooltip();
+			case MTestPackage.TEST_HARNESS___GET_LOCALIZED_ACCESSIBILITY_PHRASE:
+				return getLocalizedAccessibilityPhrase();
+			case MTestPackage.TEST_HARNESS___GET_LOCALIZED_COMMAND_NAME:
+				return getLocalizedCommandName();
+			case MTestPackage.TEST_HARNESS___GET_LOCALIZED_DESCRIPTION:
+				return getLocalizedDescription();

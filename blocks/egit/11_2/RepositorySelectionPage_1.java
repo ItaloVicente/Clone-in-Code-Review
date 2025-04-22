@@ -1,0 +1,7 @@
+		DEFAULT_SCHEMES[S_GIT] = "git"; //$NON-NLS-1$
+		DEFAULT_SCHEMES[S_SSH] = "git+ssh"; //$NON-NLS-1$
+		DEFAULT_SCHEMES[S_SFTP] = "sftp"; //$NON-NLS-1$
+		DEFAULT_SCHEMES[S_HTTP] = "http"; //$NON-NLS-1$
+		DEFAULT_SCHEMES[S_HTTPS] = "https"; //$NON-NLS-1$
+		DEFAULT_SCHEMES[S_FTP] = "ftp"; //$NON-NLS-1$
+		DEFAULT_SCHEMES[S_FILE] = "file"; //$NON-NLS-1$

@@ -1,0 +1,446 @@
+
+package org.eclipse.ui.internal.handlers;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.CommandEvent;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.ICommandListener;
+import org.eclipse.core.commands.INamedHandleStateIds;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.core.commands.State;
+import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.jface.action.AbstractAction;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.jface.bindings.TriggerSequence;
+import org.eclipse.jface.bindings.keys.KeySequence;
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.commands.RadioState;
+import org.eclipse.jface.commands.ToggleState;
+import org.eclipse.jface.menus.IMenuStateIds;
+import org.eclipse.jface.menus.TextState;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.Util;
+import org.eclipse.swt.events.HelpListener;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.ui.commands.ICommandImageService;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.internal.commands.CommandImageManager;
+import org.eclipse.ui.internal.commands.CommandImageService;
+import org.eclipse.ui.keys.IBindingService;
+import org.eclipse.ui.services.IServiceLocator;
+
+public final class CommandLegacyActionWrapper extends AbstractAction {
+
+	private final class CommandListener implements ICommandListener {
+		@Override
+		public final void commandChanged(final CommandEvent commandEvent) {
+			final Command baseCommand = commandEvent.getCommand();
+
+			if (commandEvent.isNameChanged()) {
+				String newName = null;
+				if (baseCommand.isDefined()) {
+					try {
+						newName = baseCommand.getName();
+					} catch (final NotDefinedException e) {
+					}
+				}
+				firePropertyChange(IAction.TEXT, null, newName);
+			}
+
+			if (commandEvent.isDescriptionChanged()) {
+				String newDescription = null;
+				if (baseCommand.isDefined()) {
+					try {
+						newDescription = baseCommand.getDescription();
+					} catch (final NotDefinedException e) {
+					}
+				}
+				firePropertyChange(IAction.DESCRIPTION, null, newDescription);
+				firePropertyChange(IAction.TOOL_TIP_TEXT, null, newDescription);
+			}
+
+			if (commandEvent.isHandledChanged()) {
+				if (baseCommand.isHandled()) {
+					firePropertyChange(IAction.HANDLED, Boolean.FALSE,
+							Boolean.TRUE);
+				} else {
+					firePropertyChange(IAction.HANDLED, Boolean.TRUE,
+							Boolean.FALSE);
+				}
+			}
+		}
+
+	}
+
+	private ParameterizedCommand command;
+
+	private final ICommandListener commandListener = new CommandListener();
+
+	private boolean enabled = true;
+
+	private String id;
+
+	private final IServiceLocator serviceLocator;
+
+	private final String style;
+
+	public CommandLegacyActionWrapper(final String id,
+			final ParameterizedCommand command, final String style,
+			final IServiceLocator serviceLocator) {
+		if (command == null) {
+			throw new NullPointerException(
+					"An action proxy can't be created without a command"); //$NON-NLS-1$
+		}
+
+		if (serviceLocator == null) {
+			throw new NullPointerException(
+					"An action proxy can't be created without a service locator"); //$NON-NLS-1$
+		}
+
+		this.command = command;
+		this.id = id;
+		this.style = style;
+		this.serviceLocator = serviceLocator;
+
+		command.getCommand().addCommandListener(commandListener);
+	}
+
+	@Override
+	public final int getAccelerator() {
+		final String commandId = getActionDefinitionId();
+		final IBindingService bindingService = serviceLocator
+				.getService(IBindingService.class);
+		final TriggerSequence triggerSequence = bindingService
+				.getBestActiveBindingFor(commandId);
+		if (triggerSequence instanceof KeySequence) {
+			final KeySequence keySequence = (KeySequence) triggerSequence;
+			final KeyStroke[] keyStrokes = keySequence.getKeyStrokes();
+			if (keyStrokes.length == 1) {
+				final KeyStroke keyStroke = keyStrokes[0];
+				return keyStroke.getModifierKeys() | keyStroke.getNaturalKey();
+			}
+		}
+
+		return 0;
+	}
+
+	@Override
+	public final String getActionDefinitionId() {
+		return command.getId();
+	}
+
+	@Override
+	public final String getDescription() {
+		try {
+			return command.getCommand().getDescription();
+		} catch (final NotDefinedException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public final ImageDescriptor getDisabledImageDescriptor() {
+		final String commandId = getActionDefinitionId();
+		final ICommandImageService commandImageService = serviceLocator
+				.getService(ICommandImageService.class);
+		return commandImageService.getImageDescriptor(commandId,
+				CommandImageManager.TYPE_DISABLED, style);
+	}
+
+	@Override
+	public final HelpListener getHelpListener() {
+		return null;
+	}
+
+	@Override
+	public final ImageDescriptor getHoverImageDescriptor() {
+		final String commandId = getActionDefinitionId();
+		final ICommandImageService commandImageService = serviceLocator
+				.getService(ICommandImageService.class);
+		return commandImageService.getImageDescriptor(commandId,
+				CommandImageManager.TYPE_HOVER, style);
+	}
+
+	@Override
+	public final String getId() {
+		return id;
+	}
+
+	@Override
+	public final ImageDescriptor getImageDescriptor() {
+		final String commandId = getActionDefinitionId();
+		final ICommandImageService commandImageService = serviceLocator
+				.getService(ICommandImageService.class);
+		return commandImageService.getImageDescriptor(commandId, style);
+	}
+
+	@Override
+	public final IMenuCreator getMenuCreator() {
+		return null;
+	}
+
+	@Override
+	public final int getStyle() {
+		final State state = command.getCommand().getState(IMenuStateIds.STYLE);
+		if (state instanceof RadioState) {
+			return IAction.AS_RADIO_BUTTON;
+		} else if (state instanceof ToggleState) {
+			return IAction.AS_CHECK_BOX;
+		}
+
+		return IAction.AS_PUSH_BUTTON;
+	}
+
+	@Override
+	public final String getText() {
+		try {
+			return command.getName();
+		} catch (final NotDefinedException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public final String getToolTipText() {
+		return getDescription();
+	}
+
+	@Override
+	public final boolean isChecked() {
+		final State state = command.getCommand().getState(IMenuStateIds.STYLE);
+		if (state instanceof ToggleState) {
+			final Boolean currentValue = (Boolean) state.getValue();
+			return currentValue.booleanValue();
+		}
+
+		return false;
+	}
+
+	@Override
+	public final boolean isEnabled() {
+		return isEnabledDisregardingCommand();
+	}
+
+	public final boolean isEnabledDisregardingCommand() {
+		return enabled;
+	}
+
+	@Override
+	public final boolean isHandled() {
+		final Command baseCommand = command.getCommand();
+		return baseCommand.isHandled();
+	}
+
+	@Override
+	public final void run() {
+		runWithEvent(null);
+	}
+
+	@Override
+	public final void runWithEvent(final Event event) {
+		final Command baseCommand = command.getCommand();
+		final ExecutionEvent executionEvent = new ExecutionEvent(command
+				.getCommand(), command.getParameterMap(), event, null);
+		try {
+			baseCommand.execute(executionEvent);
+			firePropertyChange(IAction.RESULT, null, Boolean.TRUE);
+
+		} catch (final NotHandledException e) {
+			firePropertyChange(IAction.RESULT, null, Boolean.FALSE);
+
+		} catch (final ExecutionException e) {
+			firePropertyChange(IAction.RESULT, null, Boolean.FALSE);
+
+		}
+	}
+
+	@Override
+	public final void setAccelerator(final int keycode) {
+	}
+
+	@Override
+	public final void setActionDefinitionId(final String id) {
+		final boolean oldChecked = isChecked();
+		final String oldDescription = getDescription();
+		final boolean oldEnabled = isEnabled();
+		final boolean oldHandled = isHandled();
+		final ImageDescriptor oldDefaultImage = getImageDescriptor();
+		final ImageDescriptor oldDisabledImage = getDisabledImageDescriptor();
+		final ImageDescriptor oldHoverImage = getHoverImageDescriptor();
+		final String oldText = getText();
+
+		final Command oldBaseCommand = command.getCommand();
+		oldBaseCommand.removeCommandListener(commandListener);
+		final ICommandService commandService = serviceLocator
+				.getService(ICommandService.class);
+		final Command newBaseCommand = commandService.getCommand(id);
+		command = new ParameterizedCommand(newBaseCommand, null);
+		newBaseCommand.addCommandListener(commandListener);
+
+		final boolean newChecked = isChecked();
+		final String newDescription = getDescription();
+		final boolean newEnabled = isEnabled();
+		final boolean newHandled = isHandled();
+		final ImageDescriptor newDefaultImage = getImageDescriptor();
+		final ImageDescriptor newDisabledImage = getDisabledImageDescriptor();
+		final ImageDescriptor newHoverImage = getHoverImageDescriptor();
+		final String newText = getText();
+
+		if (newChecked != oldChecked) {
+			if (oldChecked) {
+				firePropertyChange(IAction.CHECKED, Boolean.TRUE, Boolean.FALSE);
+			} else {
+				firePropertyChange(IAction.CHECKED, Boolean.FALSE, Boolean.TRUE);
+			}
+		}
+
+		if (!Util.equals(oldDescription, newDescription)) {
+			firePropertyChange(IAction.DESCRIPTION, oldDescription,
+					newDescription);
+			firePropertyChange(IAction.TOOL_TIP_TEXT, oldDescription,
+					newDescription);
+		}
+
+		if (newEnabled != oldEnabled) {
+			if (oldEnabled) {
+				firePropertyChange(IAction.ENABLED, Boolean.TRUE, Boolean.FALSE);
+			} else {
+				firePropertyChange(IAction.ENABLED, Boolean.FALSE, Boolean.TRUE);
+			}
+		}
+
+		if (newHandled != oldHandled) {
+			if (oldHandled) {
+				firePropertyChange(IAction.HANDLED, Boolean.TRUE, Boolean.FALSE);
+			} else {
+				firePropertyChange(IAction.HANDLED, Boolean.FALSE, Boolean.TRUE);
+			}
+		}
+
+		if (!Util.equals(oldDefaultImage, newDefaultImage)) {
+			firePropertyChange(IAction.IMAGE, oldDefaultImage, newDefaultImage);
+		}
+
+		if (!Util.equals(oldDisabledImage, newDisabledImage)) {
+			firePropertyChange(IAction.IMAGE, oldDisabledImage,
+					newDisabledImage);
+		}
+
+		if (!Util.equals(oldHoverImage, newHoverImage)) {
+			firePropertyChange(IAction.IMAGE, oldHoverImage, newHoverImage);
+		}
+
+		if (!Util.equals(oldText, newText)) {
+			firePropertyChange(IAction.TEXT, oldText, newText);
+		}
+	}
+
+	@Override
+	public final void setChecked(final boolean checked) {
+		final State state = command.getCommand().getState(IMenuStateIds.STYLE);
+		if (state instanceof ToggleState) {
+			final Boolean currentValue = (Boolean) state.getValue();
+			if (checked != currentValue.booleanValue()) {
+				if (checked) {
+					state.setValue(Boolean.TRUE);
+				} else {
+					state.setValue(Boolean.FALSE);
+				}
+			}
+		}
+	}
+
+	@Override
+	public final void setDescription(final String text) {
+		final State state = command.getCommand().getState(
+				INamedHandleStateIds.DESCRIPTION);
+		if (state instanceof TextState) {
+			final String currentValue = (String) state.getValue();
+			if (!Util.equals(text, currentValue)) {
+				state.setValue(text);
+			}
+		}
+	}
+
+	@Override
+	public final void setDisabledImageDescriptor(final ImageDescriptor newImage) {
+		final String commandId = getActionDefinitionId();
+		final int type = CommandImageManager.TYPE_DISABLED;
+		final ICommandImageService commandImageService = serviceLocator
+				.getService(ICommandImageService.class);
+		if (commandImageService instanceof CommandImageService) {
+			((CommandImageService) commandImageService).bind(commandId, type,
+					style, newImage);
+		}
+	}
+
+	@Override
+	public final void setEnabled(final boolean enabled) {
+		if (enabled != this.enabled) {
+			final Boolean oldValue = this.enabled ? Boolean.TRUE
+					: Boolean.FALSE;
+			final Boolean newValue = enabled ? Boolean.TRUE : Boolean.FALSE;
+			this.enabled = enabled;
+			firePropertyChange(ENABLED, oldValue, newValue);
+		}
+	}
+
+	@Override
+	public final void setHelpListener(final HelpListener listener) {
+
+	}
+
+	@Override
+	public final void setHoverImageDescriptor(final ImageDescriptor newImage) {
+		final String commandId = getActionDefinitionId();
+		final int type = CommandImageManager.TYPE_HOVER;
+		final ICommandImageService commandImageService = serviceLocator
+				.getService(ICommandImageService.class);
+		if (commandImageService instanceof CommandImageService) {
+			((CommandImageService) commandImageService).bind(commandId, type,
+					style, newImage);
+		}
+	}
+
+	@Override
+	public final void setId(final String id) {
+		this.id = id;
+	}
+
+	@Override
+	public final void setImageDescriptor(final ImageDescriptor newImage) {
+		final String commandId = getActionDefinitionId();
+		final int type = CommandImageManager.TYPE_DEFAULT;
+		final ICommandImageService commandImageService = serviceLocator
+				.getService(ICommandImageService.class);
+		if (commandImageService instanceof CommandImageService) {
+			((CommandImageService) commandImageService).bind(commandId, type,
+					style, newImage);
+		}
+	}
+
+	@Override
+	public final void setMenuCreator(final IMenuCreator creator) {
+	}
+
+	@Override
+	public final void setText(final String text) {
+		final State state = command.getCommand().getState(
+				INamedHandleStateIds.NAME);
+		if (state instanceof TextState) {
+			final String currentValue = (String) state.getValue();
+			if (!Util.equals(text, currentValue)) {
+				state.setValue(text);
+			}
+		}
+	}
+
+	@Override
+	public final void setToolTipText(final String text) {
+		setDescription(text);
+	}
+
+}

@@ -1,0 +1,10 @@
+		textEditor.addListener(SWT.Modify, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Point textSize = textEditor.computeSize(SWT.DEFAULT,
+						SWT.DEFAULT);
+				Point parentSize = textEditorParent.getSize();
+				textEditor.setBounds(2, inset, Math.min(textSize.x,
+						parentSize.x - 4), parentSize.y - 2 * inset);
+				textEditorParent.redraw();
+			}

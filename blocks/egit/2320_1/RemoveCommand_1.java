@@ -1,0 +1,73 @@
+package org.eclipse.egit.ui.internal.repository.tree.command;
+
+import org.eclipse.egit.ui.UIText;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
+public class DeleteRepositoryConfirmDialog extends TitleAreaDialog {
+	private final Repository repository;
+
+	private boolean shouldDelete = false;
+
+	public DeleteRepositoryConfirmDialog(Shell parentShell,
+			Repository repository) {
+		super(parentShell);
+		setHelpAvailable(false);
+		this.repository = repository;
+	}
+
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		main.setLayout(new GridLayout(1, false));
+		if (repository.isBare())
+			return main;
+		final Button deleteWorkDir = new Button(main, SWT.CHECK);
+		deleteWorkDir.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shouldDelete = deleteWorkDir.getSelection();
+			}
+		});
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(deleteWorkDir);
+		deleteWorkDir
+				.setText(NLS
+						.bind(
+								UIText.DeleteRepositoryConfirmDialog_DeleteWorkingDirectoryCheckbox,
+								repository.getWorkTree().getPath()));
+		return main;
+	}
+
+	@Override
+	public void create() {
+		super.create();
+		setTitle(NLS.bind(
+				UIText.DeleteRepositoryConfirmDialog_DeleteRepositoryTitle,
+				repository.getDirectory().getPath()));
+		setMessage(NLS.bind(
+				UIText.DeleteRepositoryConfirmDialog_DeleteRepositoryMessage,
+				repository.getDirectory().getPath()));
+	}
+
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell
+				.setText(UIText.DeleteRepositoryConfirmDialog_DeleteRepositoryWindowTitle);
+	}
+
+	public boolean shouldDeleteWorkingDir() {
+		return shouldDelete;
+	}
+}

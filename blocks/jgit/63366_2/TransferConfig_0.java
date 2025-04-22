@@ -1,0 +1,6 @@
+		boolean fsck = rc.getBoolean("transfer"
+		fetchFsck = rc.getBoolean("fetch"
+		receiveFsck = rc.getBoolean("receive"
+		allowLeadingZeroFileMode = rc.getBoolean("fsck"
+		allowInvalidPersonIdent = rc.getBoolean("fsck"
+		safeForWindows = rc.getBoolean("fsck"

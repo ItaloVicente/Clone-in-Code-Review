@@ -1,0 +1,10 @@
+		setPackedGitOpenFiles(rc.getInt(
+				"core"
+		setPackedGitLimit(rc.getLong(
+				"core"
+		setPackedGitWindowSize(rc.getInt(
+				"core"
+		setPackedGitMMAP(rc.getBoolean(
+				"core"
+		setDeltaBaseCacheLimit(rc.getInt(
+				"core"

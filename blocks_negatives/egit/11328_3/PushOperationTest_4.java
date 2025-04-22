@@ -1,0 +1,11 @@
+import org.eclipse.egit.core.Activator;
+import org.eclipse.egit.core.op.AddToIndexOperation;
+import org.eclipse.egit.core.op.BranchOperation;
+import org.eclipse.egit.core.op.CloneOperation;
+import org.eclipse.egit.core.op.CommitOperation;
+import org.eclipse.egit.core.op.PushOperation;
+import org.eclipse.egit.core.op.PushOperationResult;
+import org.eclipse.egit.core.op.PushOperationSpecification;
+import org.eclipse.egit.core.test.DualRepositoryTestCase;
+import org.eclipse.egit.core.test.TestRepository;
+import org.eclipse.egit.core.test.TestUtils;

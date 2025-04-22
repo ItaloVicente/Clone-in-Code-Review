@@ -1,0 +1,11 @@
+                new MutationCommand(Mutation.COUNTER, "counter", counterFragment, false),
+                new MutationCommand(Mutation.COUNTER, "another.counter", counterFragment, true),
+                new MutationCommand(Mutation.COUNTER, "another.counter", counterFragment, false),
+                new MutationCommand(Mutation.DICT_ADD, "sub.value2", stringFragment),
+                new MutationCommand(Mutation.DICT_UPSERT, "sub.value3", stringFragment),
+                new MutationCommand(Mutation.REPLACE, "value", stringFragment),
+                new MutationCommand(Mutation.ARRAY_INSERT, "sub.array[1]", arrayInsertedFragment),
+                new MutationCommand(Mutation.ARRAY_PUSH_FIRST, "sub.array", arrayFirstFragment),
+                new MutationCommand(Mutation.ARRAY_PUSH_LAST, "sub.array", arrayLastFragment),
+                new MutationCommand(Mutation.ARRAY_ADD_UNIQUE, "sub.array", uniqueFragment),
+                new MutationCommand(Mutation.DELETE, "sub.value")

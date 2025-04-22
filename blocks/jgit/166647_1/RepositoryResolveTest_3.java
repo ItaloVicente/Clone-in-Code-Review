@@ -1,0 +1,12 @@
+		assertEquals("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1"
+		assertNull(repository.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4~~"));
+		assertNull(repository.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4^^"));
+		assertNull(repository.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4~2"));
+		assertNull(repository.resolve("6462e7d8024396b14d7651e2ec11e2bbf07a05c4~99"));
+		assertNull(repository.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1~~"));
+		assertNull(repository.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1^^"));
+		assertNull(repository.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1~2"));
+		assertNull(repository.resolve("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1~99"));
+		assertEquals("42e4e7c5e507e113ebbb7801b16b52cf867b7ce1"
+		assertNull(repository.resolve("master~7"));
+		assertNull(repository.resolve("master~6~"));

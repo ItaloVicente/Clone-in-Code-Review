@@ -1,0 +1,16 @@
+    <T> EntityDocument<T> remove(EntityDocument<T> document);
+    <T> EntityDocument<T> remove(EntityDocument<T> document, long timeout, TimeUnit timeUnit);
+    <T> EntityDocument<T> remove(EntityDocument<T> document, PersistTo persistTo);
+    <T> EntityDocument<T> remove(EntityDocument<T> document, PersistTo persistTo, long timeout, TimeUnit timeUnit);
+    <T> EntityDocument<T> remove(EntityDocument<T> document, ReplicateTo replicateTo);
+    <T> EntityDocument<T> remove(EntityDocument<T> document, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+    <T> EntityDocument<T> remove(EntityDocument<T> document, PersistTo persistTo, ReplicateTo replicateTo);
+    <T> EntityDocument<T> remove(EntityDocument<T> document, PersistTo persistTo, ReplicateTo replicateTo, long timeout, TimeUnit timeUnit);
+    <T> EntityDocument<T> remove(String id, Class<T> entityClass);
+    <T> EntityDocument<T> remove(String id, Class<T> entityClass, long timeout, TimeUnit timeUnit);
+    <T> EntityDocument<T> remove(String id, PersistTo persistTo, Class<T> entityClass);
+    <T> EntityDocument<T> remove(String id, PersistTo persistTo, Class<T> entityClass, long timeout, TimeUnit timeUnit);
+    <T> EntityDocument<T> remove(String id, ReplicateTo replicateTo, Class<T> entityClass);
+    <T> EntityDocument<T> remove(String id, ReplicateTo replicateTo, Class<T> entityClass, long timeout, TimeUnit timeUnit);
+    <T> EntityDocument<T> remove(String id, PersistTo persistTo, ReplicateTo replicateTo, Class<T> entityClass);
+    <T> EntityDocument<T> remove(String id, PersistTo persistTo, ReplicateTo replicateTo, Class<T> entityClass, long timeout, TimeUnit timeUnit);

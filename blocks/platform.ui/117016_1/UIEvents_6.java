@@ -1,0 +1,10 @@
+		String ACCESSIBILITYPHRASE = "accessibilityPhrase"; //$NON-NLS-1$
+		String CONTAINERDATA = "containerData"; //$NON-NLS-1$
+		String CURSHAREDREF = "curSharedRef"; //$NON-NLS-1$
+		String ONTOP = "onTop"; //$NON-NLS-1$
+		String PARENT = "parent"; //$NON-NLS-1$
+		String RENDERER = "renderer"; //$NON-NLS-1$
+		String TOBERENDERED = "toBeRendered"; //$NON-NLS-1$
+		String VISIBLE = "visible"; //$NON-NLS-1$
+		String VISIBLEWHEN = "visibleWhen"; //$NON-NLS-1$
+		String WIDGET = "widget"; //$NON-NLS-1$

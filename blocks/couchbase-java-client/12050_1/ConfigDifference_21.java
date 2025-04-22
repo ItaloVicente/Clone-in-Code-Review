@@ -1,0 +1,40 @@
+
+package com.couchbase.client.vbucket.config;
+
+import java.net.URL;
+import java.util.List;
+
+import net.spy.memcached.HashAlgorithm;
+
+public interface Config {
+
+
+  int getReplicasCount();
+
+  int getVbucketsCount();
+
+  int getServersCount();
+
+  HashAlgorithm getHashAlgorithm();
+
+  String getServer(int serverIndex);
+
+
+  int getVbucketByKey(String key);
+
+  int getMaster(int vbucketIndex);
+
+  int getReplica(int vbucketIndex, int replicaIndex);
+
+  int foundIncorrectMaster(int vbucket, int wrongServer);
+
+  ConfigDifference compareTo(Config config);
+
+  List<String> getServers();
+
+  List<URL> getCouchServers();
+
+  List<VBucket> getVbuckets();
+
+  ConfigType getConfigType();
+}

@@ -1,0 +1,11 @@
+import org.eclipse.jface.tests.internal.databinding.swt.TextObservableValueModifyTest;
+import org.eclipse.jface.tests.internal.databinding.swt.TextObservableValueTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.CheckableCheckedElementsObservableSetTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.ObservableCollectionContentProviderTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.ObservableCollectionTreeContentProviderTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.ObservableViewerElementSetTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.SelectionProviderMultiSelectionObservableListTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.SelectionProviderSingleSelectionObservableValueTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.ViewerElementMapTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.ViewerElementSetTest;
+import org.eclipse.jface.tests.internal.databinding.viewers.ViewerElementWrapperTest;

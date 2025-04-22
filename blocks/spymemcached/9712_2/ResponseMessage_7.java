@@ -1,0 +1,20 @@
+	private static final int ENGINE_PRIVATE_OFFSET = 24;
+	private static final int FLAGS_OFFSET = 26;
+	private static final int TTL_OFFSET = 28;
+	private static final int RESERVED1_OFFSET = 29;
+	private static final int RESERVED2_OFFSET = 30;
+	private static final int RESERVED3_OFFSET = 31;
+	private static final int ITEM_FLAGS_OFFSET = 32;
+	private static final int ITEM_EXPIRY_OFFSET = 36;
+	private static final int KEY_OFFSET = 40;
+
+	private short engineprivate;
+	private List<TapFlag> flags;
+	private byte ttl;
+	private byte reserved1;
+	private byte reserved2;
+	private byte reserved3;
+	private int itemflags;
+	private int itemexpiry;
+	private String key;
+	private byte[] value;

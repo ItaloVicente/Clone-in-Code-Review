@@ -1,0 +1,12 @@
+		walk = beginWalk();
+		assertIteration(F, ".gitattributes");
+		assertIteration(D, "foo");
+		assertIteration(F, "foo/bar.jar", attrs("jar xml"));
+		assertIteration(F, "foo/bar.xml", attrs("xml"));
+		assertIteration(D, "sub");
+		assertIteration(F, "sub/a.txt");
+		assertIteration(F, "sub/b.jar", attrs("jar"));
+		assertIteration(F, "sub/b.xml");
+		assertIteration(D, "sub/foo");
+		assertIteration(F, "sub/foo/b.jar", attrs("jar"));
+		endWalk();

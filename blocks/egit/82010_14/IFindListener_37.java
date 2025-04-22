@@ -1,0 +1,160 @@
+package org.eclipse.egit.ui.internal.history;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.core.resources.IResource;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.internal.UIText;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.osgi.util.NLS;
+
+public class HistoryPageInput {
+	private final List<IResource> list;
+
+	private final List<File> files;
+
+	private final Repository repo;
+
+	private final Object singleFile;
+
+	private final Object singleItem;
+
+	public HistoryPageInput(final Repository repository,
+			final IResource[] resourceItems) {
+		this.repo = repository;
+		list = Arrays.asList(resourceItems);
+		if (resourceItems.length == 1) {
+			singleItem = resourceItems[0];
+			if (resourceItems[0].getType() == IResource.FILE)
+				singleFile = resourceItems[0];
+			else
+				singleFile = null;
+		} else {
+			singleItem = null;
+			singleFile = null;
+		}
+		files = null;
+	}
+
+	public HistoryPageInput(final Repository repository, final File[] fileItems) {
+		this.repo = repository;
+		list = null;
+		if (fileItems.length == 1 && fileItems[0].isFile()
+				&& !inGitDir(repository, fileItems[0])) {
+			singleItem = fileItems[0];
+			singleFile = fileItems[0];
+			files = Arrays.asList(fileItems);
+		} else {
+			singleItem = null;
+			singleFile = null;
+			files = filterFilesInGitDir(repository, fileItems);
+		}
+	}
+
+	public HistoryPageInput(final Repository repository) {
+		this.repo = repository;
+		list = null;
+		singleFile = null;
+		singleItem = null;
+		files = null;
+	}
+
+	public Repository getRepository() {
+		return repo;
+	}
+
+	public IResource[] getItems() {
+		return list == null ? null : list.toArray(new IResource[list.size()]);
+	}
+
+	public File[] getFileList() {
+		return files == null ? null : files.toArray(new File[files.size()]);
+	}
+
+	public Object getSingleFile() {
+		return singleFile;
+	}
+
+	public Object getSingleItem() {
+		return singleItem;
+	}
+
+	public boolean isSingleFile() {
+		return singleFile != null;
+	}
+
+	public Ref getHead() {
+		try {
+			Ref h = repo.exactRef(Constants.HEAD);
+			if (h != null && h.isSymbolic())
+				return h;
+			return null;
+		} catch (IOException e) {
+			throw new IllegalStateException(NLS.bind(
+					UIText.GitHistoryPage_errorParsingHead, Activator
+							.getDefault().getRepositoryUtil()
+							.getRepositoryName(repo)), e);
+		}
+	}
+
+	private boolean inGitDir(Repository repository, File file) {
+		return file.getAbsoluteFile().toPath().startsWith(
+				repository.getDirectory().getAbsoluteFile().toPath());
+	}
+
+	private List<File> filterFilesInGitDir(Repository repository,
+			File[] fileItems) {
+		List<File> result = new ArrayList<>(fileItems.length);
+		Path gitDirPath = repository.getDirectory().getAbsoluteFile().toPath();
+		for (File f : fileItems) {
+			if (!f.getAbsoluteFile().toPath().startsWith(gitDirPath)) {
+				result.add(f);
+			}
+		}
+		if (result.isEmpty()) {
+			return null;
+		}
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof HistoryPageInput)) {
+			return false;
+		}
+		HistoryPageInput other = (HistoryPageInput) obj;
+		return repo == other.repo && singleFile == other.singleFile
+				&& singleItem == other.singleItem
+				&& listEquals(files, other.files)
+				&& listEquals(list, other.list);
+	}
+
+	private <T> boolean listEquals(List<? extends T> a, List<? extends T> b) {
+		if (a == b) {
+			return true;
+		}
+		if (a == null || b == null) {
+			return false;
+		}
+		return Arrays.equals(a.toArray(), b.toArray());
+	}
+
+	@Override
+	public int hashCode() {
+		return (repo == null ? 0 : repo.hashCode())
+				^ (singleFile == null ? 0 : singleFile.hashCode())
+				^ (singleItem == null ? 0 : singleItem.hashCode())
+				^ (files == null ? 0 : Arrays.hashCode(files.toArray()))
+				^ (list == null ? 0 : Arrays.hashCode(list.toArray()));
+	}
+}

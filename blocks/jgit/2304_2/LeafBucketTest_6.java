@@ -1,0 +1,7 @@
+		assertNull(b.getNote(id(0x01)
+		assertEquals(id(0x81)
+		assertEquals(id(0x82)
+		assertEquals(id(0x83)
+		assertEquals(id(0x84)
+		assertNull(b.getNote(id(0x55)
+		assertNull(b.getNote(id(0x66)

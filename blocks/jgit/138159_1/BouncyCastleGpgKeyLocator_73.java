@@ -1,0 +1,17 @@
+	private static Path findGpgDirectory() {
+		SystemReader system = SystemReader.getInstance();
+		if (system.isWindows()) {
+			if (appData != null && !appData.isEmpty()) {
+				try {
+					if (Files.isDirectory(directory)) {
+						return directory;
+					}
+				} catch (SecurityException | InvalidPathException e) {
+				}
+			}
+		}
+		File home = FS.DETECTED.userHome();
+		if (home == null) {
+		}
+	}
+

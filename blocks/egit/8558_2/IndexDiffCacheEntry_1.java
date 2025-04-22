@@ -1,0 +1,40 @@
+	public void refreshIndexDelta() {
+		if(repository.isBare()) {
+			refresh(); // full refresh on bare repos.
+			return;
+		}
+
+		try {
+			DirCache currentIndex = repository.readDirCache();
+			DirCache oldIndex = lastIndex;
+
+			lastIndex = currentIndex;
+
+			if(oldIndex == null) {
+				refresh(); // full refresh in case we have no data to compare.
+				return;
+			}
+
+			Set<String> paths = new TreeSet<String>();
+			TreeWalk walk = new TreeWalk(repository);
+
+			walk.addTree(new DirCacheIterator(oldIndex));
+			walk.addTree(new DirCacheIterator(currentIndex));
+			walk.setFilter(TreeFilter.ANY_DIFF);
+
+			while(walk.next()) {
+				if(walk.isSubtree())
+					walk.enterSubtree();
+				else
+					paths.add(walk.getPathString());
+			}
+
+			if(!paths.isEmpty()) {
+				refreshFiles(paths);
+			}
+		} catch (Exception ex) {
+			Activator.error(String.format(CoreText.IndexDiffCacheEntry_failed_index_load, repository), ex);
+			scheduleReloadJob("failed to calculate index delta!"); //$NON-NLS-1$
+		}
+	}
+

@@ -1,0 +1,19 @@
+			} else {
+				String[] bindings = new String[] {
+						IDEResourceInfoUtils.getLocationText(destination),
+						IDEResourceInfoUtils
+						.getDateStringValue(destination),
+						IDEResourceInfoUtils.getLocationText(source),
+						IDEResourceInfoUtils.getDateStringValue(source) };
+				message = NLS
+						.bind(
+								IDEWorkbenchMessages.CopyFilesAndFoldersOperation_overwriteWithDetailsQuestion,
+								bindings);
+			}
+			MessageDialog dialog = new MessageDialog(
+					messageShell,
+					IDEWorkbenchMessages.CopyFilesAndFoldersOperation_resourceExists,
+					null, message, MessageDialog.QUESTION, 0, labels) {
+				@Override
+				protected int getShellStyle() {
+					return super.getShellStyle() | SWT.SHEET;

@@ -1,0 +1,17 @@
+import org.eclipse.egit.core.internal.ResourceRefreshHandler;
+import org.eclipse.egit.core.internal.SshPreferencesMirror;
+import org.eclipse.egit.core.internal.indexdiff.IndexDiffCache;
+import org.eclipse.egit.core.internal.job.JobUtil;
+import org.eclipse.egit.core.internal.signing.ExternalGpgSigner;
+import org.eclipse.egit.core.internal.trace.GitTraceLocation;
+import org.eclipse.egit.core.internal.util.ResourceUtil;
+import org.eclipse.egit.core.op.ConnectProviderOperation;
+import org.eclipse.egit.core.op.IgnoreOperation;
+import org.eclipse.egit.core.project.GitProjectData;
+import org.eclipse.egit.core.project.RepositoryFinder;
+import org.eclipse.egit.core.project.RepositoryMapping;
+import org.eclipse.egit.core.securestorage.EGitSecureStore;
+import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
+import org.eclipse.jgit.annotations.NonNull;
+import org.eclipse.jgit.errors.ConfigInvalidException;
+import org.eclipse.jgit.events.ListenerHandle;

@@ -1,0 +1,54 @@
+		Git git = new Git(db);
+		writeTrashFile("a", "content of a");
+		writeTrashFile("b", "content of b");
+		writeTrashFile("c", "content of c");
+		git.add().addFilepattern("a").addFilepattern("b").call();
+		Status stat = git.status().call();
+		assertEquals(Sets.of("a", "b"), stat.getAdded());
+		assertEquals(0, stat.getChanged().size());
+		assertEquals(0, stat.getMissing().size());
+		assertEquals(0, stat.getModified().size());
+		assertEquals(0, stat.getRemoved().size());
+		assertEquals(Sets.of("c"), stat.getUntracked());
+		git.commit().setMessage("initial").call();
+
+		writeTrashFile("a", "modified content of a");
+		writeTrashFile("b", "modified content of b");
+		writeTrashFile("d", "content of d");
+		git.add().addFilepattern("a").addFilepattern("d").call();
+		writeTrashFile("a", "again modified content of a");
+		stat = git.status().call();
+		assertEquals(Sets.of("d"), stat.getAdded());
+		assertEquals(Sets.of("a"), stat.getChanged());
+		assertEquals(0, stat.getMissing().size());
+		assertEquals(Sets.of("b", "a"), stat.getModified());
+		assertEquals(0, stat.getRemoved().size());
+		assertEquals(Sets.of("c"), stat.getUntracked());
+		git.add().addFilepattern(".").call();
+		git.commit().setMessage("second").call();
+
+		stat = git.status().call();
+		assertEquals(0, stat.getAdded().size());
+		assertEquals(0, stat.getChanged().size());
+		assertEquals(0, stat.getMissing().size());
+		assertEquals(0, stat.getModified().size());
+		assertEquals(0, stat.getRemoved().size());
+		assertEquals(0, stat.getUntracked().size());
+
+		deleteTrashFile("a");
+		assertFalse(new File(git.getRepository().getWorkTree(), "a").exists());
+		git.add().addFilepattern("a").setUpdate(true).call();
+		writeTrashFile("a", "recreated content of a");
+		stat = git.status().call();
+		assertEquals(0, stat.getAdded().size());
+		assertEquals(0, stat.getChanged().size());
+		assertEquals(0, stat.getMissing().size());
+		assertEquals(0, stat.getModified().size());
+		assertEquals(Sets.of("a"), stat.getRemoved());
+		assertEquals(Sets.of("a"), stat.getUntracked());
+		git.commit().setMessage("t").call();
+
+		writeTrashFile("sub/a", "sub-file");
+		stat = git.status().call();
+		assertEquals(1, stat.getUntrackedFolders().size());
+		assertTrue(stat.getUntrackedFolders().contains("sub"));

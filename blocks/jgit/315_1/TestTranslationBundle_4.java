@@ -1,0 +1,81 @@
+
+package org.eclipse.jgit.nls;
+
+import java.util.Locale;
+
+import junit.framework.TestCase;
+
+
+public class TestNLS extends TestCase {
+
+	public void testNLSLocale() {
+		NLS.setLocale(Locale.ROOT);
+		GermanTranslatedBundle bundle = GermanTranslatedBundle.get();
+		assertEquals(Locale.ROOT
+
+		NLS.setLocale(Locale.ROOT);
+		bundle = GermanTranslatedBundle.get();
+		assertEquals(Locale.ROOT
+	}
+
+
+	public void testThreadTranslationBundleInheritance() throws InterruptedException {
+
+		class T extends Thread {
+			GermanTranslatedBundle bundle;
+			@Override
+			public void run() {
+				bundle = GermanTranslatedBundle.get();
+			}
+		}
+
+		NLS.setLocale(Locale.ROOT);
+		GermanTranslatedBundle mainThreadsBundle = GermanTranslatedBundle.get();
+		T t = new T();
+		t.start();
+		t.join();
+		assertSame(mainThreadsBundle
+
+		NLS.setLocale(Locale.GERMAN);
+		mainThreadsBundle = GermanTranslatedBundle.get();
+		t = new T();
+		t.start();
+		t.join();
+		assertSame(mainThreadsBundle
+	}
+
+	public void testParallelThreadsWithDifferentLocales() throws InterruptedException {
+
+		class T extends Thread {
+			Locale locale;
+			GermanTranslatedBundle bundle;
+			InterruptedException e;
+
+			T(Locale locale) {
+				this.locale = locale;
+			}
+
+			@Override
+			public void run() {
+				try {
+					NLS.setLocale(locale);
+					bundle = GermanTranslatedBundle.get();
+				} catch (InterruptedException e) {
+					this.e = e;
+				}
+			}
+		}
+
+		T t1 = new T(Locale.ROOT);
+		T t2 = new T(Locale.GERMAN);
+		t1.start();
+		t2.start();
+		t1.join();
+		t2.join();
+
+		assertNull("t1 was interrupted"
+		assertNull("t2 was interrupted"
+		assertEquals(Locale.ROOT
+		assertEquals(Locale.GERMAN
+	}
+}

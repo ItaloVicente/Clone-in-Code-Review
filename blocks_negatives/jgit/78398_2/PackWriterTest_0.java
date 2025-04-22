@@ -1,0 +1,18 @@
+		FileRepository repo = createBareRepository();
+		TestRepository<Repository> r = new TestRepository<Repository>(repo);
+		BranchBuilder bb = r.branch("refs/heads/master");
+		RevBlob contentA = r.blob("A");
+		RevBlob contentB = r.blob("B");
+		RevBlob contentC = r.blob("C");
+		RevBlob contentD = r.blob("D");
+		RevBlob contentE = r.blob("E");
+		RevCommit c1 = bb.commit().add("a", contentA).create();
+		RevCommit c2 = bb.commit().add("b", contentB).create();
+		RevCommit c3 = bb.commit().add("c", contentC).create();
+		RevCommit c4 = bb.commit().add("d", contentD).create();
+		RevCommit c5 = bb.commit().add("e", contentE).create();
+		r.getRevWalk().parseHeaders(c1);
+		r.getRevWalk().parseHeaders(c2);
+		r.getRevWalk().parseHeaders(c3);
+		r.getRevWalk().parseHeaders(c4);
+		r.getRevWalk().parseHeaders(c5);

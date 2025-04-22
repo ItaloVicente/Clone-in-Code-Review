@@ -1,0 +1,5 @@
+block3.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/egit/before_138175_1/org.eclipse.egit.core/src/org/eclipse/egit/core/RepositoryCache.java_prune#152#171
+block29.java_method#1#16,/home/gesad/PycharmProjects/Diff/befores/egit/before_138175_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/history/CommitSelectionDialog.java_run#155#220,/home/gesad/PycharmProjects/Diff/befores/egit/before_138175_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/history/CommitSelectionDialog.java_create#148#228
+block11.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/egit/before_138175_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/dialogs/CreateTagDialog.java_createExistingTagsSection#556#616
+block36.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/egit/before_138175_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/synchronize/action/GitOpenInCompareAction.java_handleGitObjectComparison#88#131
+block8.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/egit/before_138175_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/ResourcePropertyTester.java_testRepositoryState#105#164

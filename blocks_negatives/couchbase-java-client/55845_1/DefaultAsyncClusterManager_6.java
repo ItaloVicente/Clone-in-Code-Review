@@ -1,0 +1,14 @@
+                }
+            })
+            .flatMap(new Func1<BucketsConfigResponse, Observable<BucketSettings>>() {
+                @Override
+                public Observable<BucketSettings> call(BucketsConfigResponse response) {
+                    try {
+                        JsonArray decoded = CouchbaseAsyncBucket.JSON_ARRAY_TRANSCODER.stringToJsonArray(response.config());
+                        List<BucketSettings> settings = new ArrayList<BucketSettings>();
+                        for (Object item : decoded) {
+                            JsonObject bucket = (JsonObject) item;
+
+                            int ramQuota = 0;
+                            if (bucket.getObject("quota").get("ram") instanceof Long) {
+                                ramQuota = (int) (bucket.getObject("quota").getLong("ram") / 1024 / 1024);

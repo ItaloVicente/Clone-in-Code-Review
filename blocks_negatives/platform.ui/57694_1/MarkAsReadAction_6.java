@@ -1,0 +1,44 @@
+/*******************************************************************************
+ * Copyright (c) 2009 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.e4.ui.examples.css.rcp;
+
+import org.eclipse.jface.action.Action;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchWindow;
+
+
+public class MarkAsReadAction extends Action {
+
+	private final IWorkbenchWindow window;
+
+	MarkAsReadAction(String text, IWorkbenchWindow window) {
+		super(text);
+		this.window = window;
+		setId(ICommandIds.CMD_MARK_AS_READ);
+		setActionDefinitionId(ICommandIds.CMD_MARK_AS_READ);
+		setImageDescriptor(org.eclipse.e4.ui.examples.css.rcp.Activator.getImageDescriptor("/icons/sample3.gif"));
+	}
+
+	@Override
+	public void run() {
+
+		IViewReference[] viewRefs = window.getActivePage().getViewReferences();
+
+		for (IViewReference viewReference : viewRefs) {
+			if(viewReference.getId().equals(View.ID)) {
+				View messageView = (View) viewReference.getPart(false);
+				if(messageView.isTopMost()) {
+					messageView.markAsRead();
+					return;
+				}
+			}
+		}
+	}
+}

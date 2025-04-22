@@ -1,0 +1,11 @@
+		private Set<IPath> getProjectLocations(File workTree) {
+			IProject[] projects = RuleUtil.getProjects(workTree);
+			if (projects == null) {
+				return Collections.emptySet();
+			}
+			Set<IPath> result = new HashSet<>();
+			for (IProject project : projects) {
+				if (project.isAccessible()) {
+					IPath path = project.getLocation();
+					if (path != null) {
+						result.add(path);

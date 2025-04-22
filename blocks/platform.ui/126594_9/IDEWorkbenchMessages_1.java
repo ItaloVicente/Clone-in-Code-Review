@@ -1,0 +1,7 @@
+	public static String UrlHandlerPreferencePage_Label_Message_Current_Location;
+	public static String UrlHandlerPreferencePage_Label_Message_No_Location;
+	public static String UrlHandlerPreferencePage_Label_Handler_Location;
+	public static String UrlHandlerPreferencePage_Page_Description;
+	public static String UrlHandlerPreferencePage_ColumnName_SchemeName;
+	public static String UrlHandlerPreferencePage_ColumnName_SchemeDescription;
+

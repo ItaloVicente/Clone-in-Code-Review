@@ -1,0 +1,10 @@
+			.append("<manifest>")
+			.append("<remote name=\"remote1\" fetch=\".\" />")
+			.append("<remote name=\"remote2\" fetch=\".\" revision=\"")
+			.append(BRANCH)
+			.append("\" />")
+			.append("<default remote=\"remote1\" revision=\"master\" />")
+			.append("<project path=\"foo\" remote=\"remote2\" name=\"")
+			.append(defaultUri)
+			.append("\" />")
+			.append("</manifest>");

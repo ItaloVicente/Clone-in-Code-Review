@@ -1,0 +1,4 @@
+block3.java_method#1#18,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197006_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/ProtocolV0ParserTest.java_testRecvWantsWithAgent#81#99,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197006_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/ProtocolV0ParserTest.java_testRecvWantsWithCapabilities#57#79
+block7.java_method#1#23,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197006_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/UploadPackTest.java_testGetPeerAgentProtocolV2#2431#2453
+block2.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197006_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/internal/transport/parser/FirstWantTest.java_testFirstWantValidAgentName#91#96
+block6.java_method#1#17,/home/gesad/PycharmProjects/Diff/befores/jgit/before_197006_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/transport/UploadPackTest.java_testGetPeerAgentProtocolV0#2414#2429

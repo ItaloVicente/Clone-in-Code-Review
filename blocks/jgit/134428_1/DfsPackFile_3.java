@@ -1,0 +1,12 @@
+			DfsStreamKey revKey = new DfsStreamKey.ForReverseIndex(
+					desc.getStreamKey(INDEX));
+			revref = cache.getOrLoadRef(revKey
+				PackIndex idx = idx(ctx);
+				PackReverseIndex revidx = new PackReverseIndex(idx);
+				int sz = (int) Math.min(idx.getObjectCount() * 8
+						Integer.MAX_VALUE);
+				return new DfsBlockCache.Ref<>(revKey
+			});
+			PackReverseIndex revidx = revref.get();
+			if (revidx != null) {
+				reverseIndex = revref;

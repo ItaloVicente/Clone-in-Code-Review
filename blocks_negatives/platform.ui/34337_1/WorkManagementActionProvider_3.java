@@ -1,0 +1,7 @@
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.actions.ActionGroup#setContext(org.eclipse.ui.actions.
+	 * ActionContext)
+	 */

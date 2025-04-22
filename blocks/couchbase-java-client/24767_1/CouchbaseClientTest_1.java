@@ -1,0 +1,35 @@
+  public void testReplicateToMoreThanConf() throws Exception {
+    CouchbaseClient cb = (CouchbaseClient) client;
+    int size = client.getAvailableServers().size();
+    OperationFuture<Boolean> future = null;
+    switch(size){
+    case 0:
+    future = cb.set("something", 0,
+      "to_store", ReplicateTo.ONE);
+    assertFalse(future.get());
+    break;
+    case 1:
+    future = cb.set("something", 0,
+      "to_store", ReplicateTo.TWO);
+    assertFalse(future.get());
+    break;
+    case 2:
+    future = cb.set("something", 0,
+      "to_store", ReplicateTo.THREE);
+    assertFalse(future.get());
+    break;
+    }
+    String expected = "Currently, there are less nodes in the cluster than "
+      + "required to satisfy the replication constraint.";
+    assertEquals(expected, future.getStatus().getMessage());
+  }
+
+  public void testObsDeleteKeyExists() throws Exception {
+    client.set("observetest", 0, "something");
+    OperationFuture<Boolean> delOp =
+            (((CouchbaseClient)client).delete("observetest",
+                PersistTo.MASTER));
+    assert delOp.get();
+    assertNotNull(delOp.getStatus().getMessage());    
+  }
+  

@@ -1,0 +1,39 @@
+
+package org.eclipse.egit.ui.internal.actions;
+
+import java.util.Map;
+
+import org.eclipse.egit.ui.UIText;
+import org.eclipse.jgit.dircache.DirCacheEntry;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.RepositoryState;
+import org.eclipse.ui.commands.IElementUpdater;
+import org.eclipse.ui.menus.UIElement;
+
+public class CompareWithTheirsActionHandler extends
+		CompareWithIndexStageActionHandler implements IElementUpdater {
+
+	@Override
+	protected int getStage() {
+		return DirCacheEntry.STAGE_3;
+	}
+
+	public void updateElement(UIElement element, Map parameters) {
+		Repository repo = getRepository();
+		if (repo == null)
+			return;
+
+		String text = getNameForState(repo);
+		element.setText(text);
+	}
+
+	private String getNameForState(Repository repo) {
+		RepositoryState state = repo.getRepositoryState();
+		if (state == RepositoryState.REBASING)
+			return UIText.CompareWithTheirsActionHandler_LabelWhenRebasing;
+		else if (state == RepositoryState.CHERRY_PICKING)
+			return UIText.CompareWithTheirsActionHandler_LabelWhenCherryPicking;
+		else
+			return UIText.CompareWithTheirsActionHandler_LabelWhenMerging;
+	}
+}

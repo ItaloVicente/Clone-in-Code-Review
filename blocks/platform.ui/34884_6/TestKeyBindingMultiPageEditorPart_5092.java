@@ -1,0 +1,60 @@
+
+package org.eclipse.ui.tests.multipageeditor;
+
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWorkbenchPartReference;
+
+public class PartPageListener implements IPartListener2, IPageChangedListener {
+
+	public int pageChangeCount;
+	public PageChangedEvent currentChangeEvent;
+
+	@Override
+	public void partActivated(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void partBroughtToTop(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void partClosed(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void partDeactivated(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void partHidden(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void partInputChanged(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void partOpened(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void partVisible(IWorkbenchPartReference partRef) {
+
+	}
+
+	@Override
+	public void pageChanged(PageChangedEvent event) {
+		pageChangeCount++;
+		currentChangeEvent = event;
+	}
+
+}

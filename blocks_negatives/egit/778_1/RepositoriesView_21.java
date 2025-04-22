@@ -1,0 +1,11 @@
+				final boolean updateInput = needsNewInput;
+				final List newInput;
+				if (updateInput)
+					try {
+						newInput = getRepositoriesFromDirs(monitor);
+					} catch (InterruptedException e) {
+						return new Status(IStatus.ERROR, Activator
+								.getPluginId(), e.getMessage(), e);
+					}
+				else
+					newInput = null;

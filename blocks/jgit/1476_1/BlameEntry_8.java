@@ -1,0 +1,59 @@
+package org.eclipse.jgit.blame;
+
+
+public class BlameEntry {
+	public Range originalRange;
+
+	public Origin suspect;
+
+	public int suspectStart;
+
+	public boolean guilty = false;
+
+	@Override
+	public String toString() {
+
+		return String.format("(%d -> %d
+				.valueOf(originalRange.start)
+				Integer.valueOf(originalRange.length));
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (guilty ? 1231 : 1237);
+		result = prime * result
+				+ ((originalRange == null) ? 0 : originalRange.hashCode());
+		result = prime * result + ((suspect == null) ? 0 : suspect.hashCode());
+		result = prime * result + suspectStart;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BlameEntry other = (BlameEntry) obj;
+		if (guilty != other.guilty)
+			return false;
+		if (originalRange == null) {
+			if (other.originalRange != null)
+				return false;
+		} else if (!originalRange.equals(other.originalRange))
+			return false;
+		if (suspect == null) {
+			if (other.suspect != null)
+				return false;
+		} else if (!suspect.equals(other.suspect))
+			return false;
+		if (suspectStart != other.suspectStart)
+			return false;
+		return true;
+	}
+
+}

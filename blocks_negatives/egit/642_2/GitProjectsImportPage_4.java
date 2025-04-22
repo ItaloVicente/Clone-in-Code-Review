@@ -1,0 +1,7 @@
+	/**
+	 *
+	 */
+	public GitProjectsImportPage(){
+		this(true);
+	}
+

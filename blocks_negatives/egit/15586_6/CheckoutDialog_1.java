@@ -1,0 +1,6 @@
+import org.eclipse.egit.ui.internal.repository.CreateBranchWizard;
+import org.eclipse.egit.ui.internal.repository.tree.RefNode;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;

@@ -1,0 +1,10 @@
+		out.print("\"");
+		out.print(tree.getPathString());
+		out.print("\"");
+		out.print(":  ");
+		out.print(tree.getEntrySpan());
+		out.print(" entries");
+		out.print(", ");
+		out.print(tree.getChildCount());
+		out.print(" children");
+		out.println();

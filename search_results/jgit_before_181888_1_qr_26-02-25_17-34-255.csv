@@ -1,0 +1,5 @@
+block19.java_method#1#41,/home/gesad/PycharmProjects/Diff/befores/jgit/before_181888_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/internal/storage/file/BatchRefUpdateTest.java_atomicUpdateRespectsInProcessLock#792#843
+block46.java_method#1#11,/home/gesad/PycharmProjects/Diff/befores/jgit/before_181888_1/org.eclipse.jgit/src/org/eclipse/jgit/lib/BatchRefUpdate.java_execute#442#545
+block9.java_method#1#21,/home/gesad/PycharmProjects/Diff/befores/jgit/before_181888_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/internal/storage/file/BatchRefUpdateTest.java_nonFastForwardDoesNotDoExpensiveMergeCheck#216#236
+block6.java_method#1#38,/home/gesad/PycharmProjects/Diff/befores/jgit/before_181888_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/gitrepo/RepoCommandTest.java_testRemoveOverlappingBare#922#975,/home/gesad/PycharmProjects/Diff/befores/jgit/before_181888_1/org.eclipse.jgit.test/tst/org/eclipse/jgit/gitrepo/RepoCommandTest.java_testReplaceManifestBare#855#920
+block44.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_181888_1/org.eclipse.jgit.ssh.apache/src/org/eclipse/jgit/internal/transport/sshd/JGitClientSession.java_escapeControls#436#449

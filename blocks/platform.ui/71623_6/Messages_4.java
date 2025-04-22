@@ -1,0 +1,6 @@
+	public static String JobCancelabilityMonitorPreferencePage_enable_monitoring_label;
+	public static String JobCancelabilityMonitorPreferencePage_warning_threshold_label;
+	public static String JobCancelabilityMonitorPreferencePage_error_threshold_label;
+	public static String JobCancelabilityMonitorPreferencePage_max_stack_samples_label;
+	public static String JobCancelabilityMonitorPreferencePage_log_non_cancelable_user_job_label;
+

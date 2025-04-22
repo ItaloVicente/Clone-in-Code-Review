@@ -1,0 +1,14 @@
+import com.couchbase.client.java.search.result.AsyncSearchQueryResult;
+import com.couchbase.client.java.search.result.SearchMetrics;
+import com.couchbase.client.java.search.result.SearchQueryRow;
+import com.couchbase.client.java.search.result.SearchStatus;
+import com.couchbase.client.java.search.result.facets.DateRange;
+import com.couchbase.client.java.search.result.facets.DateRangeFacetResult;
+import com.couchbase.client.java.search.result.facets.FacetResult;
+import com.couchbase.client.java.search.result.facets.NumericRange;
+import com.couchbase.client.java.search.result.facets.NumericRangeFacetResult;
+import com.couchbase.client.java.search.result.facets.TermFacetResult;
+import com.couchbase.client.java.search.result.facets.TermRange;
+import com.couchbase.client.java.search.result.hits.HitLocation;
+import com.couchbase.client.java.search.result.hits.HitLocations;
+import com.couchbase.client.java.search.result.impl.DefaultAsyncSearchQueryResult;

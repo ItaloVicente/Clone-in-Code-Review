@@ -1,0 +1,10 @@
+		if (Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug"))) { //$NON-NLS-1$
+			Policy.DEBUG_DIALOG_NO_PARENT = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug/dialog/noparent")); //$NON-NLS-1$
+			Policy.TRACE_ACTIONS = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/trace/actions")); //$NON-NLS-1$
+			Policy.TRACE_TOOLBAR = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/trace/toolbarDisposal")); //$NON-NLS-1$
+			InternalPolicy.DEBUG_LOG_REENTRANT_VIEWER_CALLS = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug/viewers/reentrantViewerCalls")); //$NON-NLS-1$
+			InternalPolicy.DEBUG_LOG_EQUAL_VIEWER_ELEMENTS = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug/viewers/equalElements")); //$NON-NLS-1$
+			InternalPolicy.DEBUG_BIDI_UTILS = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug/bidiUtils")); //$NON-NLS-1$
+			InternalPolicy.DEBUG_TRACE_URL_IMAGE_DESCRIPTOR = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug/trace/URLImageDescriptor")); //$NON-NLS-1$
+			InternalPolicy.DEBUG_LOG_URL_IMAGE_DESCRIPTOR_MISSING_2x = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug/logURLImageDescriptorMissing2x")); //$NON-NLS-1$
+			InternalPolicy.DEBUG_LOAD_URL_IMAGE_DESCRIPTOR_DIRECTLY = Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(Policy.JFACE + "/debug/loadURLImageDescriptorDirectly")); //$NON-NLS-1$

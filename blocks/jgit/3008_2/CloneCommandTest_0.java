@@ -1,0 +1,14 @@
+			assertEquals(git2.getRepository().getFullBranch()
+					"refs/heads/test");
+			assertEquals(
+					"origin"
+					git2.getRepository()
+							.getConfig()
+							.getString(ConfigConstants.CONFIG_BRANCH_SECTION
+									"test"
+			assertEquals(
+					"refs/heads/test"
+					git2.getRepository()
+							.getConfig()
+							.getString(ConfigConstants.CONFIG_BRANCH_SECTION
+									"test"

@@ -1,0 +1,144 @@
+
+package org.eclipse.jgit.http.test;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jgit.errors.NotSupportedException;
+import org.eclipse.jgit.http.test.util.AccessEvent;
+import org.eclipse.jgit.http.test.util.HttpTestCase;
+import org.eclipse.jgit.junit.TestRepository;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.NullProgressMonitor;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevBlob;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.transport.FetchConnection;
+import org.eclipse.jgit.transport.HttpTransport;
+import org.eclipse.jgit.transport.Transport;
+import org.eclipse.jgit.transport.TransportHttp;
+import org.eclipse.jgit.transport.URIish;
+
+public class DumbClientDumbServerTest extends HttpTestCase {
+	private URIish remoteURI;
+
+	private RevBlob A_txt;
+
+	private RevCommit A
+
+	protected void setUp() throws Exception {
+		super.setUp();
+
+		final TestRepository src = createTestRepository();
+		final File srcGit = src.getRepository().getDirectory();
+		final URI base = srcGit.getParentFile().toURI();
+
+		ServletContextHandler app = server.addContext("/git");
+		app.setResourceBase(base.toString());
+		app.addServlet(DefaultServlet.class
+
+		server.setUp();
+
+		remoteURI = toURIish(app
+
+		A_txt = src.blob("A");
+		A = src.commit().add("A_txt"
+		B = src.commit().parent(A).add("A_txt"
+		src.update(master
+	}
+
+	public void testListRemote() throws IOException {
+		Repository dst = createBareRepository();
+
+		assertEquals("http"
+
+		Map<String
+		Transport t = Transport.open(dst
+		try {
+			assertTrue("isa TransportHttp"
+			assertTrue("isa HttpTransport"
+
+			FetchConnection c = t.openFetch();
+			try {
+				map = c.getRefsMap();
+			} finally {
+				c.close();
+			}
+		} finally {
+			t.close();
+		}
+
+		assertNotNull("have map of refs"
+		assertEquals(2
+
+		assertNotNull("has " + master
+		assertEquals(B
+
+		assertNotNull("has " + Constants.HEAD
+		assertEquals(B
+
+		List<AccessEvent> requests = getRequests();
+		assertEquals(2
+		assertEquals(0
+
+		AccessEvent info = requests.get(0);
+		assertEquals("GET"
+		assertEquals(join(remoteURI
+		assertEquals(1
+		assertEquals("git-upload-pack"
+		assertEquals(200
+
+		AccessEvent head = requests.get(1);
+		assertEquals("GET"
+		assertEquals(join(remoteURI
+		assertEquals(0
+		assertEquals(200
+	}
+
+	public void testInitialClone_Small() throws Exception {
+		Repository dst = createBareRepository();
+		assertFalse(dst.hasObject(A_txt));
+
+		Transport t = Transport.open(dst
+		try {
+			t.fetch(NullProgressMonitor.INSTANCE
+		} finally {
+			t.close();
+		}
+
+		assertTrue(dst.hasObject(A_txt));
+		assertEquals(B
+		fsck(dst
+
+		List<AccessEvent> loose = getRequests(loose(remoteURI
+		assertEquals(1
+		assertEquals("GET"
+		assertEquals(0
+		assertEquals(200
+	}
+
+	public void testPushNotSupported() throws Exception {
+		final TestRepository src = createTestRepository();
+		final RevCommit Q = src.commit().create();
+		final Repository db = src.getRepository();
+
+		Transport t = Transport.open(db
+		try {
+			try {
+				t.push(NullProgressMonitor.INSTANCE
+				fail("push incorrectly completed against a dumb server");
+			} catch (NotSupportedException nse) {
+				String exp = "remote does not support smart HTTP push";
+				assertEquals(exp
+			}
+		} finally {
+			t.close();
+		}
+	}
+}

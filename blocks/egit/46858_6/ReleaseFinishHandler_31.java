@@ -1,0 +1,27 @@
+package org.eclipse.egit.gitflow.ui.internal.actions;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.egit.core.internal.job.JobUtil;
+import org.eclipse.egit.gitflow.GitFlowRepository;
+import org.eclipse.egit.gitflow.op.InitOperation;
+import org.eclipse.egit.gitflow.ui.internal.JobFamilies;
+import org.eclipse.egit.gitflow.ui.internal.UIText;
+
+public class InitHandler extends AbstractHandler {
+
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+		if (gfRepo == null) {
+			return null;
+		}
+
+		InitOperation initOperation = new InitOperation(gfRepo.getRepository());
+		JobUtil.scheduleUserWorkspaceJob(initOperation,
+				UIText.InitHandler_initializing, JobFamilies.GITFLOW_FAMILY);
+
+		return null;
+	}
+}

@@ -1,0 +1,7 @@
+		b.write("object 9788669ad918b6fcce64af8882fc9a81cb6aba67\n".getBytes(CHARSET));
+		b.write("type tree\n".getBytes(CHARSET));
+		b.write("tag v1.0\n".getBytes(CHARSET));
+		b.write("tagger t <t@example.com> 1218123387 +0700\n".getBytes(CHARSET));
+		b.write("encoding it_IT.UTF8\n".getBytes(CHARSET));
+		b.write("\n".getBytes(CHARSET));
+		b.write("message\n".getBytes(CHARSET));

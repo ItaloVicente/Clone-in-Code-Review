@@ -1,0 +1,60 @@
+package org.eclipse.egit.ui.internal.synchronize;
+
+import org.eclipse.core.resources.mapping.ModelProvider;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.egit.core.Activator;
+import org.eclipse.team.core.mapping.provider.SynchronizationContext;
+import org.eclipse.team.ui.TeamUI;
+import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
+import org.eclipse.team.ui.synchronize.ModelSynchronizeParticipant;
+
+public class GitModelSynchronizeParticipant extends ModelSynchronizeParticipant {
+
+	public static final String ID = "org.eclipse.egit.ui.modelCompareParticipant"; //$NON-NLS-1$
+
+	public static final String VIEWER_ID = "org.eclipse.egit.ui.compareSynchronization"; //$NON-NLS-1$
+
+	public GitModelSynchronizeParticipant(SynchronizationContext context) {
+		super(context);
+		try {
+			setInitializationData(TeamUI.getSynchronizeManager()
+					.getParticipantDescriptor(ID));
+		} catch (CoreException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+
+		setSecondaryId(Long.toString(System.currentTimeMillis()));
+	}
+
+	protected void initializeConfiguration(
+			ISynchronizePageConfiguration configuration) {
+		configuration.setProperty(ISynchronizePageConfiguration.P_VIEWER_ID,
+				VIEWER_ID);
+		super.initializeConfiguration(configuration);
+	}
+
+	@Override
+	public ModelProvider[] getEnabledModelProviders() {
+		ModelProvider[] enabledProviders = super.getEnabledModelProviders();
+		for (int i = 0; i < enabledProviders.length; i++) {
+			ModelProvider provider = enabledProviders[i];
+			if (provider.getId().equals(GitChangeSetModelProvider.ID))
+				return enabledProviders;
+		}
+
+		ModelProvider[] extended = new ModelProvider[enabledProviders.length + 1];
+		for (int i = 0; i < enabledProviders.length; i++) {
+			extended[i] = enabledProviders[i];
+		}
+
+		GitChangeSetModelProvider provider = GitChangeSetModelProvider
+				.getProvider();
+
+		if (provider == null)
+			return enabledProviders;
+
+		extended[extended.length - 1] = provider;
+		return extended;
+	}
+
+}

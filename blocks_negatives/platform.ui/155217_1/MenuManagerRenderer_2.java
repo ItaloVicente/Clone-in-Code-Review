@@ -1,0 +1,9 @@
+				MMenuElement menuElement = getMenuElement(item);
+				if (menuElement == null) {
+					MMenuItem legacyItem = OpaqueElementUtil.createOpaqueMenuItem();
+					legacyItem.setElementId(item.getId());
+					legacyItem.setVisible(item.isVisible());
+					OpaqueElementUtil.setOpaqueItem(legacyItem, item);
+					linkModelToContribution(legacyItem, item);
+					if (modelChildren.size() > dest) {
+						modelChildren.add(dest, legacyItem);

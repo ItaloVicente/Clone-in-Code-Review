@@ -1,0 +1,10 @@
+import org.eclipse.egit.core.op.ResetOperation.ResetType;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.UIText;
+import org.eclipse.egit.ui.internal.decorators.GitLightweightDecorator;
+import org.eclipse.egit.ui.internal.dialogs.ResetTargetSelectionDialog;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.osgi.util.NLS;

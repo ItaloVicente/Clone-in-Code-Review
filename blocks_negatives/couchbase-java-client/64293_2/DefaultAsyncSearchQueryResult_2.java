@@ -1,0 +1,13 @@
+import com.couchbase.client.java.fts.result.AsyncSearchQueryResult;
+import com.couchbase.client.java.fts.result.SearchMetrics;
+import com.couchbase.client.java.fts.result.SearchQueryRow;
+import com.couchbase.client.java.fts.result.SearchStatus;
+import com.couchbase.client.java.fts.result.facets.DateRange;
+import com.couchbase.client.java.fts.result.facets.DefaultDateRangeFacetResult;
+import com.couchbase.client.java.fts.result.facets.DefaultNumericRangeFacetResult;
+import com.couchbase.client.java.fts.result.facets.DefaultTermFacetResult;
+import com.couchbase.client.java.fts.result.facets.FacetResult;
+import com.couchbase.client.java.fts.result.facets.NumericRange;
+import com.couchbase.client.java.fts.result.facets.TermRange;
+import com.couchbase.client.java.fts.result.hits.DefaultHitLocations;
+import com.couchbase.client.java.fts.result.hits.HitLocations;

@@ -1,0 +1,6 @@
+
+	/**
+	 * @param testName
+	 */
+	public ZoomAndPreferencesFontTest() {
+	}

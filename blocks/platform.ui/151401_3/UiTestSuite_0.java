@@ -1,0 +1,7 @@
+	StyledStringHighlighterTest.class,
+	ZoomTestSuite.class,
+	DynamicPluginsTestSuite.class,
+	DragTestSuite.class,
+	IntroTestSuite.class,
+	MultiEditorTestSuite.class,
+	OpenSystemInPlaceEditorTest.class,

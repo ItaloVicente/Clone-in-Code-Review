@@ -1,0 +1,42 @@
+	private Iterable<Entry<String
+		return new Iterable<>() {
+
+			private int i = 0;
+
+			@Override
+			public Iterator<Entry<String
+				Iterator<Entry<String
+
+					@Override
+					public boolean hasNext() {
+						return i < refs.size() - 1;
+					}
+
+					@Override
+					public Entry<String
+						i++;
+						Ref r = refs.get(i);
+						return new Entry<>() {
+
+							@Override
+							public String getKey() {
+								return r.getName();
+							}
+
+							@Override
+							public Ref getValue() {
+								return r;
+							}
+
+							@Override
+							public Ref setValue(Ref value) {
+								throw new UnsupportedOperationException();
+							}
+						};
+					}
+				};
+				return it;
+			}
+		};
+	}
+

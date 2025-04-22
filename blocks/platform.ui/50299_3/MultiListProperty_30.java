@@ -1,0 +1,7 @@
+						List<ListDiffEntry<E>> entries = new ArrayList<ListDiffEntry<E>>(
+								2);
+						entries.add(Diffs.createListDiffEntry(subListIndex,
+								false, oldElement));
+						entries.add(Diffs.createListDiffEntry(subListIndex,
+								true, newElement));
+						ListDiff<E> diff = Diffs.createListDiff(entries);

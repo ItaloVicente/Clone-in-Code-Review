@@ -1,0 +1,76 @@
+class StoreOperationImpl extends SingleKeyOperationImpl implements
+    StoreOperation, CASOperation {
+
+  private static final int SET = 0x01;
+  private static final int ADD = 0x02;
+  private static final int REPLACE = 0x03;
+
+  static final int SETQ = 0x11;
+  static final int ADDQ = 0x12;
+  static final int REPLACEQ = 0x13;
+
+  static final int EXTRA_LEN = 8;
+
+  private final StoreType storeType;
+  private final int flags;
+  private final int exp;
+  private final long cas;
+  private final byte[] data;
+
+  private static int cmdMap(StoreType t) {
+    int rv;
+    switch (t) {
+    case set:
+      rv = SET;
+      break;
+    case add:
+      rv = ADD;
+      break;
+    case replace:
+      rv = REPLACE;
+      break;
+    default:
+      rv = -1;
+    }
+    assert rv != -1 : "Unhandled store type:  " + t;
+    return rv;
+  }
+
+  public StoreOperationImpl(StoreType t, String k, int f, int e, byte[] d,
+      long c, OperationCallback cb) {
+    super(cmdMap(t), generateOpaque(), k, cb);
+    flags = f;
+    exp = e;
+    data = d;
+    cas = c;
+    storeType = t;
+  }
+
+  @Override
+  public void initialize() {
+    prepareBuffer(key, cas, data, flags, exp);
+  }
+
+  public byte[] getBytes() {
+    return data;
+  }
+
+  public long getCasValue() {
+    return cas;
+  }
+
+  public int getExpiration() {
+    return exp;
+  }
+
+  public int getFlags() {
+    return flags;
+  }
+
+  public byte[] getData() {
+    return data;
+  }
+
+  public StoreType getStoreType() {
+    return storeType;
+  }

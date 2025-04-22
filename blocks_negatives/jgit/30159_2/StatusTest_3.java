@@ -1,0 +1,8 @@
+						"# On branch master", //
+						"# Unmerged paths:", //
+						"# ", //
+						"# \tboth modified:      unmerged", //
+						"# ", //
+						"# Untracked files:", //
+						"# ", //
+						"# \tuntracked", //

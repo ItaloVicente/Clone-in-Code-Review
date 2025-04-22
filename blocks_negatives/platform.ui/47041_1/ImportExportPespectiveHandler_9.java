@@ -1,0 +1,857 @@
+/*******************************************************************************
+ * Copyright (c) 2015 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ ******************************************************************************/
+
+package org.eclipse.ui.internal.e4.migration;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import org.eclipse.e4.ui.model.application.ui.MElementContainer;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
+import org.eclipse.e4.ui.model.application.ui.SideValue;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPlaceholder;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainer;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
+import org.eclipse.e4.ui.workbench.IPresentationEngine;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.internal.PerspectiveTagger;
+import org.eclipse.ui.internal.e4.compatibility.ModeledPageLayout;
+import org.eclipse.ui.internal.e4.compatibility.ModeledPageLayoutUtils;
+import org.eclipse.ui.internal.e4.migration.InfoReader.PageReader;
+import org.eclipse.ui.internal.e4.migration.InfoReader.PartState;
+import org.eclipse.ui.internal.e4.migration.PerspectiveReader.DetachedWindowReader;
+import org.eclipse.ui.internal.e4.migration.PerspectiveReader.ViewLayoutReader;
+import org.eclipse.ui.internal.registry.StickyViewDescriptor;
+
+public class PerspectiveBuilder {
+
+
+
+	private static final String ID_EDITOR_AREA = IPageLayout.ID_EDITOR_AREA;
+
+	@Inject
+	private PerspectiveReader perspReader;
+
+	@Inject
+	private EModelService modelService;
+
+	private MPerspective perspective;
+
+	private List<String> tags;
+
+	private List<String> renderedViews;
+
+	private Map<String, MPlaceholder> viewPlaceholders = new HashMap<>();
+
+	private Map<String, ViewLayoutReader> viewLayouts;
+
+	private MPlaceholder editorAreaPlaceholder;
+
+	private ModeledPageLayoutUtils layoutUtils;
+
+	@PostConstruct
+	private void postConstruct() {
+		layoutUtils = new ModeledPageLayoutUtils(modelService);
+	}
+
+	public MPerspective createPerspective() {
+		create();
+		tags = perspective.getTags();
+		populate();
+		return perspective;
+	}
+
+	private void create() {
+		perspective = modelService.createModelElement(MPerspective.class);
+		perspective.setElementId(perspReader.getId());
+		String label = perspReader.getLabel();
+		perspective.setLabel(label);
+		perspective.setTooltip(label);
+		if (perspReader.isCustom()) {
+			perspective.getTransientData().put(BASE_PERSPECTIVE_ID, perspReader.getBasicPerspectiveId());
+			perspective.getTransientData().put(ORIGINAL_ID, perspReader.getOriginalId());
+		}
+	}
+
+	private void populate() {
+		addActionSetTags();
+		addPerspectiveShortcutTags();
+		addNewWizardTags();
+		addShowViewTags();
+		addHiddenItems();
+
+		for (InfoReader info : perspReader.getInfos()) {
+			if (info.isEditorArea()) {
+				addEditorArea(info);
+			} else if (info.isFolder()) {
+				MPartStack stack = addPartStack(info);
+				populatePartStack(stack, info);
+			}
+		}
+
+		setZoomState();
+		addDetachedWindows();
+		hideEmptyStacks();
+		hideUrenderableSashes();
+		hideInvisibleSashes();
+		processStandaloneViews();
+		correctSelectedElements();
+		addTrimBars();
+		PerspectiveTagger.tagPerspective(perspective, modelService);
+	}
+
+	private void processStandaloneViews() {
+		Map<String, ViewLayoutReader> viewLayouts = perspReader.getViewLayouts();
+		for (String viewId : viewLayouts.keySet()) {
+			MPlaceholder placeholder = viewPlaceholders.get(viewId);
+			if (placeholder == null) {
+				continue;
+			}
+			if (viewLayouts.get(viewId).isStandalone()) {
+				MElementContainer<MUIElement> parent = placeholder.getParent();
+				placeholder.setContainerData(parent.getContainerData());
+				parent.getChildren().remove(placeholder);
+				MElementContainer<MUIElement> grandParent = parent.getParent();
+				int location = grandParent.getChildren().indexOf(parent);
+				grandParent.getChildren().add(location, placeholder);
+				grandParent.getChildren().remove(parent);
+			}
+		}
+	}
+
+	private void addDetachedWindows() {
+		for (DetachedWindowReader detachedWindowReader : perspReader.getDetachedWindows()) {
+			MTrimmedWindow detachedWindow = modelService.createModelElement(MTrimmedWindow.class);
+			Rectangle bounds = detachedWindowReader.getBounds();
+			detachedWindow.setX(bounds.x);
+			detachedWindow.setY(bounds.y);
+			detachedWindow.setWidth(bounds.width);
+			detachedWindow.setHeight(bounds.height);
+			MPartStack stack = modelService.createModelElement(MPartStack.class);
+			populatePartStack(stack, detachedWindowReader);
+			detachedWindow.getChildren().add(stack);
+			perspective.getWindows().add(detachedWindow);
+		}
+	}
+
+	private void addTrimBars() {
+		Map<String, Integer> fastViewBars = perspReader.getFastViewBars();
+		if (fastViewBars.size() == 0) {
+			return;
+		}
+
+		int topCounter = 0;
+		int bottomCounter = 0;
+		int rightCounter = 0;
+		int leftCounter = 0;
+		StringBuilder sb = new StringBuilder();
+
+		for (InfoReader folder : perspReader.getInfos()) {
+			String folderId = folder.getId();
+			if (!fastViewBars.containsKey(folderId)) {
+				continue;
+			}
+
+			sb.append(folderId).append(' ');
+
+			Integer side = fastViewBars.get(folderId);
+			if (side == null) {
+				side = SWT.LEFT;
+			}
+
+			switch (side) {
+			case SWT.TOP:
+				sb.append(SideValue.TOP_VALUE).append(' ').append(topCounter++);
+				break;
+			case SWT.BOTTOM:
+				sb.append(SideValue.BOTTOM_VALUE).append(' ').append(bottomCounter++);
+				break;
+			case SWT.RIGHT:
+				sb.append(SideValue.RIGHT_VALUE).append(' ').append(rightCounter++);
+				break;
+			default:
+				sb.append(SideValue.LEFT_VALUE).append(' ').append(leftCounter++);
+				break;
+			}
+
+			sb.append('#');
+		}
+
+		perspective.getPersistedState().put("trims", sb.toString()); //$NON-NLS-1$
+	}
+
+	private void hideEmptyStacks() {
+		for (MPartStack stack : modelService.findElements(perspective, null, MPartStack.class, null)) {
+			if (ID_EDITOR_AREA.equals(stack.getElementId()) || ID_EDITOR_AREA.equals(stack.getParent().getElementId())) {
+				continue;
+			}
+			if (!hasRenderableContent(stack)) {
+				stack.setToBeRendered(false);
+			}
+		}
+	}
+
+	private void setZoomState() {
+		List<MPartStack> stacks = modelService.findElements(perspective, null, MPartStack.class, null);
+		boolean isAnythingMaximized = isMaximized(editorAreaPlaceholder) || isAnyMaximized(stacks);
+		if (isAnythingMaximized) {
+			markMinimizedByZoom(editorAreaPlaceholder);
+			for (MPartStack stack : stacks) {
+				markMinimizedByZoom(stack);
+			}
+		}
+	}
+
+	private void markMinimizedByZoom(MUIElement element) {
+		List<String> tags = element.getTags();
+		if (tags.contains(IPresentationEngine.MINIMIZED)) {
+			tags.add(IPresentationEngine.MINIMIZED_BY_ZOOM);
+		}
+	}
+
+	private boolean isAnyMaximized(List<MPartStack> stacks) {
+		for (MPartStack stack : stacks) {
+			if (isMaximized(stack)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isMaximized(MUIElement element) {
+		return element.getTags().contains(IPresentationEngine.MAXIMIZED);
+	}
+
+	private void hideUrenderableSashes() {
+		for (MPartSashContainer sash : modelService.findElements(perspective, null, MPartSashContainer.class, null)) {
+			hideUnrenderableSash(sash);
+		}
+	}
+
+	private void hideInvisibleSashes() {
+		for (MPartSashContainer sash : modelService.findElements(perspective, null, MPartSashContainer.class, null)) {
+			hideInvisibleSash(sash);
+		}
+	}
+
+	private void hideInvisibleSash(MElementContainer<?> container) {
+		if ((container instanceof MPartSashContainer) && container != perspective) {
+			if (!hasVisibleContent((MPartSashContainer) container)) {
+				container.setVisible(false);
+				hideInvisibleSash(container.getParent());
+			}
+		}
+	}
+
+	private boolean hasVisibleContent(MPartSashContainer sash) {
+		for (MPartSashContainerElement child : sash.getChildren()) {
+			if (child.isVisible()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void hideUnrenderableSash(MElementContainer<?> container) {
+		if ((container instanceof MPartSashContainer) && container != perspective) {
+			if (modelService.countRenderableChildren(container) == 0) {
+				container.setToBeRendered(false);
+				hideUnrenderableSash(container.getParent());
+			}
+		}
+	}
+
+	private boolean hasRenderableContent(MPartStack stack) {
+		for (MStackElement child : stack.getChildren()) {
+			if (child.isVisible() && child.isToBeRendered()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void correctSelectedElements() {
+		List<MPartSashContainerElement> perspChildren = perspective.getChildren();
+		if (perspective.getSelectedElement() == null && !perspChildren.isEmpty()) {
+			for (MPartSashContainerElement child : perspChildren) {
+				if (child.isToBeRendered()) {
+					perspective.setSelectedElement(child);
+					break;
+				}
+			}
+		}
+
+		for (MPartSashContainerElement child : perspChildren) {
+			correctSelectedElements(child);
+		}
+	}
+
+	private void correctSelectedElements(MUIElement element) {
+		if (!(element instanceof MPartSashContainer || element instanceof MPartStack)) {
+			return;
+		}
+		@SuppressWarnings("unchecked")
+		MElementContainer<MUIElement> container = (MElementContainer<MUIElement>) element;
+		List<MUIElement> children = container.getChildren();
+		if (container.getSelectedElement() == null && !children.isEmpty()) {
+			MUIElement firstRenderableElement = getFirstRenderableElement(children);
+			if (firstRenderableElement != null) {
+				container.setSelectedElement(firstRenderableElement);
+			}
+		}
+		for (MUIElement child : children) {
+			correctSelectedElements(child);
+		}
+	}
+
+	private MUIElement getFirstRenderableElement(List<MUIElement> elements) {
+		for (MUIElement element : elements) {
+			if (element.isToBeRendered()) {
+				return element;
+			}
+		}
+		return null;
+	}
+
+	private void addToPerspective(MPartSashContainerElement element, InfoReader info) {
+		if (info.isRelativelyPositioned()) {
+			insert(element, info);
+		} else {
+			perspective.getChildren().add(element);
+		}
+	}
+
+	private void addEditorArea(InfoReader info) {
+		editorAreaPlaceholder = modelService.createModelElement(MPlaceholder.class);
+		editorAreaPlaceholder.setElementId(ID_EDITOR_AREA);
+		editorAreaPlaceholder.setToBeRendered(perspReader.isEditorAreaVisible());
+		setPartState(editorAreaPlaceholder, perspReader.getEditorAreaState());
+		addToPerspective(editorAreaPlaceholder, info);
+	}
+
+	private MPartStack addPartStack(InfoReader info) {
+		MPartStack stack = createPartStack(info);
+		if (info.isRelativelyPositioned()) {
+			String refElementId = info.getRelative();
+			MUIElement refElement = modelService.find(refElementId, perspective);
+			MElementContainer<?> parent = refElement.getParent();
+			if (parent instanceof MPartStack) {
+				refElement = parent;
+			}
+
+			insert(stack, refElement, info);
+		} else {
+			perspective.getChildren().add(stack);
+		}
+		setPartState(stack, info.getState());
+		return stack;
+	}
+
+	private void setPartState(MUIElement element, PartState state) {
+		List<String> tags = element.getTags();
+		switch (state) {
+		case MINIMIZED:
+			tags.add(IPresentationEngine.MINIMIZED);
+			element.setVisible(false);
+			break;
+		case MAXIMIZED:
+			tags.add(IPresentationEngine.MAXIMIZED);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void insert(MUIElement element, MUIElement refElement, InfoReader info) {
+		layoutUtils.insert(element, refElement, layoutUtils.plRelToSwt(info.getRelationship()), info.getRatio());
+	}
+
+	private void insert(MUIElement element, InfoReader info) {
+		insert(element, modelService.find(info.getRelative(), perspective), info);
+	}
+
+	private MPartStack createPartStack(InfoReader info) {
+		String stackId = info.getId();
+		if (stackId != null) {
+			if (stackId.equals(StickyViewDescriptor.STICKY_FOLDER_RIGHT)) {
+			}
+		}
+		return layoutUtils.createStack(stackId, true);
+	}
+
+	private void populatePartStack(MPartStack stack, InfoReader info) {
+		for (PageReader page : info.getPages()) {
+			addPlaceholderToStack(stack, page.getId());
+		}
+		MStackElement selectedElement = (MStackElement) modelService.find(info.getActivePageId(), stack);
+		if (selectedElement != null) {
+			selectedElement.setToBeRendered(true);
+			selectedElement.setVisible(true);
+		}
+		stack.setSelectedElement(selectedElement);
+
+		List<MStackElement> renderedViews = getRenderedViews(stack);
+		if (renderedViews.size() < 2) {
+			return;
+		}
+
+		int[] partOrder = info.getPartOrder();
+		List<MStackElement> stackChildren = stack.getChildren();
+		if (partOrder == null || partOrder.length != renderedViews.size()) {
+			return;
+		}
+		List<MStackElement> originalOrder = new ArrayList<>(renderedViews);
+		stackChildren.clear();
+		for (int i = 0; i < partOrder.length; i++) {
+			stackChildren.add(originalOrder.get(partOrder[i]));
+		}
+		originalOrder.removeAll(stackChildren);
+		stackChildren.addAll(originalOrder);
+	}
+
+	private List<MStackElement> getRenderedViews(MPartStack stack) {
+		List<MStackElement> renderedViews = new ArrayList<>();
+		for (MStackElement element : stack.getChildren()) {
+			if (element.isToBeRendered()) {
+				renderedViews.add(element);
+			}
+		}
+		return renderedViews;
+	}
+
+	private void populatePartStack(MPartStack stack, DetachedWindowReader info) {
+		for (PageReader page : info.getPages()) {
+			addPlaceholderToStack(stack, page.getId());
+		}
+		stack.setSelectedElement((MStackElement) modelService.find(info.getActivePageId(), stack));
+	}
+
+	private void addPlaceholderToStack(MPartStack stack, String partId) {
+		MPlaceholder placeholder = modelService.createModelElement(MPlaceholder.class);
+		placeholder.setElementId(partId);
+		if (!isToBeRendered(placeholder)) {
+			placeholder.setToBeRendered(false);
+		}
+		addLayoutTagsToPlaceholder(placeholder, partId);
+		stack.getChildren().add(placeholder);
+		viewPlaceholders.put(partId, placeholder);
+	}
+
+	private void addLayoutTagsToPlaceholder(MPlaceholder placeholder, String partId) {
+		ViewLayoutReader viewLayout = getViewLayout(partId);
+		if (viewLayout == null) {
+			return;
+		}
+		List<String> tags = placeholder.getTags();
+		if (!viewLayout.isCloseable()) {
+			tags.add(IPresentationEngine.NO_CLOSE);
+		}
+		if (viewLayout.isStandalone()) {
+			tags.add(IPresentationEngine.STANDALONE);
+		}
+	}
+
+	private boolean isToBeRendered(MPlaceholder placeholder) {
+		if (renderedViews == null) {
+			renderedViews = perspReader.getRenderedViewIds();
+		}
+		return renderedViews.contains(placeholder.getElementId());
+	}
+
+	private void addPerspectiveShortcutTags() {
+		for (String shortcutId : perspReader.getPerspectiveShortcutIds()) {
+			tags.add(ModeledPageLayout.PERSP_SHORTCUT_TAG + shortcutId);
+		}
+	}
+
+	private void addActionSetTags() {
+		for (String actionSetId : perspReader.getActionSetIds()) {
+			tags.add(ModeledPageLayout.ACTION_SET_TAG + actionSetId);
+		}
+	}
+
+	private void addNewWizardTags() {
+		for (String actionId : perspReader.getNewWizardActionIds()) {
+			tags.add(ModeledPageLayout.NEW_WIZARD_TAG + actionId);
+		}
+	}
+
+	private void addShowViewTags() {
+		for (String actionId : perspReader.getShowViewActionIds()) {
+			tags.add(ModeledPageLayout.SHOW_VIEW_TAG + actionId);
+		}
+	}
+
+	private void addHiddenItems() {
+		String comma = ",; //$NON-NLS-1$
+-		StringBuilder persistedValue = new StringBuilder();
+-		for (String elementId : perspReader.getHiddenMenuItemIds()) {
+-			persistedValue.append(ModeledPageLayout.HIDDEN_MENU_PREFIX);
+-			persistedValue.append(elementId).append(comma);
+-		}
+-		for (String elementId : perspReader.getHiddenToolbarItemIds()) {
+-			persistedValue.append(ModeledPageLayout.HIDDEN_TOOLBAR_PREFIX);
+-			persistedValue.append(elementId).append(comma);
+-		}
+-		perspective.getPersistedState().put(ModeledPageLayout.HIDDEN_ITEMS_KEY, persistedValue.toString());
+-	}
+-
+-	private ViewLayoutReader getViewLayout(String viewId) {
+-		if (viewLayouts == null) {
+-			viewLayouts = perspReader.getViewLayouts();
+-		}
+-		return viewLayouts.get(viewId);
+-	}
+-
+-	Collection<MPlaceholder> getPlaceholders() {
+-		return viewPlaceholders.values();
+-	}
+-
+-	MPlaceholder getEditorAreaPlaceholder() {
+-		return editorAreaPlaceholder;
+-	}
+-
+-}
+diff --git a/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/e4/migration/PerspectiveReader.java b/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/e4/migration/PerspectiveReader.java
+deleted file mode 100644
+index 137cc8cfd2..0000000000
+--- a/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/e4/migration/PerspectiveReader.java	
++++ /dev/null
+@@ -1,323 +0,0 @@
+-/*******************************************************************************
+- * Copyright (c) 2015 IBM Corporation and others.
+- * All rights reserved. This program and the accompanying materials
+- * are made available under the terms of the Eclipse Public License v1.0
+- * which accompanies this distribution, and is available at
+- * http://www.eclipse.org/legal/epl-v10.html
+- *
+- * Contributors:
+- *     IBM Corporation - initial API and implementation
+- ******************************************************************************/
+-
+-package org.eclipse.ui.internal.e4.migration;
+-
+-import java.util.ArrayList;
+-import java.util.HashMap;
+-import java.util.List;
+-import java.util.Map;
+-import org.eclipse.swt.graphics.Rectangle;
+-import org.eclipse.ui.IMemento;
+-import org.eclipse.ui.internal.IWorkbenchConstants;
+-import org.eclipse.ui.internal.e4.migration.InfoReader.PageReader;
+-import org.eclipse.ui.internal.e4.migration.InfoReader.PartState;
+-
+-public class PerspectiveReader extends MementoReader {
+-
+-	private DescriptorReader descriptor;
+-
+-	public PerspectiveReader(IMemento memento) {
+-		super(memento);
+-	}
+-
+-	String getId() {
+-		return getDescriptor().getId();
+-	}
+-
+-	String getLabel() {
+-		return getDescriptor().getLabel();
+-	}
+-
+-	private DescriptorReader getDescriptor() {
+-		if (descriptor == null) {
+-			IMemento desriptorMem = getChild(IWorkbenchConstants.TAG_DESCRIPTOR);
+-			if (desriptorMem == null) {
+-				throw new NullPointerException(Perspective descriptor not found"); //$NON-NLS-1$
+			}
+			descriptor = new DescriptorReader(desriptorMem);
+		}
+		return descriptor;
+	}
+
+	List<InfoReader> getInfos() {
+		IMemento[] infoMems = getInfoMems();
+		List<InfoReader> infos = new ArrayList<>(infoMems.length);
+		for (IMemento infoMem : infoMems) {
+			infos.add(new InfoReader(infoMem));
+		}
+		return infos;
+	}
+
+	private IMemento[] getInfoMems() {
+		IMemento[] infoMems = null;
+		IMemento layout = getLayout();
+		if (layout != null) {
+			IMemento mainWindow = layout.getChild(IWorkbenchConstants.TAG_MAIN_WINDOW);
+			if (mainWindow != null) {
+				infoMems = mainWindow.getChildren(IWorkbenchConstants.TAG_INFO);
+			}
+		}
+		if (infoMems == null) {
+			infoMems = new IMemento[0];
+		}
+		return infoMems;
+	}
+
+	Map<String, ViewLayoutReader> getViewLayouts() {
+		IMemento[] viewLayoutMems = getChildren(IWorkbenchConstants.TAG_VIEW_LAYOUT_REC);
+		Map<String, ViewLayoutReader> viewLayouts = new HashMap<>(viewLayoutMems.length);
+		for (IMemento memento : viewLayoutMems) {
+			ViewLayoutReader viewLayout = new ViewLayoutReader(memento);
+			viewLayouts.put(viewLayout.getViewId(), viewLayout);
+		}
+		return viewLayouts;
+	}
+
+	private IMemento getLayout() {
+		return getChild(IWorkbenchConstants.TAG_LAYOUT);
+	}
+
+	List<String> getPerspectiveShortcutIds() {
+		return getChildrenIds(IWorkbenchConstants.TAG_PERSPECTIVE_ACTION);
+	}
+
+	List<String> getActionSetIds() {
+		return getChildrenIds(IWorkbenchConstants.TAG_ALWAYS_ON_ACTION_SET);
+	}
+
+	List<String> getShowViewActionIds() {
+		return getChildrenIds(IWorkbenchConstants.TAG_SHOW_VIEW_ACTION);
+	}
+
+	List<String> getNewWizardActionIds() {
+		return getChildrenIds(IWorkbenchConstants.TAG_NEW_WIZARD_ACTION);
+	}
+
+	List<String> getRenderedViewIds() {
+		List<String> viewIds = getChildrenIds(IWorkbenchConstants.TAG_VIEW);
+		viewIds.addAll(getFastViewIds());
+		return viewIds;
+	}
+
+	/**
+	 * @return map of fast view bar's ID and side
+	 */
+	Map<String, Integer> getFastViewBars() {
+		Map<String, Integer> bars = new HashMap<>();
+		for (IMemento bar : getFastViewBarMems()) {
+			bars.put(bar.getString(IWorkbenchConstants.TAG_ID),
+					bar.getInteger(IWorkbenchConstants.TAG_FAST_VIEW_SIDE));
+		}
+		return bars;
+	}
+
+	private List<String> getFastViewIds() {
+		List<String> fastViewIds = new ArrayList<>();
+
+		IMemento fastViews = getChild(IWorkbenchConstants.TAG_FAST_VIEWS);
+		if (fastViews != null) {
+			for (IMemento view : fastViews.getChildren(IWorkbenchConstants.TAG_VIEW)) {
+				fastViewIds.add(view.getString(IWorkbenchConstants.TAG_ID));
+			}
+		}
+
+		IMemento[] fastViewBarArr = getFastViewBarMems();
+		for (IMemento fastViewBar : fastViewBarArr) {
+			IMemento fastViewsInBar = fastViewBar.getChild(IWorkbenchConstants.TAG_FAST_VIEWS);
+			if (fastViewsInBar != null) {
+				for (IMemento view : fastViewsInBar.getChildren(IWorkbenchConstants.TAG_VIEW)) {
+					fastViewIds.add(view.getString(IWorkbenchConstants.TAG_ID));
+				}
+			}
+		}
+		return fastViewIds;
+	}
+
+	private IMemento[] getFastViewBarMems() {
+		IMemento[] emptyArr = new IMemento[0];
+		IMemento fastViewBars = getChild(IWorkbenchConstants.TAG_FAST_VIEW_BARS);
+		if (fastViewBars == null) {
+			return emptyArr;
+		}
+		IMemento[] fastViewBarArr = fastViewBars.getChildren(IWorkbenchConstants.TAG_FAST_VIEW_BAR);
+		return fastViewBarArr == null ? emptyArr : fastViewBarArr;
+	}
+
+	List<String> getHiddenMenuItemIds() {
+		return getChildrenIds(IWorkbenchConstants.TAG_HIDE_MENU);
+	}
+
+	List<String> getHiddenToolbarItemIds() {
+		return getChildrenIds(IWorkbenchConstants.TAG_HIDE_TOOLBAR);
+	}
+
+	private List<String> getChildrenIds(String tag) {
+		IMemento[] idMemArr = getChildren(tag);
+		List<String> idList = new ArrayList<>(idMemArr.length);
+		for (IMemento idMem : idMemArr) {
+			idList.add(idMem.getString(IWorkbenchConstants.TAG_ID));
+		}
+		return idList;
+	}
+
+	List<DetachedWindowReader> getDetachedWindows() {
+		List<DetachedWindowReader> readers = new ArrayList<>();
+		IMemento layout = getLayout();
+		if (layout != null) {
+			IMemento[] mems = layout.getChildren(IWorkbenchConstants.TAG_DETACHED_WINDOW);
+			for (IMemento mem : mems) {
+				readers.add(new DetachedWindowReader(mem));
+			}
+		}
+		return readers;
+	}
+
+	boolean isCustom() {
+		return getDescriptor().isCustom();
+	}
+
+	String getBasicPerspectiveId() {
+		return getDescriptor().getBasicPerspectiveId();
+	}
+
+	String getOriginalId() {
+		return getDescriptor().getOriginalId();
+	}
+
+	boolean isEditorAreaVisible() {
+		return Integer.valueOf(1).equals(getInteger(IWorkbenchConstants.TAG_AREA_VISIBLE));
+	}
+
+	PartState getEditorAreaState() {
+		PartState state = PartState.RESTORED;
+		int value = getInteger(IWorkbenchConstants.TAG_AREA_TRIM_STATE);
+		switch (value) {
+		case 0:
+			state = PartState.MINIMIZED;
+			break;
+		case 1:
+			state = PartState.MAXIMIZED;
+			break;
+		}
+		return state;
+	}
+
+	static class DetachedWindowReader extends MementoReader {
+
+		private DetachedWindowReader(IMemento memento) {
+			super(memento);
+		}
+
+		Rectangle getBounds() {
+			Rectangle windowBounds = new Rectangle(0, 0, 0, 0);
+			Integer bigInt = getInteger(IWorkbenchConstants.TAG_X);
+			windowBounds.x = bigInt == null ? 0 : bigInt.intValue();
+			bigInt = getInteger(IWorkbenchConstants.TAG_Y);
+			windowBounds.y = bigInt == null ? 0 : bigInt.intValue();
+			bigInt = getInteger(IWorkbenchConstants.TAG_WIDTH);
+			windowBounds.width = bigInt == null ? 0 : bigInt.intValue();
+			bigInt = getInteger(IWorkbenchConstants.TAG_HEIGHT);
+			windowBounds.height = bigInt == null ? 0 : bigInt.intValue();
+			return windowBounds;
+		}
+
+		String getActivePageId() {
+			String activePageId = null;
+			IMemento folder = getFolder();
+			if (folder != null) {
+				activePageId = folder.getString(IWorkbenchConstants.TAG_ACTIVE_PAGE_ID);
+			}
+			return activePageId;
+		}
+
+		List<PageReader> getPages() {
+			IMemento folder = getFolder();
+			List<PageReader> pages = new ArrayList<>();
+			if (folder != null) {
+				IMemento[] pageMems = folder.getChildren(IWorkbenchConstants.TAG_PAGE);
+				for (IMemento pageMem : pageMems) {
+					pages.add(new PageReader(pageMem));
+				}
+			}
+			return pages;
+		}
+
+		private IMemento getFolder() {
+			return getChild(IWorkbenchConstants.TAG_FOLDER);
+		}
+
+	}
+
+	private static class DescriptorReader extends MementoReader {
+
+		private static final String TAG_DESCRIPTOR = IWorkbenchConstants.TAG_DESCRIPTOR;
+
+		DescriptorReader(IMemento memento) {
+			super(memento);
+		}
+
+		String getId() {
+			String id = getOriginalId();
+			if (isCustom()) {
+			}
+			return id;
+		}
+
+		String getOriginalId() {
+			String id = getString(IWorkbenchConstants.TAG_ID);
+			if (id == null) {
+			}
+			return id;
+		}
+
+		boolean isCustom() {
+			return contains(TAG_DESCRIPTOR);
+		}
+
+		String getBasicPerspectiveId() {
+			String id = getString(TAG_DESCRIPTOR);
+			if (id == null) {
+			}
+			return id;
+		}
+
+		String getLabel() {
+			return getString(IWorkbenchConstants.TAG_LABEL);
+		}
+
+	}
+
+	static class ViewLayoutReader extends MementoReader {
+
+		private ViewLayoutReader(IMemento memento) {
+			super(memento);
+		}
+
+		String getViewId() {
+			return getString(IWorkbenchConstants.TAG_ID);
+		}
+
+		boolean isCloseable() {
+			return getBoolean(IWorkbenchConstants.TAG_CLOSEABLE, true);
+		}
+
+		boolean isStandalone() {
+			return getBoolean(IWorkbenchConstants.TAG_STANDALONE);
+		}
+
+	}
+
+}

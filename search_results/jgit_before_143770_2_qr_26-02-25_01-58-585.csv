@@ -1,0 +1,3 @@
+block11.java_method#1#38,/home/gesad/PycharmProjects/Diff/befores/jgit/before_143770_2/org.eclipse.jgit/src/org/eclipse/jgit/api/MergeCommand.java_call#233#444
+block30.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/jgit/before_143770_2/org.eclipse.jgit/src/org/eclipse/jgit/treewalk/WorkingTreeIterator.java_hasCrLfInIndex#1509#1550
+block26.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/jgit/before_143770_2/org.eclipse.jgit/src/org/eclipse/jgit/transport/ProtocolV2Parser.java_parseFetchRequest#124#219

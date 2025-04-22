@@ -1,0 +1,11 @@
+import com.couchbase.client.core.message.dcp.FailoverLogEntry;
+import com.couchbase.client.core.message.dcp.GetFailoverLogRequest;
+import com.couchbase.client.core.message.dcp.GetFailoverLogResponse;
+import com.couchbase.client.core.message.dcp.GetLastCheckpointRequest;
+import com.couchbase.client.core.message.dcp.GetLastCheckpointResponse;
+import com.couchbase.client.core.message.dcp.StreamCloseRequest;
+import com.couchbase.client.core.message.dcp.StreamCloseResponse;
+import com.couchbase.client.core.message.dcp.StreamEndMessage;
+import com.couchbase.client.core.message.dcp.StreamRequestRequest;
+import com.couchbase.client.core.message.dcp.StreamRequestResponse;
+import com.couchbase.client.core.message.kv.MutationToken;

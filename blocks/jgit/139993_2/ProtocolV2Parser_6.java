@@ -1,0 +1,14 @@
+				if (req instanceof FetchV2Request &&
+						cachedPackUriProvider != null &&
+						!((FetchV2Request) req).getPackfileUriProtocols().isEmpty()) {
+					FetchV2Request reqV2 = (FetchV2Request) req;
+					pw.writePack(pm
+							new PackWriter.PackfileUriConfig(pckOut
+								reqV2.getPackfileUriProtocols()
+								cachedPackUriProvider)
+							packOut);
+				} else {
+					pw.writePack(pm
+				}
+			} else {
+				pw.writePack(pm

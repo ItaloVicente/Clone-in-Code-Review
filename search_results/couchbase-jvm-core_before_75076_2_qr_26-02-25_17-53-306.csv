@@ -1,0 +1,6 @@
+block14.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_75076_2/src/main/java/com/couchbase/client/core/service/AbstractPoolingService.java_AbstractPoolingService#39#47
+block1.java_method#1#11,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_75076_2/src/main/java/com/couchbase/client/core/config/DefaultConfigurationProvider.java_openBucket#219#286
+block6.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_75076_2/src/main/java/com/couchbase/client/core/config/refresher/HttpRefresher.java_registerBucket#52#92
+block10.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_75076_2/src/main/java/com/couchbase/client/core/message/internal/AddServiceRequest.java_AddServiceRequest#30#35
+block2.java_method#1#37,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_75076_2/src/main/java/com/couchbase/client/core/config/DefaultConfigurationProvider.java_openBucket#219#286
+block5.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_75076_2/src/main/java/com/couchbase/client/core/config/refresher/AbstractRefresher.java_registerBucket#85#94

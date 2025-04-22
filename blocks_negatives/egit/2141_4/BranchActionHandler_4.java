@@ -1,0 +1,12 @@
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.egit.core.op.BranchOperation;
+import org.eclipse.egit.ui.Activator;
+import org.eclipse.egit.ui.UIText;
+import org.eclipse.egit.ui.internal.decorators.GitLightweightDecorator;
+import org.eclipse.egit.ui.internal.dialogs.BranchSelectionDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;

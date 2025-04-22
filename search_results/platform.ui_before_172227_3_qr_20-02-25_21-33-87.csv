@@ -1,0 +1,5 @@
+block4.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_172227_3/bundles/org.eclipse.jface/src/org/eclipse/jface/viewers/AbstractListViewer.java_setSelectionToWidget#478#501,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_172227_3/bundles/org.eclipse.jface/src/org/eclipse/jface/viewers/ListViewer.java_setSelectionToWidget#186#211
+block1.java_method#1#23,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_172227_3/bundles/org.eclipse.jface/src/org/eclipse/jface/bindings/BindingManager.java_computeBindings#517#677
+block3.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_172227_3/bundles/org.eclipse.jface/src/org/eclipse/jface/viewers/AbstractTableViewer.java_virtualSetSelectionToWidget#901#972
+block0.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_172227_3/bundles/org.eclipse.jface/src/org/eclipse/jface/action/MenuManager.java_update#741#853
+block2.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_172227_3/bundles/org.eclipse.jface/src/org/eclipse/jface/bindings/BindingManager.java_computeBindings#517#677

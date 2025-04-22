@@ -1,0 +1,10 @@
+import org.eclipse.core.tests.databinding.util.PolicyTest;
+import org.eclipse.core.tests.databinding.validation.MultiValidatorTest;
+import org.eclipse.core.tests.databinding.validation.ValidationStatusTest;
+import org.eclipse.core.tests.internal.databinding.BindingMessagesTest;
+import org.eclipse.core.tests.internal.databinding.BindingStatusTest;
+import org.eclipse.core.tests.internal.databinding.ConverterValuePropertyTest;
+import org.eclipse.core.tests.internal.databinding.DifferentRealmsBindingTest;
+import org.eclipse.core.tests.internal.databinding.IdentityMapTest;
+import org.eclipse.core.tests.internal.databinding.IdentitySetTest;
+import org.eclipse.core.tests.internal.databinding.QueueTest;

@@ -1,0 +1,196 @@
+	private final FileSystemProvider fsp = mock(FileSystemProvider.class);
+	private final JGitFileSystem fs = mock(JGitFileSystem.class);
+
+	@Before
+	public void setup() {
+		when(fs.getSeparator()).thenReturn("/");
+		when(fs.provider()).thenReturn(fsp);
+		when(fsp.getScheme()).thenReturn("git");
+	}
+
+	@Test
+	public void testSimpleBranchedGit() {
+		final Path path = JGitPathImpl.create(fs
+
+		assertThat(path).isNotNull();
+		assertThat(path.isAbsolute()).isTrue();
+		assertThat(path.toString()).isEqualTo("/");
+		assertThat(path.getRoot()).isEqualTo(path);
+
+		assertThat(path.getNameCount()).isEqualTo(0);
+
+		assertThat(path.getRoot()).isEqualTo(path);
+	}
+
+	@Test
+	public void testSimpleBranchedGitRoot() {
+		when(fs.getSeparator()).thenReturn("/");
+
+		final Path path = JGitPathImpl.create(fs
+
+		assertThat(path).isNotNull();
+		assertThat(path.isAbsolute()).isTrue();
+		assertThat(path.toString()).isEqualTo("/");
+		assertThat(path.getRoot().toString()).isEqualTo("/");
+
+		assertThat(path.getNameCount()).isEqualTo(0);
+	}
+
+	@Test
+	public void testSimpleBranchedGitRelative() {
+		when(fs.getSeparator()).thenReturn("/");
+
+		final Path path = JGitPathImpl.create(fs
+
+		assertThat(path).isNotNull();
+		assertThat(path.isAbsolute()).isFalse();
+		assertThat(path.toString()).isEqualTo("home");
+		assertThat(path.getRoot().toString()).isEqualTo("");
+
+		assertThat(path.getNameCount()).isEqualTo(1);
+	}
+
+	@Test
+	public void testSimpleBranchedGitRoot2() {
+		when(fs.getSeparator()).thenReturn("/");
+
+		final Path path = JGitPathImpl.create(fs
+
+		assertThat(path).isNotNull();
+		assertThat(path.isAbsolute()).isTrue();
+		assertThat(path.toString()).isEqualTo("/path/to/some/place.txt");
+
+		assertThat(path.getNameCount()).isEqualTo(4);
+
+		assertThat(path.getName(0).toString()).isEqualTo("path");
+		assertThat(path.getRoot().toString()).isEqualTo("/");
+	}
+
+	@Test
+	public void testSimpleBranchedGitRoot2Spaced() throws IllegalStateException {
+		when(fs.getSeparator()).thenReturn("/");
+
+		final Path path = JGitPathImpl.create(fs
+				"master@my-host"
+
+		assertThat(path).isNotNull();
+		assertThat(path.isAbsolute()).isTrue();
+		assertThat(path.toString()).isEqualTo("/path/to/some/some place.txt");
+
+		assertThat(path.getNameCount()).isEqualTo(4);
+
+		assertThat(path.getName(0).toString()).isEqualTo("path");
+		assertThat(path.getRoot().toString()).isEqualTo("/");
+	}
+
+	@Test
+	public void testSimpleImplicitBranchGit() {
+		when(fs.getSeparator()).thenReturn("/");
+
+		final Path path = JGitPathImpl.create(fs
+
+		assertThat(path).isNotNull();
+		assertThat(path.isAbsolute()).isTrue();
+		assertThat(path.toString()).isEqualTo("/path/to/some/place.txt");
+
+		assertThat(path.getNameCount()).isEqualTo(4);
+
+		assertThat(path.getName(0).toString()).isEqualTo("path");
+		assertThat(path.getRoot().toString()).isEqualTo("/");
+	}
+
+	@Test
+	public void testSimpleImplicitBranchGitRoot() {
+		when(fs.getSeparator()).thenReturn("/");
+
+		final Path path = JGitPathImpl.create(fs
+
+		assertThat(path).isNotNull();
+		assertThat(path.isAbsolute()).isTrue();
+		assertThat(path.toString()).isEqualTo("/");
+		assertThat(path.getRoot().toString()).isEqualTo("/");
+
+		assertThat(path.getNameCount()).isEqualTo(0);
+
+		assertThat(path.getRoot().toString()).isEqualTo("/");
+		assertThatThrownBy(() -> path.getName(0)).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void testRelativize() {
+		final FileSystemProvider fsprovider = mock(FileSystemProvider.class);
+		when(fsprovider.getScheme()).thenReturn("file");
+		when(fs.provider()).thenReturn(fsprovider);
+
+		when(fs.getSeparator()).thenReturn("/");
+
+		final Path path = JGitPathImpl.create(fs
+		final Path other = JGitPathImpl.create(fs
+
+		final Path relative = path.relativize(other);
+		assertThat(relative).isNotNull();
+		assertThat(relative.toString()).isEqualTo("some/place");
+
+		final Path path2 = JGitPathImpl.create(fs
+		final Path other2 = JGitPathImpl.create(fs
+
+		final Path relative2 = path2.relativize(other2);
+		assertThat(relative2).isNotNull();
+		assertThat(relative2.toString()).isEqualTo("../..");
+
+		final Path path3 = JGitPathImpl.create(fs
+		final Path other3 = JGitPathImpl.create(fs
+
+		final Path relative3 = path3.relativize(other3);
+		assertThat(relative3).isNotNull();
+		assertThat(relative3.toString()).isEqualTo("");
+
+		final Path path4 = JGitPathImpl.create(fs
+		final Path other4 = JGitPathImpl.create(fs
+
+		final Path relative4 = path4.relativize(other4);
+		assertThat(relative4).isNotNull();
+		assertThat(relative4.toString()).isEqualTo("some/place");
+
+		final Path path5 = JGitPathImpl.create(fs
+		final Path other5 = JGitPathImpl.create(fs
+
+		final Path relative5 = path5.relativize(other5);
+		assertThat(relative5).isNotNull();
+		assertThat(relative5.toString()).isEqualTo("../../some/place");
+
+		final Path path6 = JGitPathImpl.create(fs
+		final Path other6 = JGitPathImpl.create(fs
+
+		final Path relative6 = path6.relativize(other6);
+		assertThat(relative6).isNotNull();
+		assertThat(relative6.toString()).isEqualTo("../../path/to");
+
+		final Path path7 = JGitPathImpl.create(fs
+		final Path other7 = JGitPathImpl.create(fs
+
+		final Path relative7 = path7.relativize(other7);
+		assertThat(relative7).isNotNull();
+		assertThat(relative7.toString()).isEqualTo("../../../../../some/place");
+
+		final Path path8 = JGitPathImpl.create(fs
+		final Path other8 = JGitPathImpl.create(fs
+
+		final Path relative8 = path8.relativize(other8);
+		assertThat(relative8).isNotNull();
+		assertThat(relative8.toString()).isEqualTo("../../path/to/some/thing/here");
+
+		final Path path9 = JGitPathImpl.create(fs
+		final Path other9 = JGitPathImpl.create(fs
+
+		final Path relative9 = path9.relativize(other9);
+		assertThat(relative9).isNotNull();
+		assertThat(relative9.toString()).isEqualTo("");
+
+		final Path path10 = JGitPathImpl.create(fs
+		final Path other10 = JGitPathImpl.create(fs
+
+		final Path relative10 = path10.relativize(other10);
+		assertThat(relative10).isNotNull();
+		assertThat(relative10.toString()).isEqualTo("");
+	}

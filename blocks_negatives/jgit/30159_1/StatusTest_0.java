@@ -1,0 +1,10 @@
+						"# On branch master", //
+						"# Untracked files:", //
+						"# ",//
+						"# \tstagedDeleted", //
+						"# \tstagedModified", //
+						"# \tstagedNew", //
+						"# \ttracked", //
+						"# \ttrackedDeleted", //
+						"# \ttrackedModified", //
+						"# \tuntracked", //

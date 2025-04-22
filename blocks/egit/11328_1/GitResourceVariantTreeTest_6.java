@@ -1,0 +1,11 @@
+import org.eclipse.egit.core.internal.op.ConnectProviderOperation;
+import org.eclipse.egit.core.internal.project.RepositoryMapping;
+import org.eclipse.egit.core.internal.synchronize.GitBaseResourceVariantTree;
+import org.eclipse.egit.core.internal.synchronize.GitRemoteResourceVariantTree;
+import org.eclipse.egit.core.internal.synchronize.GitResourceVariantTree;
+import org.eclipse.egit.core.internal.synchronize.GitSyncCache;
+import org.eclipse.egit.core.internal.synchronize.dto.GitSynchronizeData;
+import org.eclipse.egit.core.internal.synchronize.dto.GitSynchronizeDataSet;
+import org.eclipse.egit.core.internal.test.GitTestCase;
+import org.eclipse.egit.core.internal.test.TestProject;
+import org.eclipse.egit.core.internal.test.TestRepository;

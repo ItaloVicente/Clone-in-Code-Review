@@ -1,0 +1,12 @@
+		StringBuilder sb = new StringBuilder(100);
+		sb.append("GIT_AUTHOR_NAME='");
+		sb.append(commitToPick.getAuthorIdent().getName());
+		sb.append("'\n");
+		sb.append("GIT_AUTHOR_EMAIL='");
+		sb.append(commitToPick.getAuthorIdent().getEmailAddress());
+		sb.append("'\n");
+		sb.append("GIT_AUTHOR_DATE='");
+		sb.append(commitToPick.getAuthorIdent().getWhen());
+		sb.append("'\n");
+		createFile(rebaseDir, "author-script", sb.toString());
+		createFile(rebaseDir, "message", commitToPick.getShortMessage());

@@ -1,0 +1,6 @@
+	Bug66182Test.class,
+	StateTest.class,
+	CommandEnablementTest.class,
+	ActionDelegateProxyTest.class,
+	ToggleStateTest.class,
+	RadioStateTest.class,

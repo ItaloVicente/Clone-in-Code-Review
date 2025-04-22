@@ -1,0 +1,39 @@
+	@Test
+	public void testGC() throws IOException {
+
+		final JGitFileSystem fs = (JGitFileSystem) provider.newFileSystem(newRepo
+
+		assertThat(fs).isNotNull();
+
+		final DirectoryStream<Path> stream = provider.newDirectoryStream(provider.getPath(newRepo)
+		assertThat(stream).isNotNull().hasSize(0);
+
+		try {
+			provider.newFileSystem(newRepo
+			failBecauseExceptionWasNotThrown(FileSystemAlreadyExistsException.class);
+		} catch (final Exception ex) {
+		}
+
+		for (int i = 0; i < 19; i++) {
+			assertThat(fs.getNumberOfCommitsSinceLastGC()).isEqualTo(i);
+
+
+			final OutputStream outStream = provider.newOutputStream(path);
+			assertThat(outStream).isNotNull();
+			outStream.write(("my cool" + i + " content").getBytes());
+			outStream.close();
+		}
+
+
+		final OutputStream outStream = provider.newOutputStream(path);
+		assertThat(outStream).isNotNull();
+		outStream.write("my cool content".getBytes());
+		outStream.close();
+		assertThat(fs.getNumberOfCommitsSinceLastGC()).isEqualTo(0);
+
+		final OutputStream outStream2 = provider.newOutputStream(path);
+		assertThat(outStream2).isNotNull();
+		outStream2.write("my co dwf sdf ol content".getBytes());
+		outStream2.close();
+		assertThat(fs.getNumberOfCommitsSinceLastGC()).isEqualTo(1);
+	}

@@ -1,0 +1,9 @@
+				final FindToolbarThread finder = new FindToolbarThread();
+				finder.pattern = ((Text) e.getSource()).getText();
+				finder.fileRevisions = fileRevisions;
+				finder.toolbar = thisToolbar;
+				finder.ignoreCase = caseItem.getSelection();
+				finder.findInCommitId = commitIdItem.getSelection();
+				finder.findInComments = commentsItem.getSelection();
+				finder.findInAuthor = authorItem.getSelection();
+				finder.findInCommitter = committerItem.getSelection();

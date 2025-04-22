@@ -1,0 +1,35 @@
+    public static byte[] decode( byte[] source, int off, int len )
+    {
+        int    len34   = len * 3 / 4;
+        int    outBuffPosn = 0;
+
+        byte[] b4        = new byte[4];
+        int    b4Posn    = 0;
+        int    i         = 0;
+        byte   sbiCrop   = 0;
+        byte   sbiDecode = 0;
+        for( i = off; i < off+len; i++ )
+        {
+            sbiDecode = DECODABET[ sbiCrop ];
+
+            {
+                if( sbiDecode >= EQUALS_SIGN_ENC )
+                {
+                    b4[ b4Posn++ ] = sbiCrop;
+                    if( b4Posn > 3 )
+                    {
+                        outBuffPosn += decode4to3( b4, 0, outBuff, outBuffPosn );
+                        b4Posn = 0;
+
+                        if( sbiCrop == EQUALS_SIGN )
+                            break;
+
+
+            else
+            {
+                System.err.println(MessageFormat.format(JGitText.get().badBase64InputCharacterAt, i+ source[i]));
+                return null;
+
+        byte[] out = new byte[ outBuffPosn ];
+        System.arraycopy( outBuff, 0, out, 0, outBuffPosn );
+        return out;

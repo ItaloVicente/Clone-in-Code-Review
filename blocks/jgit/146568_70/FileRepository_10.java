@@ -1,0 +1,510 @@
+
+package org.eclipse.jgit.internal.storage.file;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.eclipse.jgit.annotations.Nullable;
+import org.eclipse.jgit.internal.JGitText;
+import org.eclipse.jgit.internal.storage.io.BlockSource;
+import org.eclipse.jgit.internal.storage.reftable.MergedReftable;
+import org.eclipse.jgit.internal.storage.reftable.ReftableCompactor;
+import org.eclipse.jgit.internal.storage.reftable.ReftableConfig;
+import org.eclipse.jgit.internal.storage.reftable.ReftableReader;
+import org.eclipse.jgit.internal.storage.reftable.ReftableWriter;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.util.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+class FileReftableStack implements AutoCloseable {
+
+	private final static Logger LOG = LoggerFactory
+		.getLogger(FileReftableStack.class);
+
+	private static class StackEntry {
+
+		String name;
+
+		ReftableReader reftableReader;
+	}
+
+	private MergedReftable mergedReftable;
+
+	private List<StackEntry> stack;
+
+	private long lastNextUpdateIndex;
+
+	private final File stackPath;
+
+	private final File reftableDir;
+
+	private final Runnable onChange;
+
+	private final Supplier<Config> configSupplier;
+
+	static class CompactionStats {
+
+		long tables;
+
+		long bytes;
+
+		int count;
+
+		CompactionStats() {
+			tables = 0;
+			bytes = 0;
+			count = 0;
+		}
+	}
+
+	private final CompactionStats stats;
+
+	FileReftableStack(File stackPath
+		@Nullable Runnable onChange
+		throws IOException {
+		this.stackPath = stackPath;
+		this.reftableDir = reftableDir;
+		this.stack = new ArrayList<>();
+		this.configSupplier = configSupplier;
+		this.onChange = onChange;
+
+		lastNextUpdateIndex = 0;
+		reload();
+
+		stats = new CompactionStats();
+	}
+
+	public CompactionStats getStats() {
+		return stats;
+	}
+
+	private void reloadOnce() throws IOException {
+		List<String> names = readTableNames();
+
+		Map<String
+			.collect(Collectors.toMap(e -> e.name
+
+		List<ReftableReader> newTables = new ArrayList<>();
+		List<StackEntry> newStack = new ArrayList<>(stack.size() + 1);
+		try {
+			ReftableReader last = null;
+			for (String name : names) {
+				StackEntry entry = new StackEntry();
+				entry.name = name;
+
+				if (current.containsKey(name)) {
+					entry.reftableReader = current.remove(name);
+				} else {
+					File subtable = new File(reftableDir
+					FileInputStream is;
+					try {
+						is = new FileInputStream(subtable);
+					} catch (FileNotFoundException e) {
+						throw new RetryException();
+					}
+
+					entry.reftableReader = new ReftableReader(
+						BlockSource.from(is));
+					newTables.add(entry.reftableReader);
+				}
+
+				if (last != null) {
+					if (last.maxUpdateIndex() >= entry.reftableReader
+						.minUpdateIndex()) {
+						throw new IllegalStateException(
+							MessageFormat.format(
+								JGitText.get().indexNumbersNotIncreasing
+								name
+								Long.valueOf(entry.reftableReader
+									.minUpdateIndex())
+								Long.valueOf(
+									last.maxUpdateIndex())));
+					}
+				}
+				last = entry.reftableReader;
+
+				newStack.add(entry);
+			}
+		} catch (Throwable e) {
+			newTables.forEach(t -> {
+				try {
+					t.close();
+				} catch (IOException ioe) {
+					throw new AssertionError(ioe);
+				}
+			});
+			throw e;
+		}
+
+		stack = newStack;
+		current.values().forEach(r -> {
+			try {
+				r.close();
+			} catch (IOException e) {
+				LOG.error(e.getMessage()
+			}
+		});
+	}
+
+	void reload() throws IOException {
+		while (true) {
+			try {
+				reloadOnce();
+				break;
+			} catch (RetryException e) {
+			}
+		}
+
+		mergedReftable = new MergedReftable(stack.stream()
+			.map(x -> x.reftableReader).collect(Collectors.toList()));
+		long curr = nextUpdateIndex();
+		if (lastNextUpdateIndex > 0 && lastNextUpdateIndex != curr
+			&& onChange != null) {
+			onChange.run();
+		}
+		lastNextUpdateIndex = curr;
+	}
+
+	MergedReftable getMergedReftable() {
+		return mergedReftable;
+	}
+
+	interface Writer {
+
+		void call(ReftableWriter w) throws IOException;
+	}
+
+	private static class RetryException extends IOException {
+
+		private static final long serialVersionUID = 1L;
+	}
+
+	private List<String> readTableNames() throws IOException {
+		List<String> names = new ArrayList<>(stack.size() + 1);
+
+		try (BufferedReader br = new BufferedReader(
+			new InputStreamReader(new FileInputStream(stackPath)
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (!line.isEmpty()) {
+					names.add(line);
+				}
+			}
+		} catch (FileNotFoundException e) {
+		}
+		return names;
+	}
+
+	public boolean isUpToDate() throws IOException {
+		try {
+			List<String> names = readTableNames();
+			if (names.size() != stack.size()) {
+				return false;
+			}
+			for (int i = 0; i < names.size(); i++) {
+				if (!names.get(i).equals(stack.get(i).name)) {
+					return false;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			return stack.isEmpty();
+		}
+		return true;
+	}
+
+	@Override
+	public void close() {
+		for (StackEntry entry : stack) {
+			try {
+				entry.reftableReader.close();
+			} catch (Exception e) {
+				throw new AssertionError(e);
+			}
+		}
+	}
+
+	private long nextUpdateIndex() throws IOException {
+		return stack.size() > 0
+			? stack.get(stack.size() - 1).reftableReader.maxUpdateIndex()
+			+ 1
+			: 1;
+	}
+
+	private String filename(long low
+		return String.format("%012x-%012x"
+			Long.valueOf(low)
+	}
+
+	@SuppressWarnings("nls")
+	boolean addReftable(Writer w) throws IOException {
+		LockFile lock = new LockFile(stackPath);
+		try {
+			if (!lock.lockForAppend()) {
+				return false;
+			}
+			if (!isUpToDate()) {
+				return false;
+			}
+
+			String fn = filename(nextUpdateIndex()
+
+			File tmpTable = File.createTempFile(fn + "_"
+				stackPath.getParentFile());
+
+			ReftableWriter.Stats s;
+			try (FileOutputStream fos = new FileOutputStream(tmpTable)) {
+				ReftableWriter rw = new ReftableWriter(reftableConfig()
+				w.call(rw);
+				rw.finish();
+				s = rw.getStats();
+			}
+
+			if (s.minUpdateIndex() != nextUpdateIndex()) {
+				return false;
+			}
+
+			fn += s.refCount() > 0 ? ".ref" : ".log";
+			File dest = new File(reftableDir
+
+			FileUtils.rename(tmpTable
+			lock.write((fn + "\n").getBytes(UTF_8));
+			if (!lock.commit()) {
+				FileUtils.delete(dest);
+				return false;
+			}
+
+			reload();
+
+			autoCompact();
+		} finally {
+			lock.unlock();
+		}
+		return true;
+	}
+
+	private ReftableConfig reftableConfig() {
+		return new ReftableConfig(configSupplier.get());
+	}
+
+	private File compactLocked(int first
+		String fn = filename(first
+
+		File tmpTable = File.createTempFile(fn + "_"
+			stackPath.getParentFile());
+		try (FileOutputStream fos = new FileOutputStream(tmpTable)) {
+			ReftableCompactor c = new ReftableCompactor(fos)
+				.setConfig(reftableConfig())
+				.setMinUpdateIndex(
+					stack.get(first).reftableReader.minUpdateIndex())
+				.setMaxUpdateIndex(
+					stack.get(last).reftableReader.maxUpdateIndex())
+				.setIncludeDeletes(first > 0);
+
+			List<ReftableReader> compactMe = new ArrayList<>();
+			for (int i = first; i <= last; i++) {
+				compactMe.add(stack.get(i).reftableReader);
+			}
+			c.addAll(compactMe);
+
+			c.compact();
+		}
+
+		return tmpTable;
+	}
+
+	boolean compactRange(int first
+		if (first >= last) {
+			return true;
+		}
+		LockFile lock = new LockFile(stackPath);
+
+		File tmpTable = null;
+		List<LockFile> subtableLocks = new ArrayList<>();
+
+		long bytes = 0;
+		long tables = 0;
+		try {
+			if (!lock.lock()) {
+				return false;
+			}
+			if (!isUpToDate()) {
+				return false;
+			}
+
+			List<File> deleteOnSuccess = new ArrayList<>();
+			for (int i = first; i <= last; i++) {
+				File f = new File(reftableDir
+				LockFile lf = new LockFile(f);
+				if (!lf.lock()) {
+					return false;
+				}
+				subtableLocks.add(lf);
+				deleteOnSuccess.add(f);
+				tables++;
+				bytes += stack.get(i).reftableReader.size();
+			}
+
+			lock.unlock();
+			lock = null;
+
+			tmpTable = compactLocked(first
+
+			lock = new LockFile(stackPath);
+			if (!lock.lock()) {
+				return false;
+			}
+			if (!isUpToDate()) {
+				return false;
+			}
+
+			String fn = filename(
+				stack.get(first).reftableReader.minUpdateIndex()
+				stack.get(last).reftableReader.maxUpdateIndex());
+
+			File dest = new File(reftableDir
+
+			FileUtils.rename(tmpTable
+			tmpTable = null;
+
+			StringBuilder sb = new StringBuilder();
+
+			for (int i = 0; i < first; i++) {
+			}
+			for (int i = last + 1; i < stack.size(); i++) {
+			}
+
+			lock.write(sb.toString().getBytes(UTF_8));
+			if (!lock.commit()) {
+				dest.delete();
+				return false;
+			}
+
+			stats.bytes += bytes;
+			stats.tables += tables;
+			stats.count++;
+
+			for (File f : deleteOnSuccess) {
+				Files.delete(f.toPath());
+			}
+
+			reload();
+			return true;
+		} finally {
+			if (tmpTable != null) {
+				tmpTable.delete();
+			}
+			for (LockFile lf : subtableLocks) {
+				lf.unlock();
+			}
+			if (lock != null) {
+				lock.unlock();
+			}
+		}
+	}
+
+	private int log2(long sz) {
+		int l = 0;
+		while (sz > 0) {
+			l++;
+			sz /= 2;
+		}
+
+		return l;
+	}
+
+	private static class Segment {
+
+		int log;
+
+		int start;
+
+
+		int size() {
+			return end - start;
+		}
+	}
+
+	private void autoCompact() throws IOException {
+		int i = 0;
+
+		int segmentStart = -1;
+		int lastLog = -1;
+
+		List<Segment> segments = new ArrayList<>();
+		for (StackEntry e : stack) {
+			int l = log2(e.reftableReader.size());
+			if (l != lastLog) {
+				if (segmentStart > 0) {
+					Segment s = new Segment();
+					s.log = l;
+					s.start = segmentStart;
+					s.end = i;
+					segments.add(s);
+				}
+				segmentStart = i;
+			}
+
+			lastLog = l;
+			i++;
+		}
+
+		if (stack.size() > 0) {
+			Segment s = new Segment();
+			s.log = lastLog;
+			s.start = segmentStart;
+			s.end = stack.size();
+			segments.add(s);
+		}
+
+		segments = segments.stream().filter(s -> s.size() > 1)
+			.collect(Collectors.toList());
+		if (segments.isEmpty()) {
+			return;
+		}
+
+		Optional<Segment> minSeg = segments.stream()
+			.min(Comparator.comparing(s -> Integer.valueOf(s.log)));
+
+		int start = minSeg.get().start;
+		int end = minSeg.get().end;
+
+		long total = 0;
+		for (int j = start; j < end; j++) {
+			total += stack.get(j).reftableReader.size();
+		}
+
+		while (start > 0) {
+			int prev = start - 1;
+			long prevSize = stack.get(prev).reftableReader.size();
+			if (log2(total) < log2(prevSize)) {
+				break;
+			}
+			start = prev;
+			total += prevSize;
+		}
+
+		compactRange(start
+	}
+
+	void fullCompact() throws IOException {
+		compactRange(0
+	}
+}

@@ -1,0 +1,9 @@
+import org.eclipse.egit.core.internal.Activator;
+import org.eclipse.egit.core.internal.GitCorePreferences;
+import org.eclipse.egit.core.internal.RepositoryCache;
+import org.eclipse.egit.core.internal.op.AddToIndexOperation;
+import org.eclipse.egit.core.internal.op.CloneOperation;
+import org.eclipse.egit.core.internal.op.CommitOperation;
+import org.eclipse.egit.core.internal.op.ConnectProviderOperation;
+import org.eclipse.egit.core.internal.op.ListRemoteOperation;
+import org.eclipse.egit.ui.internal.UIPreferences;

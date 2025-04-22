@@ -1,0 +1,23 @@
+			case UiPackageImpl.UI_ELEMENT__WIDGET:
+				return getWidget();
+			case UiPackageImpl.UI_ELEMENT__RENDERER:
+				return getRenderer();
+			case UiPackageImpl.UI_ELEMENT__TO_BE_RENDERED:
+				return isToBeRendered();
+			case UiPackageImpl.UI_ELEMENT__ON_TOP:
+				return isOnTop();
+			case UiPackageImpl.UI_ELEMENT__VISIBLE:
+				return isVisible();
+			case UiPackageImpl.UI_ELEMENT__PARENT:
+				return getParent();
+			case UiPackageImpl.UI_ELEMENT__CONTAINER_DATA:
+				return getContainerData();
+			case UiPackageImpl.UI_ELEMENT__CUR_SHARED_REF:
+				if (resolve) return getCurSharedRef();
+				return basicGetCurSharedRef();
+			case UiPackageImpl.UI_ELEMENT__VISIBLE_WHEN:
+				return getVisibleWhen();
+			case UiPackageImpl.UI_ELEMENT__ACCESSIBILITY_PHRASE:
+				return getAccessibilityPhrase();
+			case UiPackageImpl.UI_ELEMENT__LOCALIZED_ACCESSIBILITY_PHRASE:
+				return getLocalizedAccessibilityPhrase();

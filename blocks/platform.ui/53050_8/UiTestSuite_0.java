@@ -1,0 +1,19 @@
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	StartupTest.class,
+	UIAutomatedSuite.class,
+	ApiTestSuite.class,
+	NavigatorTestSuite.class,
+	DecoratorsTestSuite.class,
+	DataTransferTestSuite.class,
+	PreferencesTestSuite.class,
+	KeysTestSuite.class,
+	ActivitiesTestSuite.class,
+	ThemesTestSuite.class,
+	EncodingTestSuite.class,
+	OperationsTestSuite.class,
+	FieldAssistTestSuite.class,
+	ServicesTestSuite.class,
+	ProgressTestSuite.class
+})
+public class UiTestSuite {

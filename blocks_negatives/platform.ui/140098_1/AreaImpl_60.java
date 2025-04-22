@@ -1,0 +1,10 @@
+			case AdvancedPackageImpl.AREA__LABEL:
+				return getLabel();
+			case AdvancedPackageImpl.AREA__ICON_URI:
+				return getIconURI();
+			case AdvancedPackageImpl.AREA__TOOLTIP:
+				return getTooltip();
+			case AdvancedPackageImpl.AREA__LOCALIZED_LABEL:
+				return getLocalizedLabel();
+			case AdvancedPackageImpl.AREA__LOCALIZED_TOOLTIP:
+				return getLocalizedTooltip();

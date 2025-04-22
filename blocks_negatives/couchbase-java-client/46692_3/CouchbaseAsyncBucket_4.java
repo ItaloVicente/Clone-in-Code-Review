@@ -1,0 +1,8 @@
+                            new Func2<ArrayList<Throwable>, Exception, ArrayList<Throwable>>() {
+                                @Override
+                                public ArrayList<Throwable> call(ArrayList<Throwable> throwables,
+                                                                 Exception error) {
+                                    throwables.add(error);
+                                    return throwables;
+                                }
+                            }).flatMap(new Func1<ArrayList<Throwable>, Observable<QueryPlan>>() {

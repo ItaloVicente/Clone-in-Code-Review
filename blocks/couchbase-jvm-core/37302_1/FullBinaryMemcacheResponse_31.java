@@ -1,0 +1,18 @@
+package io.netty.handler.codec.memcache.binary;
+
+import io.netty.handler.codec.memcache.FullMemcacheMessage;
+
+public interface FullBinaryMemcacheRequest extends BinaryMemcacheRequest, FullMemcacheMessage {
+
+    @Override
+    FullBinaryMemcacheRequest copy();
+
+    @Override
+    FullBinaryMemcacheRequest retain(int increment);
+
+    @Override
+    FullBinaryMemcacheRequest retain();
+
+    @Override
+    FullBinaryMemcacheRequest duplicate();
+}

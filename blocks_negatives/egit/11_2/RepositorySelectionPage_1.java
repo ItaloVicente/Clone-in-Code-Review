@@ -1,0 +1,7 @@
+		DEFAULT_SCHEMES[S_GIT] = "git";
+		DEFAULT_SCHEMES[S_SSH] = "git+ssh";
+		DEFAULT_SCHEMES[S_SFTP] = "sftp";
+		DEFAULT_SCHEMES[S_HTTP] = "http";
+		DEFAULT_SCHEMES[S_HTTPS] = "https";
+		DEFAULT_SCHEMES[S_FTP] = "ftp";
+		DEFAULT_SCHEMES[S_FILE] = "file";

@@ -1,0 +1,14 @@
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.UTF_8;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.cryptoCipherListPBE;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.cryptoCipherListTrans;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.folderDelete;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.permitLongTests;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.policySetup;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.product;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.proxySetup;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.publicAddress;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.reportPolicy;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.securityProviderName;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.textWrite;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.transferStream;
+import static org.eclipse.jgit.transport.WalkEncryptionTest.Util.verifyFileContent;

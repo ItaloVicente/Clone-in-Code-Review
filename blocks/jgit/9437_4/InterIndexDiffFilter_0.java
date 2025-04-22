@@ -1,0 +1,157 @@
+package org.eclipse.jgit.treewalk.filter;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+
+import org.eclipse.jgit.dircache.DirCache;
+import org.eclipse.jgit.dircache.DirCacheEditor;
+import org.eclipse.jgit.dircache.DirCacheEntry;
+import org.eclipse.jgit.dircache.DirCacheIterator;
+import org.eclipse.jgit.dircache.DirCacheEditor.PathEdit;
+import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.FileMode;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.storage.file.FileRepository;
+import org.eclipse.jgit.treewalk.TreeWalk;
+import org.junit.Before;
+import org.junit.Test;
+
+public class InterIndexDiffFilterTest extends LocalDiskRepositoryTestCase {
+
+	private FileRepository db;
+
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		db = createWorkRepository();
+	}
+
+	@Test
+	public void testEmpty() throws IOException {
+		DirCache dc1 = DirCache.newInCore();
+		DirCache dc2 = DirCache.newInCore();
+		TreeWalk tw = new TreeWalk(db);
+		tw.addTree(new DirCacheIterator(dc1));
+		tw.addTree(new DirCacheIterator(dc2));
+		assertFalse(tw.next());
+	}
+
+	static final class AddEdit extends PathEdit {
+
+		private final ObjectId data;
+
+		private final long length;
+
+		private boolean assumeValid;
+
+		private FileMode type;
+
+		public AddEdit(String entryPath
+				long length
+				boolean assumeValid) {
+			super(entryPath);
+			this.type = type;
+			this.data = data;
+			this.length = length;
+			this.assumeValid = assumeValid;
+		}
+
+		@Override
+		public void apply(DirCacheEntry ent) {
+			ent.setFileMode(type);
+			ent.setLength(length);
+			ent.setObjectId(data);
+			ent.setAssumeValid(assumeValid);
+		}
+	}
+
+	private ObjectId id(String data) {
+		byte[] bytes = data.getBytes();
+		return db.newObjectInserter().idFor(Constants.OBJ_BLOB
+	}
+
+	@Test
+	public void testOneOnly() throws IOException {
+		DirCache dc1 = DirCache.newInCore();
+		DirCache dc2 = DirCache.newInCore();
+		DirCacheEditor editor = dc1.editor();
+		editor.add(new AddEdit("a/a"
+		editor.finish();
+
+		TreeWalk tw = new TreeWalk(db);
+		tw.setRecursive(true);
+		tw.addTree(new DirCacheIterator(dc1));
+		tw.addTree(new DirCacheIterator(dc2));
+		tw.setFilter(InterIndexDiffFilter.INSTANCE);
+		assertTrue(tw.next());
+		assertEquals("a/a"
+		assertFalse(tw.next());
+	}
+
+	@Test
+	public void testTwoSame() throws IOException {
+		DirCache dc1 = DirCache.newInCore();
+		DirCache dc2 = DirCache.newInCore();
+		DirCacheEditor ed1 = dc1.editor();
+		ed1.add(new AddEdit("a/a"
+		ed1.finish();
+		DirCacheEditor ed2 = dc2.editor();
+		ed2.add(new AddEdit("a/a"
+		ed2.finish();
+
+		TreeWalk tw = new TreeWalk(db);
+		tw.setRecursive(true);
+		tw.addTree(new DirCacheIterator(dc1));
+		tw.addTree(new DirCacheIterator(dc2));
+		tw.setFilter(InterIndexDiffFilter.INSTANCE);
+
+		assertFalse(tw.next());
+	}
+
+	@Test
+	public void testTwoSameDifferByAssumeValid() throws IOException {
+		DirCache dc1 = DirCache.newInCore();
+		DirCache dc2 = DirCache.newInCore();
+		DirCacheEditor ed1 = dc1.editor();
+		ed1.add(new AddEdit("a/a"
+		ed1.finish();
+		DirCacheEditor ed2 = dc2.editor();
+		ed2.add(new AddEdit("a/a"
+		ed2.finish();
+
+		TreeWalk tw = new TreeWalk(db);
+		tw.setRecursive(true);
+		tw.addTree(new DirCacheIterator(dc1));
+		tw.addTree(new DirCacheIterator(dc2));
+		tw.setFilter(InterIndexDiffFilter.INSTANCE);
+
+		assertTrue(tw.next());
+		assertEquals("a/a"
+		assertFalse(tw.next());
+	}
+
+	@Test
+	public void testTwoSameSameAssumeValidDifferentContent()
+			throws IOException {
+		DirCache dc1 = DirCache.newInCore();
+		DirCache dc2 = DirCache.newInCore();
+		DirCacheEditor ed1 = dc1.editor();
+		ed1.add(new AddEdit("a/a"
+		ed1.finish();
+		DirCacheEditor ed2 = dc2.editor();
+		ed2.add(new AddEdit("a/a"
+		ed2.finish();
+
+		TreeWalk tw = new TreeWalk(db);
+		tw.setRecursive(true);
+		tw.addTree(new DirCacheIterator(dc1));
+		tw.addTree(new DirCacheIterator(dc2));
+		tw.setFilter(InterIndexDiffFilter.INSTANCE);
+
+		assertFalse(tw.next());
+	}
+}

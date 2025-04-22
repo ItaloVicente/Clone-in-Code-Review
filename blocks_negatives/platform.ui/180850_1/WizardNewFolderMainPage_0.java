@@ -1,0 +1,12 @@
+			linkedResourceComposite.dispose();
+			linkedResourceComposite = null;
+			filterButton.dispose();
+			useDefaultLocation.dispose();
+			useVirtualFolder.dispose();
+			useLinkedResource.dispose();
+			linkedGroupComposite.dispose();
+			filterButton = null;
+			useDefaultLocation = null;
+			useVirtualFolder = null;
+			useLinkedResource = null;
+			linkedGroupComposite = null;

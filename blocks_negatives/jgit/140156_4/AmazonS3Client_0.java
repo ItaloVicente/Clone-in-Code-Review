@@ -1,0 +1,13 @@
+			final URLConnection c = s3.get(bucket, key);
+			int len = c.getContentLength();
+			try (InputStream in = c.getInputStream()) {
+				outw.flush();
+				final byte[] tmp = new byte[2048];
+				while (len > 0) {
+					final int n = in.read(tmp);
+					if (n < 0)
+						throw new EOFException(MessageFormat.format(
+								CLIText.get().expectedNumberOfbytes,
+								valueOf(len)));
+					outs.write(tmp, 0, n);
+					len -= n;

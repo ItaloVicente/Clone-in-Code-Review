@@ -1,0 +1,39 @@
+	@Test
+	public void testRuleCaching() throws Exception {
+		String css = "Shell > * > * { color: red; }\n" + "Button { color: blue; }\n";
+		CSSStyleSheet styleSheet = ParserTestUtil.parseCss(css);
+		DocumentCSSImpl docCss = new DocumentCSSImpl();
+		docCss.addStyleSheet(styleSheet);
+		ViewCSSImpl viewCSS = new ViewCSSImpl(docCss);
+
+		Field currentStylesheetsField = ViewCSSImpl.class.getDeclaredField("currentStylesheets");
+		currentStylesheetsField.setAccessible(true);
+		Field currentCombinedRulesField = ViewCSSImpl.class.getDeclaredField("currentCombinedRules");
+		currentCombinedRulesField.setAccessible(true);
+
+		assertNull(currentStylesheetsField.get(viewCSS));
+		assertNull(currentCombinedRulesField.get(viewCSS));
+
+		final TestElement shell = new TestElement("Shell", engine);
+		final TestElement composite = new TestElement("Composite", shell, engine);
+		final TestElement button = new TestElement("Button", composite, engine);
+		CSSStyleDeclaration buttonStyle = viewCSS.getComputedStyle(button, null);
+		assertNotNull(buttonStyle);
+
+		assertNotNull(currentStylesheetsField.get(viewCSS));
+		assertNotNull(currentCombinedRulesField.get(viewCSS));
+
+		Method getCombinedRulesMethod = ViewCSSImpl.class.getDeclaredMethod("getCombinedRules", null);
+		getCombinedRulesMethod.setAccessible(true);
+		List<CSSRule> cssRules = (List<CSSRule>) getCombinedRulesMethod.invoke(viewCSS, (Object[]) null);
+		assertSame(cssRules, getCombinedRulesMethod.invoke(viewCSS, (Object[]) null));
+
+		css = "Shell > * > * { color: blue; }\n" + "Label { color: green; }\n";
+		styleSheet = ParserTestUtil.parseCss(css);
+		docCss.addStyleSheet(styleSheet);
+
+		List<CSSRule> cssRules2 = (List<CSSRule>) getCombinedRulesMethod.invoke(viewCSS, (Object[]) null);
+		assertNotSame(cssRules, cssRules2);
+		assertTrue(cssRules2.size() > cssRules.size());
+	}
+

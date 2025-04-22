@@ -1,0 +1,14 @@
+        return true;
+    }
+
+    /**
+     * Process an extension.
+     * Assumption: Extension is for current perspective.
+     */
+    private boolean processExtension(IConfigurationElement element) {
+        IConfigurationElement[] children = element.getChildren();
+        for (IConfigurationElement child : children) {
+            String type = child.getName();
+            if (includeTag(type)) {
+                boolean result = false;
+                if (type.equals(IWorkbenchRegistryConstants.TAG_ACTION_SET)) {

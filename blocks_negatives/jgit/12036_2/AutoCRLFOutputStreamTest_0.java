@@ -1,0 +1,11 @@
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE - 5);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE - 4);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE - 3);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE - 2);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE - 1);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE + 1);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE + 2);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE + 3);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE + 4);
+		assertBoundaryCorrect(AutoCRLFOutputStream.BUFFER_SIZE + 5);

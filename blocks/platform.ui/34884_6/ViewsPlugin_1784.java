@@ -1,0 +1,109 @@
+package org.eclipse.ui.views.properties.tabbed;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+
+public class TabbedPropertySheetWidgetFactory
+    extends FormToolkit {
+
+    public TabbedPropertySheetWidgetFactory() {
+        super(Display.getCurrent());
+    }
+
+    public CTabFolder createTabFolder(Composite parent, int style) {
+        CTabFolder tabFolder = new CTabFolder(parent, style);
+        return tabFolder;
+    }
+
+    public CTabItem createTabItem(CTabFolder tabFolder, int style) {
+        CTabItem tabItem = new CTabItem(tabFolder, style);
+        return tabItem;
+    }
+
+    public List createList(Composite parent, int style) {
+        List list = new org.eclipse.swt.widgets.List(parent, style);
+        return list;
+    }
+
+    public Composite createComposite(Composite parent, int style) {
+        Composite c = super.createComposite(parent, style);
+        paintBordersFor(c);
+        return c;
+    }
+
+    public Composite createComposite(Composite parent) {
+        Composite c = createComposite(parent, SWT.NONE);
+        return c;
+    }
+
+    public Composite createPlainComposite(Composite parent, int style) {
+        Composite c = super.createComposite(parent, style);
+        c.setBackground(parent.getBackground());
+        paintBordersFor(c);
+        return c;
+    }
+
+    public ScrolledComposite createScrolledComposite(Composite parent, int style) {
+        ScrolledComposite scrolledComposite = new ScrolledComposite(parent,
+            style);
+        return scrolledComposite;
+    }
+
+    public CCombo createCCombo(Composite parent, int comboStyle) {
+        CCombo combo = new CCombo(parent, comboStyle);
+        adapt(combo, true, false);
+		if (getBorderStyle() == SWT.BORDER) {
+			combo.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		}
+        return combo;
+    }
+
+    public CCombo createCCombo(Composite parent) {
+        return createCCombo(parent, SWT.FLAT | SWT.READ_ONLY);
+    }
+
+    public Group createGroup(Composite parent, String text) {
+        Group group = new Group(parent, SWT.SHADOW_NONE);
+        group.setText(text);
+        group.setBackground(getColors().getBackground());
+        group.setForeground(getColors().getForeground());
+        return group;
+    }
+
+    public Composite createFlatFormComposite(Composite parent) {
+        Composite composite = createComposite(parent);
+        FormLayout layout = new FormLayout();
+        layout.marginWidth = ITabbedPropertyConstants.HSPACE + 2;
+        layout.marginHeight = ITabbedPropertyConstants.VSPACE;
+        layout.spacing = ITabbedPropertyConstants.VMARGIN + 1;
+        composite.setLayout(layout);
+        return composite;
+    }
+
+    public CLabel createCLabel(Composite parent, String text) {
+        return createCLabel(parent, text, SWT.NONE);
+    }
+
+    public CLabel createCLabel(Composite parent, String text, int style) {
+        final CLabel label = new CLabel(parent, style);
+        label.setBackground(parent.getBackground());
+        label.setText(text);
+        return label;
+    }
+
+    public void dispose() {
+        if (getColors() != null) {
+            super.dispose();
+        }
+    }
+}

@@ -1,0 +1,6 @@
+                .arrayAddUnique("spring.refs", "id1", new SubdocOptionsBuilder().createParents(true).attributeAccess(true))
+                .arrayAppend("spring.refs", "id0", new SubdocOptionsBuilder().createParents(false).attributeAccess(true))
+                .arrayPrepend("spring.refs", "id2", new SubdocOptionsBuilder().createParents(false).attributeAccess(true))
+                .arrayInsert("spring.refs[0]", "id3", new SubdocOptionsBuilder().createParents(false).attributeAccess(true))
+                .remove("spring.refs[0]", new SubdocOptionsBuilder().createParents(false).attributeAccess(true))
+                .remove("spring.refs", new SubdocOptionsBuilder().createParents(false).attributeAccess(true))

@@ -1,0 +1,43 @@
+/*******************************************************************************
+ * Copyright (c) 2010, 2015 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.ui.internal.handlers;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.action.ICoolBarManager;
+import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.internal.WorkbenchWindow;
+
+/**
+ *
+ * @author Prakash G.R.
+ *
+ * @since 3.7
+ *
+ */
+public class LockToolBarHandler extends AbstractHandler {
+
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+		WorkbenchWindow workbenchWindow = (WorkbenchWindow) HandlerUtil
+				.getActiveWorkbenchWindow(event);
+		if (workbenchWindow != null) {
+			ICoolBarManager coolBarManager = workbenchWindow.getCoolBarManager2();
+			if (coolBarManager != null) {
+				boolean oldValue = HandlerUtil.toggleCommandState(event.getCommand());
+				coolBarManager.setLockLayout(!oldValue);
+			}
+		}
+		return null;
+	}
+
+}

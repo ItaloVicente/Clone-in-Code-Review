@@ -1,0 +1,34 @@
+	private FileElement createFileElement(FileElement.Type elementType,
+			Pair pair, Side side, DiffEntry entry)
+			throws NoWorkTreeException, CorruptObjectException, IOException,
+			ToolException {
+		String entryPath = side == Side.NEW ? entry.getNewPath()
+				: entry.getOldPath();
+		FileElement fileElement = new FileElement(entryPath, elementType);
+		if (!pair.isWorkingTreeSource(side) && !fileElement.isNullPath()) {
+			try (RevWalk revWalk = new RevWalk(db);
+					TreeWalk treeWalk = new TreeWalk(db,
+							revWalk.getObjectReader())) {
+				treeWalk.setFilter(
+						PathFilterGroup.createFromStrings(entryPath));
+				if (side == Side.NEW) {
+					newTree.reset();
+					treeWalk.addTree(newTree);
+				} else {
+					oldTree.reset();
+					treeWalk.addTree(oldTree);
+				}
+				if (treeWalk.next()) {
+					final EolStreamType eolStreamType = treeWalk
+							.getEolStreamType(CHECKOUT_OP);
+					final String filterCommand = treeWalk.getFilterCommand(
+							Constants.ATTR_FILTER_TYPE_SMUDGE);
+					WorkingTreeOptions opt = db.getConfig()
+							.get(WorkingTreeOptions.KEY);
+					CheckoutMetadata checkoutMetadata = new CheckoutMetadata(
+							eolStreamType, filterCommand);
+					DirCacheCheckout.checkoutToFile(db, entryPath,
+							checkoutMetadata, pair.open(side, entry),
+							db.getFS(), opt, fileElement.createTempFile(null));
+				} else {
+							+ "' in staging area!", null); //$NON-NLS-1$

@@ -1,0 +1,2 @@
+block0.java_method#1#6,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_86386_3/src/main/java/com/couchbase/client/core/endpoint/AbstractEndpoint.java_doConnect#334#485
+block1.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_86386_3/src/test/java/com/couchbase/client/core/logging/LogRedactionTest.java_shouldRedactEverythingOnFull#89#102,/home/gesad/PycharmProjects/Diff/befores/couchbase-jvm-core/before_86386_3/src/test/java/com/couchbase/client/core/logging/LogRedactionTest.java_shouldOnlyRedactUserOnPartial#74#87

@@ -1,0 +1,34 @@
+package org.eclipse.egit.gitflow.op;
+
+import static org.junit.Assert.assertEquals;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.egit.core.op.BranchOperation;
+import org.eclipse.egit.gitflow.GitFlowRepository;
+import org.eclipse.jgit.lib.Repository;
+import org.junit.Test;
+
+public class FeatureStartOperationTest extends AbstractFeatureOperationTest {
+	@Test
+	public void testFeatureStart() throws Exception {
+		Repository repository = testRepository.getRepository();
+		GitFlowRepository gfRepo = init("testFeatureStart\n\nfirst commit\n");
+
+		new FeatureStartOperation(gfRepo, MY_FEATURE).execute(null);
+
+		assertEquals(gfRepo.getConfig().getFullFeatureBranchName(MY_FEATURE),
+				repository.getFullBranch());
+	}
+
+	@Test(expected = CoreException.class)
+	public void testFeatureStartFail() throws Exception {
+		Repository repository = testRepository.getRepository();
+		GitFlowRepository gfRepo = init("testFeatureStart\n\nfirst commit\n");
+
+		BranchOperation branchOperation = new BranchOperation(repository,
+				MY_MASTER);
+		branchOperation.execute(null);
+
+		new FeatureStartOperation(gfRepo, MY_FEATURE).execute(null);
+	}
+}

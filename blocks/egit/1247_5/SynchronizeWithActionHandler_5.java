@@ -1,0 +1,10 @@
+import org.eclipse.team.core.RepositoryProvider;
+import org.eclipse.team.core.mapping.provider.SynchronizationContext;
+import org.eclipse.team.core.subscribers.SubscriberScopeManager;
+import org.eclipse.team.internal.ui.TeamUIPlugin;
+import org.eclipse.team.internal.ui.Utils;
+import org.eclipse.team.internal.ui.actions.TeamAction;
+import org.eclipse.team.ui.TeamUI;
+import org.eclipse.team.ui.synchronize.ISynchronizeParticipant;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;

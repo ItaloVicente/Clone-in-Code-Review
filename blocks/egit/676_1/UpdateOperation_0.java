@@ -1,0 +1,9 @@
+import org.eclipse.core.runtime.jobs.MultiRule;
+import org.eclipse.egit.core.Activator;
+import org.eclipse.egit.core.CoreText;
+import org.eclipse.egit.core.internal.trace.GitTraceLocation;
+import org.eclipse.egit.core.project.RepositoryMapping;
+import org.eclipse.jgit.errors.NotSupportedException;
+import org.eclipse.jgit.lib.GitIndex;
+import org.eclipse.jgit.lib.GitIndex.Entry;
+import org.eclipse.osgi.util.NLS;

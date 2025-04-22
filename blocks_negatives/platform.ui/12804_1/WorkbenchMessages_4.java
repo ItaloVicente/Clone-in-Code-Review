@@ -1,0 +1,19 @@
+	public static String WorkbenchWindow_problemsRestoringWindow;
+	public static String WorkbenchWindow_problemsSavingWindow;
+	public static String EditorManager_problemsRestoringEditors;
+	public static String EditorManager_problemsSavingEditors;
+	public static String RootLayoutContainer_problemsRestoringPerspective;
+	public static String RootLayoutContainer_problemsSavingPerspective;
+	public static String ViewFactory_problemsSavingViews;
+
+	public static String EditorManager_unableToSaveEditor;
+	public static String Perspective_problemsRestoringPerspective;
+	public static String Perspective_problemsSavingPerspective;
+	public static String Perspective_problemsRestoringViews;
+	public static String WorkbenchWindow_unableToRestorePerspective;
+	public static String WorkbenchPage_unableToRestorePerspective;
+	public static String WorkbenchPage_unableToSavePerspective;
+	public static String Perspective_unableToRestorePerspective;
+	public static String PageLayout_missingRefPart;
+	public static String PageLayout_duplicateRefPart;
+	public static String PartStack_incorrectPartInFolder;

@@ -1,0 +1,9 @@
+    CITY_DOCS.add(new City("amsterdam", "netherlands", "europe"));
+    CITY_DOCS.add(new City("rome", "italy", "europe"));
+    CITY_DOCS.add(new City("paris", "france", "europe"));
+    CITY_DOCS.add(new City("vienna", "austria", "europe"));
+    CITY_DOCS.add(new City("new_york", "usa", "north_america"));
+    CITY_DOCS.add(new City("san_francisco", "usa", "north_america"));
+    CITY_DOCS.add(new City("shanghai", "china", "asia"));
+    CITY_DOCS.add(new City("tokyo", "japan", "asia"));
+    CITY_DOCS.add(new City("moscow", "russia", "asia"));

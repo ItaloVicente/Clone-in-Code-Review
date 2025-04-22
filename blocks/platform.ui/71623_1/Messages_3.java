@@ -1,0 +1,7 @@
+	public static String JobMonitoringPreferencePage_enable_monitoring_label;
+	public static String JobMonitoringPreferencePage_warning_threshold_label;
+	public static String JobMonitoringPreferencePage_error_threshold_label;
+	public static String JobMonitoringPreferencePage_max_stack_samples_label;
+	public static String JobMonitoringPreferencePage_log_non_cancellable_user_job_label;
+	public static String JobMonitoringPreferencePage_not_log_fast_system_job_label;
+

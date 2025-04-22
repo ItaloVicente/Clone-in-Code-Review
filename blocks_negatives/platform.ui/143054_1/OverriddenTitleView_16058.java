@@ -1,0 +1,6 @@
+    /**
+     *
+     */
+    public OverriddenTitleView() {
+        super();
+    }

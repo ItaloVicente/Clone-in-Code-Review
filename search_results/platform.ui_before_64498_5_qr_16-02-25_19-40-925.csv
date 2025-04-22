@@ -1,0 +1,3 @@
+block3.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_64498_5/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/AbstractWorkingSetManager.java_getUpdater#745#762
+block0.java_method#1#14,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_64498_5/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/AbstractWorkingSetManager.java_getSupportedEditableDescriptors#150#167
+block2.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/platform.ui/before_64498_5/bundles/org.eclipse.ui.workbench/Eclipse UI/org/eclipse/ui/internal/AbstractWorkingSetManager.java_restoreWorkingSetState#499#508

@@ -1,0 +1,6 @@
+	public static String CancelabilityMonitorPreferencePage_enable_monitoring_label;
+	public static String CancelabilityMonitorPreferencePage_warning_threshold_label;
+	public static String CancelabilityMonitorPreferencePage_error_threshold_label;
+	public static String CancelabilityMonitorPreferencePage_max_stack_samples_label;
+	public static String CancelabilityMonitorPreferencePage_log_non_cancelable_user_job_label;
+

@@ -1,0 +1,7 @@
+block5.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/jgit/before_987_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/BundleWriter.java_writeBundle#167#200
+block4.java_method#1#16,/home/gesad/PycharmProjects/Diff/befores/jgit/before_987_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/BasePackPushConnection.java_writePack#227#250
+block1.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/jgit/before_987_1/org.eclipse.jgit.junit/src/org/eclipse/jgit/junit/TestRepository.java_packAndPrune#600#635
+block3.java_method#1#17,/home/gesad/PycharmProjects/Diff/befores/jgit/before_987_1/org.eclipse.jgit/src/org/eclipse/jgit/storage/pack/PackWriter.java_writePack#612#629
+block7.java_method#1#17,/home/gesad/PycharmProjects/Diff/befores/jgit/before_987_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/UploadPack.java_sendPack#549#595
+block2.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/jgit/before_987_1/org.eclipse.jgit.junit/src/org/eclipse/jgit/junit/TestRepository.java_packAndPrune#600#635
+block6.java_method#1#12,/home/gesad/PycharmProjects/Diff/befores/jgit/before_987_1/org.eclipse.jgit/src/org/eclipse/jgit/transport/BundleWriter.java_writeBundle#167#200

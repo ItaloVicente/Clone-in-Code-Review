@@ -1,0 +1,22 @@
+	private static final int ENGINE_PRIVATE_OFFSET = 24;
+	private static final int FLAGS_OFFSET = 26;
+	private static final int TTL_OFFSET = 28;
+	private static final int RESERVED1_OFFSET = 29;
+	private static final int RESERVED2_OFFSET = 30;
+	private static final int RESERVED3_OFFSET = 31;
+	private static final int ITEM_FLAGS_OFFSET = 32;
+	private static final int ITEM_EXPIRY_OFFSET = 36;
+	private static final int KEY_OFFSET = 40;
+
+	private final short engineprivate;
+	private final List<TapFlag> flags;
+	private final byte ttl;
+	private final byte reserved1;
+	private final byte reserved2;
+	private final byte reserved3;
+	private final int itemflags;
+	private int itemexpiry;
+	private final int vbucketstate;
+	private final byte[] key;
+	private final byte[] value;
+	private final byte[] revid;

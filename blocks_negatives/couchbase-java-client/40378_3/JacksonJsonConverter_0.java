@@ -1,0 +1,14 @@
+import com.couchbase.client.java.document.JsonDocument;
+import com.couchbase.client.java.document.json.JsonArray;
+import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.deps.com.fasterxml.jackson.core.JsonGenerator;
+import com.couchbase.client.deps.com.fasterxml.jackson.core.JsonParseException;
+import com.couchbase.client.deps.com.fasterxml.jackson.core.JsonParser;
+import com.couchbase.client.deps.com.fasterxml.jackson.core.JsonProcessingException;
+import com.couchbase.client.deps.com.fasterxml.jackson.core.JsonToken;
+import com.couchbase.client.deps.com.fasterxml.jackson.core.Version;
+import com.couchbase.client.deps.com.fasterxml.jackson.databind.DeserializationContext;
+import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonDeserializer;
+import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonSerializer;
+import com.couchbase.client.deps.com.fasterxml.jackson.databind.ObjectMapper;
+import com.couchbase.client.deps.com.fasterxml.jackson.databind.SerializerProvider;

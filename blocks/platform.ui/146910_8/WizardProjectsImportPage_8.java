@@ -1,0 +1,8 @@
+	public void setRebuildProjectsAfterImport(boolean rebuildProjectsAfterImport) {
+		this.rebuildProjectsAfterImport = rebuildProjectsAfterImport;
+	}
+
+	public void setCloseProjectsAfterImport(boolean closeProjectsAfterImport) {
+		this.closeProjectsAfterImport = closeProjectsAfterImport;
+	}
+

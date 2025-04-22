@@ -1,0 +1,9 @@
+    /**
+     * Removes the given listener from this registry. Has no effect if the
+     * listener is not registered.
+     *
+     * @param listener a property change listener
+     */
+    public void removeListener(IPropertyChangeListener listener) {
+        removeListenerObject(listener);
+    }

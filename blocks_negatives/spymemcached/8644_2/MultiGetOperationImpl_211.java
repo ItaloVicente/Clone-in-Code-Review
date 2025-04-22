@@ -1,0 +1,12 @@
+			bb.put(REQ_MAGIC);
+			bb.put((byte)CMD_GETQ);
+			bb.putShort((short)keyBytes.length);
+			bb.putInt(keyBytes.length);
+			bb.putInt(me.getKey());
+			bb.put(keyBytes);
+		}
+		bb.put(REQ_MAGIC);
+		bb.put((byte)NoopOperationImpl.CMD);
+		bb.putShort((short)0);
+		bb.putInt(0);
+		bb.putInt(terminalOpaque);

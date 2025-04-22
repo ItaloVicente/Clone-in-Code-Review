@@ -1,0 +1,30 @@
+		else {
+			if (tf != TreeFilter.ALL) {
+				rf = AndRevFilter.create(rf
+				pendingOutputType |= HAS_REWRITE | NEEDS_REWRITE;
+			}
+
+			walker.queue = q;
+			g = new PendingGenerator(w
+
+			if (boundary) {
+				((PendingGenerator) g).canDispose = false;
+			}
+
+			if ((g.outputType() & NEEDS_REWRITE) != 0) {
+				g = new FIFORevQueue(g);
+				g = new RewriteGenerator(g);
+			}
+
+			if (walker.hasRevSort(RevSort.TOPO)
+					&& (g.outputType() & SORT_TOPO) == 0)
+				g = new TopoSortGenerator(g);
+			if (walker.hasRevSort(RevSort.REVERSE))
+				g = new LIFORevQueue(g);
+			if (boundary)
+				g = new BoundaryGenerator(w
+			else if (uninteresting) {
+				if (pending.peek() != null)
+					g = new DelayRevQueue(g);
+				g = new FixUninterestingGenerator(g);
+			}

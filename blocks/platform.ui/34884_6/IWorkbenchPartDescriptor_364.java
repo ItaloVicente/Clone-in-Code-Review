@@ -1,0 +1,17 @@
+package org.eclipse.ui;
+
+public interface IWorkbenchPartConstants {
+
+    int PROP_TITLE = 0x001;
+
+    int PROP_DIRTY = 0x101;
+
+    int PROP_INPUT = 0x102;
+
+    int PROP_PART_NAME = 0x104;
+
+    int PROP_CONTENT_DESCRIPTION = 0x105;
+
+    int PROP_PREFERRED_SIZE = 0x303;
+    
+}

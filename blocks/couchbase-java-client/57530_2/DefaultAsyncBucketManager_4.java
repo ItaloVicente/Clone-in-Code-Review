@@ -1,0 +1,13 @@
+import com.couchbase.client.java.query.AsyncN1qlQueryResult;
+import com.couchbase.client.java.query.AsyncN1qlQueryRow;
+import com.couchbase.client.java.query.Index;
+import com.couchbase.client.java.query.N1qlParams;
+import com.couchbase.client.java.query.N1qlQuery;
+import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.query.consistency.ScanConsistency;
+import com.couchbase.client.java.query.core.N1qlQueryExecutor;
+import com.couchbase.client.java.query.dsl.Expression;
+import com.couchbase.client.java.query.dsl.Sort;
+import com.couchbase.client.java.query.dsl.path.index.IndexType;
+import com.couchbase.client.java.query.dsl.path.index.UsingWithPath;
+import com.couchbase.client.java.query.util.IndexInfo;

@@ -1,0 +1,11 @@
+
+package net.spy.memcached.ops;
+
+public interface ReplicaGetsOperation extends KeyedOperation {
+
+  interface Callback extends OperationCallback {
+    void gotData(String key, int flags, long cas, byte[] data);
+  }
+
+  int getReplicaIndex();
+}

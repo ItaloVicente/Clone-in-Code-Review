@@ -1,0 +1,11 @@
+		SubmoduleWalk generator = SubmoduleWalk.forIndex(db);
+		assertTrue(generator.next());
+		assertEquals(path, generator.getPath());
+		assertEquals(commit, generator.getObjectId());
+		assertEquals(uri, generator.getModulesUrl());
+		assertEquals(path, generator.getModulesPath());
+		assertEquals(uri, generator.getConfigUrl());
+		Repository subModRepo = generator.getRepository();
+		assertNotNull(subModRepo);
+		assertEquals(subCommit, commit);
+		subModRepo.close();

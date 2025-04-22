@@ -1,0 +1,11 @@
+		h.save(h.a + a
+	}
+
+	private void recompress(int t) {
+		State s;
+		if (t == 58) {
+			s = state58;
+		} else if (t == 65) {
+			s = state65;
+		} else {
+			throw new IllegalStateException();

@@ -1,0 +1,24 @@
+	Iterable<Integer> getRetrySleepMs() {
+		return retrySleepMs;
+	}
+
+	void setRetrySleepMs(List<Integer> retrySleepMs) {
+		if (retrySleepMs == null || retrySleepMs.isEmpty()
+				|| retrySleepMs.get(0).intValue() != 0) {
+			throw new IllegalArgumentException();
+		}
+		this.retrySleepMs = retrySleepMs;
+	}
+
+	static void sleep(long ms) throws IOException {
+		if (ms < 0) {
+			return;
+		}
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IOException(e);
+		}
+	}
+

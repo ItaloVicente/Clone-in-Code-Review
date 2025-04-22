@@ -1,0 +1,3 @@
+block0.java_method#1#13,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_571_1/src/main/java/net/spy/memcached/internal/BulkGetFuture.java_getSome#69#81
+block1.java_method#1#10,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_571_1/src/main/java/net/spy/memcached/internal/BulkGetFuture.java_get#89#99,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_571_1/src/main/java/net/spy/memcached/internal/BulkGetFuture.java_getSome#69#81
+block2.java_method#1#24,/home/gesad/PycharmProjects/Diff/befores/spymemcached/before_571_1/src/main/java/net/spy/memcached/internal/BulkGetFuture.java_internalGet#112#135

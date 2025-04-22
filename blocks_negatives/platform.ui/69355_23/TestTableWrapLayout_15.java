@@ -1,0 +1,14 @@
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		Shell shell = new Shell(display);
+		shell.setSize(100, 300);
+		shell.setLayout(new FillLayout());
+		Composite inner = new Composite(shell, SWT.V_SCROLL);
+		inner.setLayout(new TableWrapLayout());
+		Label l1 = new Label(inner, SWT.NULL);
+		l1.setText(A10);
+		Label l2 = new Label(inner, SWT.NULL);
+		l2.setText(A80);
+		shell.layout();
+		assertEquals(l1.getSize().y, l2.getSize().y);
+		assertTrue(l2.getSize().x > 100);
+		shell.dispose();

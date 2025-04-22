@@ -1,0 +1,16 @@
+        MultiLookupResult resultPayload = ctx.bucket().lookupIn(key, LookupSpec.get("boolean"),
+                LookupSpec.get("sub"), LookupSpec.exists("string"), LookupSpec.exists("no"));
+
+        assertNotNull(resultPayload);
+        List<LookupResult> results = resultPayload.results();
+        assertEquals(4, results.size());
+        assertEquals("boolean", results.get(0).path());
+        assertEquals("sub", results.get(1).path());
+        assertEquals("string", results.get(2).path());
+        assertEquals("no", results.get(3).path());
+        assertTrue(results.get(0).value() instanceof Boolean);
+        assertTrue(results.get(1).value() instanceof JsonObject);
+        assertTrue(results.get(2).value() instanceof Boolean);
+        assertTrue(results.get(3).value() instanceof Boolean);
+        assertEquals(true, results.get(2).value());
+        assertEquals(false, results.get(3).value());

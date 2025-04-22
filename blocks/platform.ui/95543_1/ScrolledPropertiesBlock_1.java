@@ -1,0 +1,11 @@
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.DetailsPart;
+import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.MasterDetailsBlock;
+import org.eclipse.ui.forms.SectionPart;

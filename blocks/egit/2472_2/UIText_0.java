@@ -1,0 +1,6 @@
+	public static String GlobalConfigurationPreferencePage_repositorySettingTabTitle;
+
+	public static String GlobalConfigurationPreferencePage_repositorySettingRepositoryLabel;
+
+	public static String GlobalConfigurationPreferencePage_repositorySettingNoRepositories;
+

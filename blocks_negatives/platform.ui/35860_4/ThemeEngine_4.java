@@ -1,0 +1,15 @@
+         os_version="6.1">
+   </theme>
+   <theme
+         basestylesheeturi="css/e4_classic_win7.css"
+         id="org.eclipse.e4.ui.css.theme.e4_classic"
+         label="%theme.win8Classic"
+         os="win32"
+         os_version="6.2">
+   </theme>
+   <theme
+         basestylesheeturi="css/e4_classic_win7.css"
+         id="org.eclipse.e4.ui.css.theme.e4_classic"
+         label="%theme.win8.1Classic"
+         os="win32"
+         os_version="6.3">

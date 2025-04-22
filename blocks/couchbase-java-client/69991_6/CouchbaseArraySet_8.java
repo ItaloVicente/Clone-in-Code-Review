@@ -1,0 +1,167 @@
+package com.couchbase.client.java.datastructures.collections;
+import java.util.AbstractSet;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.Set;
+
+import com.couchbase.client.core.annotations.InterfaceAudience;
+import com.couchbase.client.core.annotations.InterfaceStability;
+import com.couchbase.client.core.message.ResponseStatus;
+import com.couchbase.client.core.message.kv.subdoc.multi.Lookup;
+import com.couchbase.client.core.message.kv.subdoc.multi.Mutation;
+import com.couchbase.client.java.Bucket;
+import com.couchbase.client.java.datastructures.collections.iterators.JsonArrayDocumentIterator;
+import com.couchbase.client.java.document.JsonArrayDocument;
+import com.couchbase.client.java.document.json.JsonArray;
+import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.document.json.JsonValue;
+import com.couchbase.client.java.error.CASMismatchException;
+import com.couchbase.client.java.error.DocumentAlreadyExistsException;
+import com.couchbase.client.java.subdoc.DocumentFragment;
+
+
+@InterfaceStability.Experimental
+@InterfaceAudience.Public
+public class CouchbaseArraySet<T> extends AbstractSet<T> {
+
+    private static final int MAX_OPTIMISTIC_LOCKING_ATTEMPTS = Integer.parseInt(System.getProperty("com.couchbase.datastructureCASRetryLimit", "10"));
+    private final String id;
+    private final Bucket bucket;
+
+    public CouchbaseArraySet(String id, Bucket bucket) {
+        this.id = id;
+        this.bucket = bucket;
+
+        try {
+            this.bucket.insert(JsonArrayDocument.create(id, JsonArray.empty()));
+        } catch (DocumentAlreadyExistsException e) {
+        }
+    }
+
+    public CouchbaseArraySet(String id, Bucket bucket, Set<? extends T> initialData) {
+        this.id = id;
+        this.bucket = bucket;
+
+        JsonArray data = JsonArray.create();
+        if (initialData != null && !initialData.isEmpty()) {
+            for (Object o : initialData) {
+                enforcePrimitive(o);
+                data.add(o);
+            }
+        }
+        bucket.upsert(JsonArrayDocument.create(id, data));
+    }
+
+    @Override
+    public int size() {
+        JsonArrayDocument current = bucket.get(id, JsonArrayDocument.class);
+        return current.content().size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        DocumentFragment<Lookup> current = bucket.lookupIn(id).exists("[0]").execute();
+        return current.status(0) == ResponseStatus.SUBDOC_PATH_NOT_FOUND;
+    }
+
+    @Override
+    public boolean contains(Object t) {
+        enforcePrimitive(t);
+        JsonArrayDocument current = bucket.get(id, JsonArrayDocument.class);
+        for (Object in : current.content()) {
+            if (safeEquals(in, t)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new JsonArrayDocumentIterator<T>(bucket, id);
+    }
+
+    @Override
+    public boolean add(T t) {
+        enforcePrimitive(t);
+
+        for (int i = 0; i < MAX_OPTIMISTIC_LOCKING_ATTEMPTS; i++) {
+            try {
+                JsonArrayDocument current = bucket.get(id, JsonArrayDocument.class);
+                long cas = current.cas();
+                boolean absent = true;
+                for (Object in : current.content()) {
+                    if (safeEquals(in, t)) {
+                        absent = false;
+                        break;
+                    }
+                }
+
+                if (absent) {
+                    DocumentFragment<Mutation> result = bucket.mutateIn(id)
+                            .arrayAppend("", t, true) //append at the root array
+                            .withCas(cas)
+                            .execute();
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (CASMismatchException e) {
+            }
+        }
+        throw new ConcurrentModificationException("Couldn't perform add in less than " + MAX_OPTIMISTIC_LOCKING_ATTEMPTS + " iterations");
+    }
+
+    @Override
+    public boolean remove(Object t) {
+        enforcePrimitive(t);
+
+        for (int i = 0; i < MAX_OPTIMISTIC_LOCKING_ATTEMPTS; i++) {
+            try {
+                JsonArrayDocument current = bucket.get(id, JsonArrayDocument.class);
+                long cas = current.cas();
+                int index = 0;
+                boolean found = false;
+                Iterator<Object> it = current.content().iterator();
+                while (it.hasNext()) {
+                    Object next = it.next();
+                    if (safeEquals(next, t)) {
+                        found = true;
+                        break;
+                    }
+                    index++;
+                }
+                String path = "[" + index + "]";
+
+                if (!found) {
+                    return false;
+                } else {
+                    DocumentFragment<Mutation> result = bucket
+                            .mutateIn(id).remove(path).withCas(cas).execute();
+                    return true;
+                }
+            } catch (CASMismatchException e) {
+            }
+        }
+        throw new ConcurrentModificationException("Couldn't perform remove in less than " + MAX_OPTIMISTIC_LOCKING_ATTEMPTS + " iterations");
+    }
+
+    @Override
+    public void clear() {
+        bucket.upsert(JsonArrayDocument.create(id, JsonArray.empty()));
+    }
+
+    protected void enforcePrimitive(Object t) throws ClassCastException {
+        if (!JsonValue.checkType(t)
+                || t instanceof JsonValue) {
+            throw new ClassCastException("Only primitive types are supported in CouchbaseArraySet, got a " + t.getClass().getName());
+        }
+    }
+
+    protected boolean safeEquals(Object expected, Object tested) {
+        if (expected == null) {
+            return tested == null;
+        }
+        return expected.equals(tested);
+    }
+}

@@ -1,0 +1,40 @@
+		NUM_LOCK = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUM_LOCK_NAME));
+		NUMPAD_0 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_0_NAME));
+		NUMPAD_1 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_1_NAME));
+		NUMPAD_2 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_2_NAME));
+		NUMPAD_3 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_3_NAME));
+		NUMPAD_4 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_4_NAME));
+		NUMPAD_5 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_5_NAME));
+		NUMPAD_6 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_6_NAME));
+		NUMPAD_7 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_7_NAME));
+		NUMPAD_8 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_8_NAME));
+		NUMPAD_9 = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_9_NAME));
+		NUMPAD_ADD = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_ADD_NAME));
+		NUMPAD_DECIMAL = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_DECIMAL_NAME));
+		NUMPAD_DIVIDE = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_DIVIDE_NAME));
+		NUMPAD_ENTER = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_ENTER_NAME));
+		NUMPAD_EQUAL = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_EQUAL_NAME));
+		NUMPAD_MULTIPLY = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_MULTIPLY_NAME));
+		NUMPAD_SUBTRACT = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.NUMPAD_SUBTRACT_NAME));
+		PAGE_DOWN = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.PAGE_DOWN_NAME));
+		PAGE_UP = new SpecialKey(lookup
+				.formalKeyLookup(IKeyLookup.PAGE_UP_NAME));

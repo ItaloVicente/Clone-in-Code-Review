@@ -1,0 +1,7 @@
+block5.java_method#1#9,/home/gesad/PycharmProjects/Diff/befores/egit/before_152110_1/org.eclipse.egit.core/src/org/eclipse/egit/core/internal/indexdiff/IndexDiffCacheEntry.java_calcIndexDiffDataFull#663#677
+block4.java_method#1#16,/home/gesad/PycharmProjects/Diff/befores/egit/before_152110_1/org.eclipse.egit.core/src/org/eclipse/egit/core/internal/indexdiff/IndexDiffCacheEntry.java_calcIndexDiffDataIncremental#604#634
+block7.java_method#1#12,/home/gesad/PycharmProjects/Diff/befores/egit/before_152110_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/RepositoryStateCache.java_getHead#91#117
+block10.java_method#1#19,/home/gesad/PycharmProjects/Diff/befores/egit/before_152110_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/decorators/DecoratorRepositoryStateCache.java_getBranchStatus#126#150
+block9.java_method#1#21,/home/gesad/PycharmProjects/Diff/befores/egit/before_152110_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/decorators/DecoratorRepositoryStateCache.java_getCurrentBranchLabel#93#116
+block8.java_method#1#7,/home/gesad/PycharmProjects/Diff/befores/egit/before_152110_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/RepositoryStateCache.java_getRepositoryState#243#248
+block6.java_method#1#8,/home/gesad/PycharmProjects/Diff/befores/egit/before_152110_1/org.eclipse.egit.ui/src/org/eclipse/egit/ui/internal/RepositoryStateCache.java_getHead#91#117

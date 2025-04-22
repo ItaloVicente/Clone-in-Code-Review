@@ -1,0 +1,98 @@
+	@SuppressWarnings("boxing")
+	@Test
+	public void indexScan() throws IOException {
+		List<Ref> refs = new ArrayList<>();
+		for (int i = 1; i <= 5670; i++) {
+			refs.add(ref(String.format("refs/heads/%04d"
+		}
+
+		byte[] table = write(refs);
+		assertTrue(stats.refIndexKeys() > 0);
+		assertTrue(stats.refIndexSize() > 0);
+
+		ReftableReader t = read(table);
+		try (RefCursor rc = t.allRefs()) {
+			for (Ref exp : refs) {
+				assertTrue("has " + exp.getName()
+				Ref act = rc.getRef();
+				assertEquals(exp.getName()
+				assertEquals(exp.getObjectId()
+			}
+			assertFalse(rc.next());
+		}
+	}
+
+	@SuppressWarnings("boxing")
+	@Test
+	public void indexSeek() throws IOException {
+		List<Ref> refs = new ArrayList<>();
+		for (int i = 1; i <= 5670; i++) {
+			refs.add(ref(String.format("refs/heads/%04d"
+		}
+
+		byte[] table = write(refs);
+		assertTrue(stats.refIndexKeys() > 0);
+		assertTrue(stats.refIndexSize() > 0);
+
+		ReftableReader t = read(table);
+		for (Ref exp : refs) {
+			try (RefCursor rc = t.seek(exp.getName())) {
+				assertTrue("has " + exp.getName()
+				Ref act = rc.getRef();
+				assertEquals(exp.getName()
+				assertEquals(exp.getObjectId()
+				assertFalse(rc.next());
+			}
+		}
+	}
+
+	@SuppressWarnings("boxing")
+	@Test
+	public void noIndexScan() throws IOException {
+		List<Ref> refs = new ArrayList<>();
+		for (int i = 1; i <= 567; i++) {
+			refs.add(ref(String.format("refs/heads/%03d"
+		}
+
+		byte[] table = write(refs);
+		assertEquals(0
+		assertEquals(0
+		assertEquals(4
+		assertEquals(table.length
+
+		ReftableReader t = read(table);
+		try (RefCursor rc = t.allRefs()) {
+			for (Ref exp : refs) {
+				assertTrue("has " + exp.getName()
+				Ref act = rc.getRef();
+				assertEquals(exp.getName()
+				assertEquals(exp.getObjectId()
+			}
+			assertFalse(rc.next());
+		}
+	}
+
+	@SuppressWarnings("boxing")
+	@Test
+	public void noIndexSeek() throws IOException {
+		List<Ref> refs = new ArrayList<>();
+		for (int i = 1; i <= 567; i++) {
+			refs.add(ref(String.format("refs/heads/%03d"
+		}
+
+		byte[] table = write(refs);
+		assertEquals(0
+		assertEquals(4
+
+		ReftableReader t = read(table);
+		for (Ref exp : refs) {
+			try (RefCursor rc = t.seek(exp.getName())) {
+				assertTrue("has " + exp.getName()
+				Ref act = rc.getRef();
+				assertEquals(exp.getName()
+				assertEquals(exp.getObjectId()
+				assertFalse(rc.next());
+			}
+		}
+	}
+

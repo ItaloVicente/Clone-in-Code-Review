@@ -1,0 +1,2 @@
+block1.java_method#1#13,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_26556_1/src/main/java/com/couchbase/client/ClusterManager.java_createBucket#234#262
+block4.java_method#1#15,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_26556_1/src/test/java/com/couchbase/client/BucketTool.java_createSaslBucket#103#117,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_26556_1/src/test/java/com/couchbase/client/BucketTool.java_createDefaultBucket#87#101

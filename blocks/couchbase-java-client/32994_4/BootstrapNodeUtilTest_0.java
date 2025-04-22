@@ -1,0 +1,121 @@
+
+package com.couchbase.client;
+
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class BootstrapNodeUtil {
+
+  private static Hashtable<String, String> DNS_ENV =
+    new Hashtable<String, String>();
+
+  private static final String DEFAULT_DNS_FACTORY =
+    "com.sun.jndi.dns.DnsContextFactory";
+
+  private static final String DEFAULT_DNS_PROVIDER = "dns:";
+
+  static {
+    DNS_ENV.put("java.naming.factory.initial", DEFAULT_DNS_FACTORY);
+    DNS_ENV.put("java.naming.provider.url", DEFAULT_DNS_PROVIDER);
+  }
+
+  public static List<URI> locateFromDNS(String service) throws IOException {
+    List<URI> uris = new ArrayList<URI>();
+
+    try {
+      DirContext ctx = new InitialDirContext(DNS_ENV);
+      Set<DnsRecord> sortedRecords = loadDnsRecords(service, ctx);
+      for(DnsRecord record : sortedRecords) {
+        uris.add(new URI("http://" + record.getHost() + ":" + record.getPort()
+          + "/pools"));
+      }
+    } catch(Exception ex) {
+      throw new IOException("Could not locate URIs from DNS SRV.", ex);
+    }
+
+    return uris;
+  }
+
+  static Set<DnsRecord> loadDnsRecords(String service, DirContext ctx)
+    throws NamingException {
+    Attributes attrs = ctx.getAttributes(service, new String[] { "SRV" });
+    NamingEnumeration<?> servers = attrs.get("srv").getAll();
+    Set<DnsRecord> sortedRecords = new TreeSet<DnsRecord>();
+    while (servers.hasMore()) {
+      DnsRecord record = DnsRecord.fromString((String) servers.next());
+      sortedRecords.add(record);
+    }
+    return sortedRecords;
+  }
+
+  static class DnsRecord implements Comparable<DnsRecord> {
+    private final int priority;
+    private final int weight;
+    private final int port;
+    private final String host;
+
+    public DnsRecord(int priority, int weight, int port, String host) {
+      this.priority = priority;
+      this.weight = weight;
+      this.port = port;
+      this.host = host.replaceAll("\\.$", "");
+    }
+
+    public int getPriority() {
+      return priority;
+    }
+
+    public int getWeight() {
+      return weight;
+    }
+
+    public int getPort() {
+      return port;
+    }
+
+    public String getHost() {
+      return host;
+    }
+
+    public static DnsRecord fromString(String input) {
+      String[] splitted = input.split(" ");
+      return new DnsRecord(
+        Integer.parseInt(splitted[0]),
+        Integer.parseInt(splitted[1]),
+        Integer.parseInt(splitted[2]),
+        splitted[3]
+      );
+    }
+
+    @Override
+    public String toString() {
+      return "DnsRecord{" +
+        "priority=" + priority +
+        ", weight=" + weight +
+        ", port=" + port +
+        ", host='" + host + '\'' +
+        '}';
+    }
+
+    @Override
+    public int compareTo(DnsRecord o) {
+      if (getPriority() < o.getPriority()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+
+  }
+
+}

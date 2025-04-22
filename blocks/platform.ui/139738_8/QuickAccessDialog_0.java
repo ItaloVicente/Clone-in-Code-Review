@@ -1,0 +1,11 @@
+					List<QuickAccessProvider> providers = new ArrayList<>();
+					providers.add(new PreviousPicksProvider(previousPicksList));
+					providers.add(new EditorProvider());
+					providers.add(new ViewProvider(model.getContext().get(MApplication.class), model));
+					providers.add(new PerspectiveProvider());
+					providers.add(commandProvider);
+					providers.add(new ActionProvider());
+					providers.add(new WizardProvider());
+					providers.add(new PreferenceProvider());
+					providers.add(new PropertiesProvider());
+					providers.addAll(QuickAccessExtensionManager.getProviders());

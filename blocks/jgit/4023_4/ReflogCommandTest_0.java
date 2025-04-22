@@ -1,0 +1,6 @@
+		assertEquals(reflogs[2].getComment()
+		assertEquals(reflogs[2].getNewId()
+		assertEquals(reflogs[2].getOldId()
+		assertEquals(reflogs[1].getNewId()
+		assertEquals(reflogs[1].getOldId()
+		assertEquals(reflogs[0].getComment()

@@ -1,0 +1,25 @@
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	CommandExecutionTest.class,
+	Bug66182Test.class,
+	Bug70503Test.class,
+	Bug73756Test.class,
+	Bug74982Test.class,
+	Bug74990Test.class,
+	Bug87856Test.class,
+	Bug125792Test.class,
+	Bug417762Test.class,
+	CommandManagerTest.class,
+	CommandParameterTypeTest.class,
+	CommandSerializationTest.class,
+	HelpContextIdTest.class,
+	StateTest.class,
+	HandlerActivationTest.class,
+	CommandCallbackTest.class,
+	CommandEnablementTest.class,
+	CommandActionTest.class,
+	ActionDelegateProxyTest.class,
+	ToggleStateTest.class,
+	RadioStateTest.class,
+})
+public final class CommandsTestSuite {

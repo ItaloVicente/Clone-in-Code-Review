@@ -1,0 +1,10 @@
+        private final SortedSet<ThresholdLogSpan> kvThresholdSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> n1qlThresholdSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> viewThresholdSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> ftsThresholdSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> analyticsThresholdSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> kvZombieSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> n1qlZombieSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> viewZombieSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> ftsZombieSet = new TreeSet<ThresholdLogSpan>();
+        private final SortedSet<ThresholdLogSpan> analyticsZombieSet = new TreeSet<ThresholdLogSpan>();

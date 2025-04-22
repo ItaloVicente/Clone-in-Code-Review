@@ -1,0 +1,21 @@
+        sslEnabled = booleanPropertyOr("sslEnabled", builder.sslEnabled());
+        sslKeystoreFile = stringPropertyOr("sslKeystoreFile", builder.sslKeystoreFile());
+        sslKeystorePassword = stringPropertyOr("sslKeystorePassword", builder.sslKeystorePassword());
+        queryEnabled = booleanPropertyOr("queryEnabled", builder.queryEnabled());
+        queryPort = intPropertyOr("queryPort", builder.queryPort());
+        bootstrapHttpEnabled = booleanPropertyOr("bootstrapHttpEnabled", builder.bootstrapHttpEnabled());
+        bootstrapHttpDirectPort = intPropertyOr("bootstrapHttpDirectPort", builder.bootstrapHttpDirectPort());
+        bootstrapHttpSslPort = intPropertyOr("bootstrapHttpSslPort", builder.bootstrapHttpSslPort());
+        bootstrapCarrierEnabled = booleanPropertyOr("bootstrapCarrierEnabled", builder.bootstrapCarrierEnabled());
+        bootstrapCarrierDirectPort = intPropertyOr("bootstrapCarrierDirectPort", builder.bootstrapCarrierDirectPort());
+        bootstrapCarrierSslPort = intPropertyOr("bootstrapCarrierSslPort", builder.bootstrapCarrierSslPort());
+        ioPoolSize = intPropertyOr("ioPoolSize", builder.ioPoolSize());
+        computationPoolSize = intPropertyOr("computationPoolSize", builder.computationPoolSize());
+        responseBufferSize = intPropertyOr("responseBufferSize", builder.responseBufferSize());
+        requestBufferSize = intPropertyOr("requestBufferSize", builder.requestBufferSize());
+        binaryServiceEndpoints = intPropertyOr("binaryServiceEndpoints", builder.binaryServiceEndpoints());
+        viewServiceEndpoints = intPropertyOr("viewServiceEndpoints", builder.viewServiceEndpoints());
+        queryServiceEndpoints = intPropertyOr("queryServiceEndpoints", builder.queryServiceEndpoints());
+
+        this.ioPool = builder.ioPool() == null ? new NioEventLoopGroup(ioPoolSize()) : builder.ioPool();
+        this.coreScheduler = builder.scheduler() == null ? new CoreScheduler(computationPoolSize()) : builder.scheduler();

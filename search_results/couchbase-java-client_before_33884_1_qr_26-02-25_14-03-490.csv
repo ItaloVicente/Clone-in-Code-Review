@@ -1,0 +1,3 @@
+block0.java_method#1#13,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_33884_1/src/main/java/com/couchbase/client/CouchbaseClient.java_getFromReplica#841#853,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_33884_1/src/main/java/com/couchbase/client/CouchbaseClient.java_getAndLock#995#1011
+block1.java_method#1#64,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_33884_1/src/main/java/com/couchbase/client/CouchbaseClient.java_asyncGetFromReplica#860#923
+block2.java_method#1#63,/home/gesad/PycharmProjects/Diff/befores/couchbase-java-client/before_33884_1/src/main/java/com/couchbase/client/CouchbaseClient.java_createOperationForReplicaGet#931#993
