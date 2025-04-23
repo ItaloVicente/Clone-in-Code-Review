@@ -1,0 +1,401 @@
+review_number,categoria,move_block
+269,,no_clone,
+286,,no_clone,
+287,,no_clone,
+288,,no_clone,
+289,,no_clone,
+290,,no_clone,
+416,,no_clone,
+561,,no_clone,
+569,BulkGetFuture_0,review with at least one clone,mesmo arquivo
+569,BulkGetFuture_1,review with at least one clone,mesmo arquivo
+569,BulkGetFuture_2,review with at least one clone,mesmo arquivo
+571,BulkGetFuture_0,review with at least one clone,mesmo arquivo
+571,BulkGetFuture_1,review with at least one clone,mesmo arquivo
+571,BulkGetFuture_2,review with at least one clone,mesmo arquivo
+572,BulkGetFuture_0,review with at least one clone,mesmo arquivo
+572,BulkGetFuture_1,review with at least one clone,mesmo arquivo
+572,BulkGetFuture_2,review with at least one clone,mesmo arquivo
+574,BulkGetFuture_0,review with at least one clone,mesmo arquivo
+574,BulkGetFuture_1,review with at least one clone,mesmo arquivo
+574,BulkGetFuture_2,review with at least one clone,mesmo arquivo
+629,,no_clone,
+630,,no_clone,
+919,,no_clone,
+920,,no_clone,
+935,,no_clone,
+936,,no_clone,
+1228,,no_clone,
+2698,,no_clone,
+2699,,no_clone,
+2700,,no_clone,
+2701,MemcachedConnection_1,review with at least one clone,mesmo arquivo
+2702,MemcachedClient_2,review with at least one clone,mesmo arquivo
+2896,,no_clone,
+2897,,no_clone,
+2898,,no_clone,
+2899,MemcachedConnection_1,review with at least one clone,mesmo arquivo
+2900,MemcachedClient_2,review with at least one clone,mesmo arquivo
+2901,,no_clone,
+2902,,no_clone,
+2903,,no_clone,
+2904,MemcachedConnection_1,review with at least one clone,mesmo arquivo
+2905,MemcachedClient_2,review with at least one clone,mesmo arquivo
+2907,,no_clone,
+2908,,no_clone,
+2909,,no_clone,
+2910,MemcachedConnection_1,review with at least one clone,mesmo arquivo
+2911,MemcachedClient_2,review with at least one clone,mesmo arquivo
+3224,,no_clone,
+3225,,no_clone,
+3226,,no_clone,
+3227,,no_clone,
+3438,,no_clone,
+3640,,no_clone,
+3850,,no_clone,
+3851,,no_clone,
+3852,,no_clone,
+4231,,no_clone,
+4232,,no_clone,
+4248,,no_clone,
+5502,,no_clone,
+6074,,no_clone,
+6091,,no_clone,
+6151,,no_clone,
+6152,,no_clone,
+6208,,no_clone,
+6532,,no_clone,
+6669,,no_clone,
+6670,,no_clone,
+6751,,no_clone,
+6761,,no_clone,
+6816,,no_clone,
+6817,,no_clone,
+6818,,no_clone,
+6827,ConfigurationProviderHTTP_0,review with at least one clone,mesmo arquivo
+6847,MemcachedClient_0,review with at least one clone,mesmo arquivo
+6847,MemcachedClient_1,review with at least one clone,mesmo arquivo
+6853,,no_clone,
+6854,,no_clone,
+6855,,no_clone,
+6856,,no_clone,
+6857,,no_clone,
+6858,,no_clone,
+6859,,no_clone,
+6860,,no_clone,
+6861,,no_clone,
+6862,,no_clone,
+6863,,no_clone,
+6864,ConfigurationProviderHTTP_0,review with at least one clone,arquivo diferente
+6865,,no_clone,
+6866,,no_clone,
+6867,MemcachedClient_0,review with at least one clone,mesmo arquivo
+6868,,no_clone,
+6880,MemcachedClient_0,review with at least one clone,mesmo arquivo
+6920,,no_clone,
+6950,,no_clone,
+7007,,no_clone,
+7039,,no_clone,
+7045,,no_clone,
+7103,,no_clone,
+7104,,no_clone,
+7108,,no_clone,
+7576,,no_clone,
+7587,,no_clone,
+7642,,no_clone,
+7643,,no_clone,
+7647,,no_clone,
+7649,,no_clone,
+7651,,no_clone,
+7672,,no_clone,
+7778,,no_clone,
+7779,,no_clone,
+7781,,no_clone,
+7783,,no_clone,
+7846,,no_clone,
+7881,,no_clone,
+7890,,no_clone,
+7931,,no_clone,
+8004,,no_clone,
+8006,,no_clone,
+8074,,no_clone,
+8149,,no_clone,
+8194,,no_clone,
+8232,,no_clone,
+8233,,no_clone,
+8234,,no_clone,
+8240,,no_clone,
+8243,,no_clone,
+8399,,no_clone,
+8479,,no_clone,
+8483,,no_clone,
+8524,,no_clone,
+8540,,no_clone,
+8560,,no_clone,
+8576,,no_clone,
+8594,CouchbaseClient_0,review with at least one clone,mesmo arquivo
+8599,,no_clone,
+8602,,no_clone,
+8642,,no_clone,
+8643,ViewOperationImpl_166,review with at least one clone,ambos
+8643,MultiGetOperationImpl_131,review with at least one clone,ambos
+8643,DefaultConfig_262,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_179,review with at least one clone,mesmo arquivo
+8643,BucketMonitorPipelineFactory_218,review with at least one clone,mesmo arquivo
+8643,VBucketNodeLocator_245,review with at least one clone,mesmo arquivo
+8643,DefaultKetamaNodeLocatorConfiguration_210,review with at least one clone,mesmo arquivo
+8643,WhalinTranscoder_207,review with at least one clone,ambos
+8643,ConfigurationProviderHTTP_238,review with at least one clone,mesmo arquivo
+8643,MultiGetOperationImpl_130,review with at least one clone,mesmo arquivo
+8643,BaseGetOpImpl_102,review with at least one clone,mesmo arquivo
+8643,BaseStoreOperationImpl_105,review with at least one clone,ambos
+8643,ViewOperationImpl_167,review with at least one clone,ambos
+8643,ResponseMessage_181,review with at least one clone,mesmo arquivo
+8643,ConfigurationParserJSON_260,review with at least one clone,mesmo arquivo
+8643,ViewsOperationImpl_172,review with at least one clone,ambos
+8643,ViewOperationImpl_168,review with at least one clone,mesmo arquivo
+8643,Bucket_246,review with at least one clone,mesmo arquivo
+8643,BinaryMemcachedNodeImpl_121,review with at least one clone,mesmo arquivo
+8643,TapMessagePrinter_48,review with at least one clone,mesmo arquivo
+8643,ReducedOperationImpl_158,review with at least one clone,ambos
+8643,SunLogger_67,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_234,review with at least one clone,mesmo arquivo
+8643,NoDocsOperationImpl_156,review with at least one clone,ambos
+8643,ConfigurationProviderHTTP_233,review with at least one clone,mesmo arquivo
+8643,KetamaIterator_25,review with at least one clone,mesmo arquivo
+8643,KetamaNodeLocator_29,review with at least one clone,mesmo arquivo
+8643,ViewOperationImpl_165,review with at least one clone,mesmo arquivo
+8643,BaseGetOpImpl_100,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_239,review with at least one clone,mesmo arquivo
+8643,ClientBaseCase_314,review with at least one clone,mesmo arquivo
+8643,ConfigurationParserJSON_256,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_182,review with at least one clone,mesmo arquivo
+8643,BaseOperationFactory_84,review with at least one clone,mesmo arquivo
+8643,BucketMonitor_214,review with at least one clone,mesmo arquivo
+8643,AddrUtil_1,review with at least one clone,mesmo arquivo
+8643,ProxyCallback_91,review with at least one clone,mesmo arquivo
+8643,ViewsOperationImpl_174,review with at least one clone,ambos
+8643,ResponseMessage_184,review with at least one clone,mesmo arquivo
+8643,NoDocsOperationImpl_154,review with at least one clone,ambos
+8643,BinaryMemcachedNodeImpl_119,review with at least one clone,mesmo arquivo
+8643,LongTranscoder_196,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_232,review with at least one clone,mesmo arquivo
+8643,HashAlgorithm_22,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_236,review with at least one clone,mesmo arquivo
+8643,DefaultConfig_263,review with at least one clone,ambos
+8643,BaseGetOpImpl_99,review with at least one clone,mesmo arquivo
+8643,SyncThread_56,review with at least one clone,mesmo arquivo
+8643,SunLogger_65,review with at least one clone,mesmo arquivo
+8643,MutatorOperationImpl_134,review with at least one clone,mesmo arquivo
+8643,TranscoderUtils_204,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_240,review with at least one clone,mesmo arquivo
+8643,AddrUtil_0,review with at least one clone,mesmo arquivo
+8643,OperationImpl_111,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_187,review with at least one clone,mesmo arquivo
+8643,OperationImpl_113,review with at least one clone,mesmo arquivo
+8643,SASLConnectReconnect_431,review with at least one clone,mesmo arquivo
+8643,BulkGetFuture_73,review with at least one clone,mesmo arquivo
+8643,BucketUpdateResponseHandler_222,review with at least one clone,mesmo arquivo
+8643,MultiGetOperationImpl_129,review with at least one clone,mesmo arquivo
+8643,ViewsOperationImpl_173,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_180,review with at least one clone,mesmo arquivo
+8643,SASLConnectReconnect_435,review with at least one clone,mesmo arquivo
+8643,KetamaIterator_24,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_235,review with at least one clone,mesmo arquivo
+8643,RowWithDocs_163,review with at least one clone,mesmo arquivo
+8643,DefaultConfigFactory_265,review with at least one clone,mesmo arquivo
+8643,DoLotsOfSets_319,review with at least one clone,mesmo arquivo
+8643,BaseStoreOperationImpl_104,review with at least one clone,mesmo arquivo
+8643,SerializingTranscoder_200,review with at least one clone,ambos
+8643,HashAlgorithm_21,review with at least one clone,mesmo arquivo
+8643,SerializingTranscoder_198,review with at least one clone,mesmo arquivo
+8643,TranscoderUtils_203,review with at least one clone,mesmo arquivo
+8643,BaseGetOpImpl_101,review with at least one clone,mesmo arquivo
+8643,BinaryMemcachedNodeImpl_118,review with at least one clone,mesmo arquivo
+8643,SyncThread_59,review with at least one clone,mesmo arquivo
+8643,Util_193,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_186,review with at least one clone,mesmo arquivo
+8643,MutatorOperationImpl_135,review with at least one clone,mesmo arquivo
+8643,MultiGetOperationImpl_132,review with at least one clone,mesmo arquivo
+8643,VBucketNodeLocator_244,review with at least one clone,mesmo arquivo
+8643,SyncThread_57,review with at least one clone,mesmo arquivo
+8643,KeyUtil_30,review with at least one clone,mesmo arquivo
+8643,DocsOperationImpl_152,review with at least one clone,ambos
+8643,CacheConfig_249,review with at least one clone,arquivo diferente
+8643,AbstractNodeLocationCase_273,review with at least one clone,mesmo arquivo
+8643,BaseOperationFactory_83,review with at least one clone,mesmo arquivo
+8643,TapOpcode_191,review with at least one clone,mesmo arquivo
+8643,SASLBaseOperationImpl_139,review with at least one clone,mesmo arquivo
+8643,ClientBaseCase_313,review with at least one clone,mesmo arquivo
+8643,SASLBaseOperationImpl_140,review with at least one clone,mesmo arquivo
+8643,BucketUpdateResponseHandler_221,review with at least one clone,mesmo arquivo
+8643,SASLBaseOperationImpl_141,review with at least one clone,mesmo arquivo
+8643,ClientBaseCase_315,review with at least one clone,mesmo arquivo
+8643,KetamaIterator_26,review with at least one clone,ambos
+8643,Node_270,review with at least one clone,arquivo diferente
+8643,BucketMonitor_217,review with at least one clone,mesmo arquivo
+8643,RowReduced_162,review with at least one clone,mesmo arquivo
+8643,BaseGetOpImpl_97,review with at least one clone,mesmo arquivo
+8643,SyncThread_58,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_185,review with at least one clone,mesmo arquivo
+8643,TapFlag_189,review with at least one clone,mesmo arquivo
+8643,DefaultConfigFactory_264,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_183,review with at least one clone,mesmo arquivo
+8643,ReducedOperationImpl_160,review with at least one clone,ambos
+8643,WhalinTranscoder_206,review with at least one clone,mesmo arquivo
+8643,ConfigurationParserJSON_255,review with at least one clone,mesmo arquivo
+8643,CASMutator_6,review with at least one clone,mesmo arquivo
+8643,OperationImpl_114,review with at least one clone,mesmo arquivo
+8643,SASLConnectReconnect_433,review with at least one clone,mesmo arquivo
+8643,BucketUpdateResponseHandler_220,review with at least one clone,mesmo arquivo
+8643,SunLogger_66,review with at least one clone,mesmo arquivo
+8643,ConfigurationParserJSON_257,review with at least one clone,mesmo arquivo
+8643,Node_271,review with at least one clone,mesmo arquivo
+8643,DefaultConfigFactory_268,review with at least one clone,mesmo arquivo
+8643,CASMutator_8,review with at least one clone,mesmo arquivo
+8643,TranscoderUtils_202,review with at least one clone,mesmo arquivo
+8643,ConfigurationParserJSON_259,review with at least one clone,mesmo arquivo
+8643,ConfigurationParserJSON_258,review with at least one clone,mesmo arquivo
+8643,MultiOperationCallback_85,review with at least one clone,mesmo arquivo
+8643,Log4JLogger_62,review with at least one clone,mesmo arquivo
+8643,BinaryMemcachedNodeImpl_120,review with at least one clone,ambos
+8643,OperationImpl_112,review with at least one clone,mesmo arquivo
+8643,CacheConfig_250,review with at least one clone,arquivo diferente
+8643,DocsOperationImpl_151,review with at least one clone,ambos
+8643,Util_192,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_230,review with at least one clone,mesmo arquivo
+8643,CASMutator_7,review with at least one clone,mesmo arquivo
+8643,ReducedOperationImpl_159,review with at least one clone,ambos
+8643,SerializingTranscoder_199,review with at least one clone,mesmo arquivo
+8643,NoDocsOperationImpl_155,review with at least one clone,ambos
+8643,BaseStoreOperationImpl_106,review with at least one clone,ambos
+8643,ClientBaseCase_311,review with at least one clone,arquivo diferente
+8643,BaseGetOpImpl_98,review with at least one clone,mesmo arquivo
+8643,TapCustomOperationImpl_148,review with at least one clone,ambos
+8643,MultiGetOperationImpl_128,review with at least one clone,mesmo arquivo
+8643,ProxyCallback_92,review with at least one clone,mesmo arquivo
+8643,ObserverToy_430,review with at least one clone,mesmo arquivo
+8643,ConfigurationProviderHTTP_231,review with at least one clone,mesmo arquivo
+8643,ResponseMessage_188,review with at least one clone,mesmo arquivo
+8643,DefaultConfigFactory_267,review with at least one clone,mesmo arquivo
+8643,BulkGetFuture_75,review with at least one clone,mesmo arquivo
+8643,Bucket_247,review with at least one clone,arquivo diferente
+8643,IntegerTranscoder_195,review with at least one clone,mesmo arquivo
+8643,KeyUtil_31,review with at least one clone,mesmo arquivo
+8643,BucketMonitor_213,review with at least one clone,mesmo arquivo
+8643,RowNoDocs_161,review with at least one clone,mesmo arquivo
+8643,AddrUtil_2,review with at least one clone,mesmo arquivo
+8643,BinaryMemcachedNodeImpl_117,review with at least one clone,mesmo arquivo
+8643,SASLConnectReconnect_432,review with at least one clone,mesmo arquivo
+8680,,no_clone,
+8984,,no_clone,
+8995,,no_clone,
+8997,,no_clone,
+9000,,no_clone,
+9002,,no_clone,
+9110,,no_clone,
+9111,,no_clone,
+9226,TCPMemcachedNodeImpl_0,review with at least one clone,mesmo arquivo
+9227,,no_clone,
+9370,,no_clone,
+9386,,no_clone,
+9387,,no_clone,
+9393,,no_clone,
+9402,,no_clone,
+9403,,no_clone,
+9422,,no_clone,
+9424,,no_clone,
+9425,,no_clone,
+9426,TCPMemcachedNodeImpl_0,review with at least one clone,mesmo arquivo
+9429,TCPMemcachedNodeImpl_0,review with at least one clone,mesmo arquivo
+9431,MemcachedConnection_0,review with at least one clone,mesmo arquivo
+9435,,no_clone,
+9436,,no_clone,
+9437,,no_clone,
+9438,,no_clone,
+9440,,no_clone,
+9441,,no_clone,
+9442,,no_clone,
+9443,,no_clone,
+9450,,no_clone,
+9451,,no_clone,
+9454,,no_clone,
+9455,,no_clone,
+9462,,no_clone,
+9474,,no_clone,
+9512,,no_clone,
+9513,,no_clone,
+9568,,no_clone,
+9576,,no_clone,
+9591,,no_clone,
+9612,,no_clone,
+9613,,uninteresting_clone,
+9640,,no_clone,
+9641,,no_clone,
+9665,TapClient_0,review with at least one clone,mesmo arquivo
+9674,,no_clone,
+9679,,no_clone,
+9710,,no_clone,
+9713,,no_clone,
+9764,,no_clone,
+9769,,no_clone,
+10009,,no_clone,
+10058,,no_clone,
+10059,,no_clone,
+10098,,no_clone,
+10202,,no_clone,
+10294,,no_clone,
+10297,,no_clone,
+10298,,no_clone,
+10299,,no_clone,
+10300,,no_clone,
+10301,,no_clone,
+10302,,no_clone,
+10304,,no_clone,
+10328,,no_clone,
+11100,,no_clone,
+11107,,no_clone,
+11108,,no_clone,
+11109,,no_clone,
+11111,StoreOperationImpl_0,review with at least one clone,arquivo diferente
+11947,,no_clone,
+12049,,no_clone,
+12052,,no_clone,
+12088,,no_clone,
+12138,,no_clone,
+12139,StringUtils_0,review with at least one clone,arquivo diferente
+12575,,no_clone,
+12581,,no_clone,
+12992,,no_clone,
+13570,,no_clone,
+13676,,no_clone,
+13995,,no_clone,
+14142,,no_clone,
+14143,,no_clone,
+14158,,no_clone,
+14159,,no_clone,
+15947,,no_clone,
+16714,,no_clone,
+17026,,no_clone,
+17028,,no_clone,
+17666,,no_clone,
+17667,,no_clone,
+18682,,no_clone,
+18693,,no_clone,
+19035,,no_clone,
+19066,,no_clone,
+19846,,no_clone,
+19847,,no_clone,
+20818,,no_clone,
+21140,,no_clone,
+21378,,no_clone,
+24968,,no_clone,
+32336,AuthThreadMonitor_0,review with at least one clone,mesmo arquivo
+32430,AuthThreadMonitor_0,review with at least one clone,mesmo arquivo
+38346,,no_clone,
+38918,,no_clone,
+48015,,no_clone,
+72269,,no_clone,
+91951,,no_clone,
+91955,,no_clone,
+128662,,no_clone,

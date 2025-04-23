@@ -1,6 +1,0 @@
-    /**
-     * If the property contains a collection, then the length of that
-     * collection, otherwise - 1.
-     * @return int length
-     */
-    @Override

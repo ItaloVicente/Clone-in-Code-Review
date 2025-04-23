@@ -1,9 +1,0 @@
-		adv.advertiseCapability(OPTION_INCLUDE_TAG);
-		adv.advertiseCapability(OPTION_MULTI_ACK_DETAILED);
-		adv.advertiseCapability(OPTION_MULTI_ACK);
-		adv.advertiseCapability(OPTION_OFS_DELTA);
-		adv.advertiseCapability(OPTION_SIDE_BAND);
-		adv.advertiseCapability(OPTION_SIDE_BAND_64K);
-		adv.advertiseCapability(OPTION_THIN_PACK);
-		adv.advertiseCapability(OPTION_NO_PROGRESS);
-		adv.advertiseCapability(OPTION_SHALLOW);

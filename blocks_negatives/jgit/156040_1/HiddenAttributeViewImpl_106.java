@@ -1,6 +1,0 @@
-                if (attribute.equals("*")) {
-                    break;
-                }
-            }
-        }};
-    }

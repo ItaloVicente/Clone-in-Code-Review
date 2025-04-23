@@ -1,8 +1,0 @@
-	public static boolean equals(Object[] one, Object[] two) {
-		if (one.length != two.length)
-			return false;
-		for (int i = 0; i < one.length; i++)
-			if (one[i] != two[i])
-				return false;
-		return true;
-	}

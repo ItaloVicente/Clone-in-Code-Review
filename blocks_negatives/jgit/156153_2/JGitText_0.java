@@ -1,9 +1,0 @@
-	/***/ public String gpgFailedToParseSecretKey;
-	/***/ public String gpgNoCredentialsProvider;
-	/***/ public String gpgNoKeyring;
-	/***/ public String gpgNoKeyInLegacySecring;
-	/***/ public String gpgNoPublicKeyFound;
-	/***/ public String gpgNoSecretKeyForPublicKey;
-	/***/ public String gpgNotASigningKey;
-	/***/ public String gpgKeyInfo;
-	/***/ public String gpgSigningCancelled;

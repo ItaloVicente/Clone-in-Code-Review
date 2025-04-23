@@ -1,6 +1,0 @@
-	/**
-	 * The constructor.
-	 */
-	public SplitHandler() {
-	}
-

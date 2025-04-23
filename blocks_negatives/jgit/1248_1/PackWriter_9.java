@@ -1,6 +1,0 @@
-				}
-			});
-		}
-
-		pool.shutdown();
-		for (;;) {

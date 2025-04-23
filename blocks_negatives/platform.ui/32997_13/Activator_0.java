@@ -1,7 +1,0 @@
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
-
-

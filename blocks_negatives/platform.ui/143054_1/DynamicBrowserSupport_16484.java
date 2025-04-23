@@ -1,6 +1,0 @@
-    /**
-     *
-     */
-    public DynamicBrowserSupport() {
-        super();
-    }

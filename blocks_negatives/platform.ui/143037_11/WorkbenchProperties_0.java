@@ -1,8 +1,0 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import org.eclipse.core.databinding.observable.list.ListDiff;
-import org.eclipse.core.databinding.property.INativePropertyListener;
-import org.eclipse.core.databinding.property.IProperty;
-import org.eclipse.core.databinding.property.ISimplePropertyListener;
-import org.eclipse.core.databinding.property.NativePropertyListener;

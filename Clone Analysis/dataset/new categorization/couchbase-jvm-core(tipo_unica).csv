@@ -1,0 +1,157 @@
+review_number,categoria,move_block
+36099,CouchbaseEnvironment_6,review with at least one clone,mesmo arquivo
+36134,,no_clone,
+36204,,no_clone,
+36211,,no_clone,
+36214,BinaryCodec_4,review with at least one clone,mesmo arquivo
+36214,BinaryCodec_5,review with at least one clone,mesmo arquivo
+36291,CouchbaseNode_6,review with at least one clone,arquivo diferente
+36742,,no_clone,
+36841,DefaultConfigurationProvider_1,review with at least one clone,mesmo arquivo
+36886,,no_clone,
+36896,CouchbaseEnvironment_3,review with at least one clone,mesmo arquivo
+37025,BinaryCodec_0,review with at least one clone,mesmo arquivo
+37034,DefaultNodeInfo_1,review with at least one clone,mesmo arquivo
+37069,,no_clone,
+37273,,no_clone,
+37302,,no_clone,
+37309,,no_clone,
+37310,,no_clone,
+37313,DefaultConfigurationProvider_6,review with at least one clone,mesmo arquivo
+37437,,no_clone,
+37491,BinaryCodec_0,review with at least one clone,mesmo arquivo
+37499,,no_clone,
+37502,,no_clone,
+37503,,no_clone,
+37594,CouchbaseEnvironment_7,review with at least one clone,mesmo arquivo
+37595,,no_clone,
+37702,,no_clone,
+37703,ConfigLocator_13,review with at least one clone,arquivo diferente
+37772,CouchbaseNode_3,review with at least one clone,mesmo arquivo
+37829,,no_clone,
+38200,ViewCodec_3,review with at least one clone,mesmo arquivo
+38200,ConfigLocator_9,review with at least one clone,ambos
+38224,,no_clone,
+38294,,no_clone,
+38318,,no_clone,
+38964,RequestHandler_5,review with at least one clone,mesmo arquivo
+38964,RequestHandler_4,review with at least one clone,mesmo arquivo
+38964,AbstractEndpoint_7,review with at least one clone,mesmo arquivo
+38965,,no_clone,
+39083,,no_clone,
+39085,,no_clone,
+39156,,no_clone,
+39160,,no_clone,
+39263,BinaryCodec_2,review with at least one clone,mesmo arquivo
+39266,,no_clone,
+39406,,no_clone,
+39413,,no_clone,
+39433,BinaryCodec_1,review with at least one clone,mesmo arquivo
+39480,,no_clone,
+39527,,no_clone,
+39664,,no_clone,
+40253,,no_clone,
+40254,,no_clone,
+40261,,no_clone,
+40377,,no_clone,
+40499,,no_clone,
+40535,,no_clone,
+40563,,no_clone,
+40566,,no_clone,
+40571,,no_clone,
+40693,,uninteresting_clone,
+40723,,no_clone,
+40725,,no_clone,
+40778,,no_clone,
+40781,,no_clone,
+40782,,no_clone,
+40783,,no_clone,
+40784,,no_clone,
+40787,,no_clone,
+40791,,no_clone,
+40796,DefaultConfigurationProvider_0,review with at least one clone,arquivo diferente
+40824,,no_clone,
+40826,CouchbaseCore_0,review with at least one clone,mesmo arquivo
+40834,ConfigLocator_2,review with at least one clone,ambos
+40847,,no_clone,
+40876,,no_clone,
+40879,AbstractService_1,review with at least one clone,mesmo arquivo
+40879,AbstractService_0,review with at least one clone,mesmo arquivo
+40911,,no_clone,
+40912,,no_clone,
+40917,,no_clone,
+40918,,no_clone,
+40919,,no_clone,
+40964,,no_clone,
+40968,,no_clone,
+40969,,no_clone,
+40970,DefaultMemcachedBucketConfig_0,review with at least one clone,arquivo diferente
+41011,,no_clone,
+41129,,no_clone,
+41163,,no_clone,
+41164,,no_clone,
+41165,,no_clone,
+41166,,no_clone,
+41419,,no_clone,
+41434,,uninteresting_clone,
+44605,,no_clone,
+44923,,no_clone,
+45382,,no_clone,
+45467,,no_clone,
+46073,,no_clone,
+50747,,no_clone,
+50838,,no_clone,
+51561,,no_clone,
+53669,,no_clone,
+55010,,no_clone,
+55469,,no_clone,
+55493,,no_clone,
+55494,,no_clone,
+55495,,no_clone,
+55496,,no_clone,
+56004,,no_clone,
+56504,,no_clone,
+56509,,no_clone,
+59328,,no_clone,
+60123,,no_clone,
+62537,,no_clone,
+63463,,no_clone,
+63924,,no_clone,
+64704,,no_clone,
+70559,,no_clone,
+77650,,no_clone,
+78480,,no_clone,
+85456,,no_clone,
+85588,,no_clone,
+85699,,no_clone,
+88925,,no_clone,
+89395,,no_clone,
+89624,,no_clone,
+89655,,no_clone,
+92731,,no_clone,
+92848,,no_clone,
+93176,,no_clone,
+93326,,no_clone,
+93327,,no_clone,
+95071,,no_clone,
+95324,,no_clone,
+96250,,no_clone,
+97003,,no_clone,
+97388,AnalyticsEndpoint_0,review with at least one clone,arquivo diferente
+99198,,no_clone,
+99199,AbstractBucketConfig_0,review with at least one clone,mesmo arquivo
+99557,,no_clone,
+99558,,no_clone,
+99606,,no_clone,
+99607,,no_clone,
+99608,AbstractOnDemandService_2,review with at least one clone,arquivo diferente
+100074,,no_clone,
+100488,,no_clone,
+101496,,no_clone,
+104874,,no_clone,
+108475,,no_clone,
+109503,,no_clone,
+109509,,no_clone,
+125045,,no_clone,
+125068,,no_clone,
+162678,Observe_0,review with at least one clone,arquivo diferente

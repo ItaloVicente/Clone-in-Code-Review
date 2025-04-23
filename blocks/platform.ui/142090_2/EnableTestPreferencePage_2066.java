@@ -1,7 +1,0 @@
-				flipState();
-			}
-		});
-		return composite;
-	}
-
-	@Override

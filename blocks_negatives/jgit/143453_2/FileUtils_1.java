@@ -1,7 +1,0 @@
-        "-Xep:IncompatibleModifiers:WARN",
-        "-Xep:InjectOnConstructorOfAbstractClass:WARN",
-        "-Xep:InputStreamSlowMultibyteRead:WARN",
-        "-Xep:IterableAndIterator:WARN",
-        "-Xep:JUnit3FloatingPointComparisonWithoutDelta:WARN",
-        "-Xep:JUnitAmbiguousTestClass:WARN",
-        "-Xep:LiteralClassName:WARN",

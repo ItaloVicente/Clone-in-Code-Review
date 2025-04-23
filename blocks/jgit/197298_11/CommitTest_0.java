@@ -1,6 +1,0 @@
-		assertEquals(toString("On branch master"
-				""
-				"No commits yet"
-				""
-				"Changes to be committed:"
-				"(use \"git restore --staged <file>...\" to unstage)"

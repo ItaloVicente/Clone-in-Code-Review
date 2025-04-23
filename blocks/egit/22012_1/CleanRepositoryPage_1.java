@@ -1,9 +1,0 @@
-	private void updatePageComplete() {
-		boolean hasCheckedElements = cleanTable.getCheckedElements().length != 0;
-		setPageComplete(hasCheckedElements);
-		if (hasCheckedElements)
-			setMessage("", NONE); //$NON-NLS-1$
-		else
-			setMessage(UIText.CleanRepositoryPage_SelectFilesToClean, INFORMATION);
-	}
-

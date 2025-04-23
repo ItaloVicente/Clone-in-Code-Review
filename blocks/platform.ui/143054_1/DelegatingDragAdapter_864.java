@@ -1,6 +1,0 @@
-				}
-			}
-		});
-		currentListener = null;
-		activeListeners.clear();
-	}

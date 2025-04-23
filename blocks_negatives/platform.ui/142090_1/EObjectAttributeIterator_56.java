@@ -1,6 +1,0 @@
-        this.position = position;
-        if (includeXmlLang) {
-            return position == 1 || super.setPosition(position - 1);
-        }
-        return super.setPosition(position);
-    }

@@ -1,6 +1,0 @@
-            queryErrorObservable.onBackpressureBuffer(),
-            queryRowObservable.onBackpressureBuffer(),
-            querySignatureObservable.onBackpressureBuffer(),
-            queryStatusObservable.onBackpressureBuffer(),
-            queryInfoObservable.onBackpressureBuffer(),
-            queryProfileInfoObservable.onBackpressureBuffer(),

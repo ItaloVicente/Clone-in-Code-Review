@@ -1,7 +1,0 @@
-		/**
-		 *
-		 */
-		public TestPropertyListener() {
-			super();
-		}
-

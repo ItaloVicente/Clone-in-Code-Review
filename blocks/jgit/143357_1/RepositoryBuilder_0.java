@@ -1,8 +1,0 @@
-	@Override
-	public Repository build() throws IOException {
-		Repository repo = new FileRepository(setup());
-		if (isMustExist() && !repo.getObjectDatabase().exists()) {
-			throw new RepositoryNotFoundException(repo.getIdentifier());
-		}
-		return repo;
-	}

@@ -1,6 +1,0 @@
-		IFile result = ResourceUtil.getFileForLocation(location, false);
-		assertThat(result, notNullValue());
-		assertTrue("Returned IFile should exist", result.exists());
-		assertThat(result.getProject(), is(project.getProject()));
-
-		result = ResourceUtil.getFileForLocation(location, true);

@@ -1,6 +1,0 @@
-        }
-        finally {
-        	tree.setRedraw(true);
-        }
-    }
-

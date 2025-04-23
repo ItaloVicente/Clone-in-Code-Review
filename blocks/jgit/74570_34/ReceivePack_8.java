@@ -1,6 +1,0 @@
-			enableCapabilities();
-
-			if (usePushOptions) {
-				readPushOptions();
-			}
-

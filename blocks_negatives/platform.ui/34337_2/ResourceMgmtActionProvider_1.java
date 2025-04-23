@@ -1,7 +1,0 @@
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.navigator.CommonActionProvider#init(org.eclipse.ui.navigator
-	 * .ICommonActionExtensionSite)
-	 */

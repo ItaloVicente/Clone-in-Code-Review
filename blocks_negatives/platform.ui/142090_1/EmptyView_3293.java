@@ -1,8 +1,0 @@
-    /**
-     *
-     */
-    public EmptyView() {
-        super();
-    }
-
-    @Override

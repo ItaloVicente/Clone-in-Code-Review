@@ -1,7 +1,0 @@
-      + "\"nodes\": [\n"
-      + "{\n"
-      + "\"clusterCompatibility\": 1,\n"
-      + "\"clusterMembership\": \"active\"\n,"
-      + "\"couchApiBase\": \"http://10.2.1.67:5984/\"\n"
-      + "}\n"
-      + "],\n"

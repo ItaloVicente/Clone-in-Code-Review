@@ -1,6 +1,0 @@
-				+ "  merge = master.branch.to.keep.in.the.file\n"
-				+ "\n"
-				+ "[single]\n"
-				+ "  merge = this.will.get.deleted\n"
-				+ "  remote = origin-for-some-long-gone-place\n"
-				+ "\n"

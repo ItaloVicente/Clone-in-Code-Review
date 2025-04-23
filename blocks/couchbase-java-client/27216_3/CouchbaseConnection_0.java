@@ -1,6 +1,0 @@
-
-  boolean isShutDown() {
-    return shutDown;
-  }
-
-

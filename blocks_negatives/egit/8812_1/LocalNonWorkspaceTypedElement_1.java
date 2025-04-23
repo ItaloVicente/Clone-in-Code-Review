@@ -1,6 +1,0 @@
-						if (out != null)
-							try {
-								out.close();
-							} catch (IOException ex) {
-							}
-					}

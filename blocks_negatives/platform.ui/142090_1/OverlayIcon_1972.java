@@ -1,8 +1,0 @@
-            }
-        }
-    }
-
-    /**
-     * @see CompositeImageDescriptor#getSize()
-     */
-    @Override

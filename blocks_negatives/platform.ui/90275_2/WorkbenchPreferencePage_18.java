@@ -1,7 +1,0 @@
-        singleClickButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-			public void widgetSelected(SelectionEvent e) {
-                selectClickMode(singleClickButton.getSelection());
-            }
-        });

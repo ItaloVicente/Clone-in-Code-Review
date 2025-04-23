@@ -1,0 +1,950 @@
+review_number,block,categoria,tipo,duracao,distancia,move_block
+25,MemcachedConnection_0,recorrente,ini/mei,0.5,0,mesmo arquivo
+25,MemcachedConnection_0_rev_2,recorrente,mei/final,0.5,0.75,mesmo arquivo
+5206,KetamaNodeLocator_1,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+6778,BaseGetOpImpl_4,recorrente,ini/mei,0.7142857142857143,0,mesmo arquivo
+6778,MemcachedClient_0,individual,unique/ini,0.14285714285714285,0,mesmo arquivo
+6778,MemcachedClient_1,individual,unique/ini,0.14285714285714285,0,mesmo arquivo
+6778,MemcachedClient_0_rev_1,individual,unique/mei,0.14285714285714285,0.2857142857142857,mesmo arquivo
+6778,MemcachedClient_1_rev_1,individual,unique/mei,0.14285714285714285,0.2857142857142857,mesmo arquivo
+6778,MemcachedClient_0_rev_2,recorrente,mei,0.42857142857142855,0.42857142857142855,mesmo arquivo
+6778,MemcachedClient_1_rev_2,recorrente,mei,0.42857142857142855,0.42857142857142855,mesmo arquivo
+6778,MemcachedClient_0_rev_5,individual,unique/mei,0.14285714285714285,0.8571428571428571,mesmo arquivo
+6778,MemcachedClient_0_rev_6,individual,unique/final,0.14285714285714285,1.0,mesmo arquivo
+6813,MemcachedClient_0,recorrente,ini/mei,0.5714285714285714,0,mesmo arquivo
+6813,MemcachedClient_1,individual,unique/ini,0.14285714285714285,0,mesmo arquivo
+6813,MemcachedClient_1_rev_1,recorrente,mei,0.2857142857142857,0.2857142857142857,mesmo arquivo
+6813,MemcachedClient_1_rev_3,recorrente,mei,0.42857142857142855,0.5714285714285714,mesmo arquivo
+6813,BaseGetOpImpl_3,recorrente,mei,0.2857142857142857,0.7142857142857143,arquivo diferente
+6813,MemcachedClient_0_rev_4,recorrente,mei,0.2857142857142857,0.7142857142857143,mesmo arquivo
+6813,BaseGetOpImpl_4,individual,unique/final,0.14285714285714285,1.0,arquivo diferente
+6813,MemcachedClient_0_rev_6,individual,unique/final,0.14285714285714285,1.0,mesmo arquivo
+6813,MemcachedClient_1_rev_6,individual,unique/final,0.14285714285714285,1.0,mesmo arquivo
+6815,MemcachedClient_2,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+6815,MemcachedConnection_6,recorrente,mei/final,0.4,0.8,mesmo arquivo
+6823,MemcachedClient_0,recorrente,ini/mei,0.375,0,mesmo arquivo
+6824,ConfigurationProviderHTTP_0,recorrente,ini/mei/final,1.0,0,arquivo diferente
+6849,MemcachedClient_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+7048,MemcachedClient_0,recorrente,ini/mei,0.75,0,mesmo arquivo
+7048,MembaseClient_0,individual,unique/mei,0.125,0.875,arquivo diferente
+7048,MembaseClient_0_rev_7,individual,unique/final,0.125,1.0,arquivo diferente
+7101,TCPMemcachedNodeImpl_0,individual,unique/ini,0.16666666666666666,0,arquivo diferente
+7859,MemcachedClient_2,recorrente,ini/mei/final,1.0,0,ambos
+7859,ProtocolBaseCase_8,recorrente,mei/final,0.375,0.75,mesmo arquivo
+7898,TapClient_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+7969,ProtocolBaseCase_7,individual,unique/ini,0.5,0,mesmo arquivo
+7969,MemcachedClient_4,recorrente,ini/mei/final,1.0,0,arquivo diferente
+7969,ProtocolBaseCase_7_rev_1,individual,unique/final,0.5,1.0,mesmo arquivo
+8239,ProtocolBaseCase_7,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+8239,ConnectionFactoryBuilder_0,individual,unique/ini,0.5,0,mesmo arquivo
+8239,MemcachedClient_4,recorrente,ini/mei/final,1.0,0,arquivo diferente
+8478,CouchbaseConnection_3,recorrente,ini/mei/final,1.0,0,arquivo diferente
+8478,CouchbaseClient_0,recorrente,ini/mei/final,1.0,0,arquivo diferente
+8478,CouchbaseConnection_2,recorrente,ini/mei/final,1.0,0,arquivo diferente
+8478,MemcachedConnection_5,individual,unique/final,0.5,1.0,mesmo arquivo
+8644,ViewOperationImpl_166,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,MultiGetOperationImpl_131,recorrente,ini/mei,0.3333333333333333,0,ambos
+8644,DefaultConfig_262,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ResponseMessage_179,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,BucketMonitorPipelineFactory_218,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,VBucketNodeLocator_245,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,DefaultKetamaNodeLocatorConfiguration_210,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,WhalinTranscoder_207,individual,unique/ini,0.1111111111111111,0,ambos
+8644,ConfigurationProviderHTTP_238,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,MultiGetOperationImpl_130,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BaseGetOpImpl_102,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BaseStoreOperationImpl_105,recorrente,ini/mei,0.3333333333333333,0,ambos
+8644,ViewOperationImpl_167,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,ResponseMessage_181,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,ConfigurationParserJSON_260,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ViewsOperationImpl_172,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,ViewOperationImpl_168,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,Bucket_246,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_121,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,TapMessagePrinter_48,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ReducedOperationImpl_158,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,SunLogger_67,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_234,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,NoDocsOperationImpl_156,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,ConfigurationProviderHTTP_233,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,KetamaIterator_25,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,KetamaNodeLocator_29,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ViewOperationImpl_165,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,BaseGetOpImpl_100,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_239,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ClientBaseCase_314,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationParserJSON_256,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ResponseMessage_182,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,BaseOperationFactory_84,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BucketMonitor_214,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,AddrUtil_1,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ProxyCallback_91,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ViewsOperationImpl_174,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,ResponseMessage_184,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,NoDocsOperationImpl_154,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,BinaryMemcachedNodeImpl_119,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,LongTranscoder_196,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_232,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,HashAlgorithm_22,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_236,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,DefaultConfig_263,individual,unique/ini,0.1111111111111111,0,ambos
+8644,BaseGetOpImpl_99,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SyncThread_56,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SunLogger_65,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,MutatorOperationImpl_134,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,TranscoderUtils_204,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_240,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,AddrUtil_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+8644,OperationImpl_111,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ResponseMessage_187,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,OperationImpl_113,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SASLConnectReconnect_431,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,BulkGetFuture_73,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BucketUpdateResponseHandler_222,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,MultiGetOperationImpl_129,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ViewsOperationImpl_173,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,ResponseMessage_180,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,SASLConnectReconnect_435,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,KetamaIterator_24,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_235,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,RowWithDocs_163,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,DefaultConfigFactory_265,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,DoLotsOfSets_319,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,BaseStoreOperationImpl_104,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SerializingTranscoder_200,individual,unique/ini,0.1111111111111111,0,ambos
+8644,HashAlgorithm_21,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SerializingTranscoder_198,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,TranscoderUtils_203,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,BaseGetOpImpl_101,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_118,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SyncThread_59,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,Util_193,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ResponseMessage_186,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,MutatorOperationImpl_135,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,MultiGetOperationImpl_132,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,VBucketNodeLocator_244,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,SyncThread_57,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,KeyUtil_30,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,DocsOperationImpl_152,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,CacheConfig_249,individual,unique/ini,0.1111111111111111,0,arquivo diferente
+8644,AbstractNodeLocationCase_273,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,BaseOperationFactory_83,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,TapOpcode_191,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,SASLBaseOperationImpl_139,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ClientBaseCase_313,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,SASLBaseOperationImpl_140,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BucketUpdateResponseHandler_221,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,SASLBaseOperationImpl_141,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ClientBaseCase_315,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,KetamaIterator_26,recorrente,ini/mei,0.3333333333333333,0,ambos
+8644,Node_270,individual,unique/ini,0.1111111111111111,0,arquivo diferente
+8644,BucketMonitor_217,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,RowReduced_162,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,BaseGetOpImpl_97,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SyncThread_58,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ResponseMessage_185,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,TapFlag_189,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,DefaultConfigFactory_264,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ResponseMessage_183,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,ReducedOperationImpl_160,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,WhalinTranscoder_206,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationParserJSON_255,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,CASMutator_6,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,OperationImpl_114,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SASLConnectReconnect_433,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,BucketUpdateResponseHandler_220,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,SunLogger_66,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ConfigurationParserJSON_257,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,Node_271,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,DefaultConfigFactory_268,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,CASMutator_8,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,TranscoderUtils_202,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationParserJSON_259,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationParserJSON_258,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,MultiOperationCallback_85,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,Log4JLogger_62,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_120,recorrente,ini/mei,0.3333333333333333,0,ambos
+8644,OperationImpl_112,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,CacheConfig_250,individual,unique/ini,0.1111111111111111,0,arquivo diferente
+8644,DocsOperationImpl_151,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,Util_192,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_230,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,CASMutator_7,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ReducedOperationImpl_159,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,SerializingTranscoder_199,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,NoDocsOperationImpl_155,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,BaseStoreOperationImpl_106,recorrente,ini/mei,0.3333333333333333,0,ambos
+8644,ClientBaseCase_311,individual,unique/ini,0.1111111111111111,0,arquivo diferente
+8644,BaseGetOpImpl_98,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,TapCustomOperationImpl_148,recorrente,ini/mei,0.2222222222222222,0,ambos
+8644,MultiGetOperationImpl_128,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ProxyCallback_92,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,ObserverToy_430,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ConfigurationProviderHTTP_231,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,ResponseMessage_188,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,DefaultConfigFactory_267,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,BulkGetFuture_75,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,Bucket_247,individual,unique/ini,0.1111111111111111,0,arquivo diferente
+8644,IntegerTranscoder_195,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,KeyUtil_31,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BucketMonitor_213,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,RowNoDocs_161,recorrente,ini/mei,0.2222222222222222,0,mesmo arquivo
+8644,AddrUtil_2,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_117,recorrente,ini/mei,0.3333333333333333,0,mesmo arquivo
+8644,SASLConnectReconnect_432,individual,unique/ini,0.1111111111111111,0,mesmo arquivo
+8644,DefaultConfig_262_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,ambos
+8644,ConfigurationParserJSON_254,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_238_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,DefaultKetamaNodeLocatorConfiguration_209,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,DefaultConfig_261,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,Bucket_246_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,arquivo diferente
+8644,DefaultConfigFactory_266,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_234_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_233_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,LongTranscoder_195,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_239_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationParserJSON_256_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,IntegerTranscoder_194,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,Util_191,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_232_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,SASLConnectReconnect_429,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,TapOpcode_190,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,BucketMonitor_216,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,SASLConnectReconnect_431_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,WhalinTranscoder_205,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_235_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_237,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,SerializingTranscoder_198_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_229,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,TranscoderUtils_203_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,VBucketNodeLocator_244_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,AbstractNodeLocationCase_272,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,CacheConfig_249_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,arquivo diferente
+8644,Node_269,individual,unique/mei,0.1111111111111111,0.2222222222222222,arquivo diferente
+8644,BucketMonitor_212,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ClientBaseCase_313_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,BucketUpdateResponseHandler_221_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,Node_270_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ClientBaseCase_309,individual,unique/mei,0.1111111111111111,0.2222222222222222,arquivo diferente
+8644,BucketUpdateResponseHandler_219,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,BucketMonitorPipelineFactory_217,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,DefaultConfigFactory_264_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,SerializingTranscoder_197,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,WhalinTranscoder_206_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,ambos
+8644,ConfigurationParserJSON_255_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,CacheConfig_248,individual,unique/mei,0.1111111111111111,0.2222222222222222,arquivo diferente
+8644,SASLConnectReconnect_433_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,BucketUpdateResponseHandler_220_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationParserJSON_257_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,DefaultConfigFactory_263,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,TranscoderUtils_202_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationParserJSON_259_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationParserJSON_258_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,Util_192_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_230_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,TranscoderUtils_201,recorrente,mei/final,0.8888888888888888,0.2222222222222222,mesmo arquivo
+8644,VBucketNodeLocator_243,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,DoLotsOfSets_317,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,SerializingTranscoder_199_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,ambos
+8644,ClientBaseCase_311_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,Bucket_245,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ConfigurationProviderHTTP_231_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,DefaultConfigFactory_267_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,SASLConnectReconnect_430,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ObserverToy_428,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,ClientBaseCase_312_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,BucketMonitor_213_rev_1,individual,unique/mei,0.1111111111111111,0.2222222222222222,mesmo arquivo
+8644,DocsOperationImpl_150,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ViewOperationImpl_166_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,LongTranscoder_194,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ResponseMessage_179_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationParserJSON_254_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationProviderHTTP_238_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ViewOperationImpl_167_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,VBucketNodeLocator_242,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ResponseMessage_181_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DefaultConfig_261_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,TapFlag_188,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ViewsOperationImpl_172_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DefaultConfigFactory_266_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,Bucket_244,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ReducedOperationImpl_158_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ConfigurationProviderHTTP_234_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationProviderHTTP_233_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationParserJSON_253,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ViewOperationImpl_165_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ConfigurationParserJSON_256_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ResponseMessage_182_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,BucketMonitorPipelineFactory_216,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,CacheConfig_247,individual,unique/mei,0.1111111111111111,0.3333333333333333,arquivo diferente
+8644,Util_191_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ClientBaseCase_310_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ResponseMessage_184_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ReducedOperationImpl_157,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,NoDocsOperationImpl_154_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ReconfigurableObserver_239,individual,unique/mei,0.1111111111111111,0.3333333333333333,arquivo diferente
+8644,ConfigurationProviderHTTP_232_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationProviderHTTP_236_rev_1,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,SASLConnectReconnect_429_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,RowReduced_161,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DefaultConfigFactory_262,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,BucketMonitor_215,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DefaultKetamaNodeLocatorConfiguration_208,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ResponseMessage_187_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,WhalinTranscoder_205_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ConfigurationProviderHTTP_228,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ViewsOperationImpl_173_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ResponseMessage_180_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,IntegerTranscoder_193,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DefaultConfigFactory_265_rev_1,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationProviderHTTP_237_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,SerializingTranscoder_198_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ConfigurationProviderHTTP_229_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,SerializingTranscoder_196,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,BucketMonitor_211,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ResponseMessage_186_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,GetAndTouchOperationImpl_124,recorrente,mei/final,0.7777777777777778,0.3333333333333333,ambos
+8644,ObserverToy_427,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,Node_269_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,BucketMonitor_212_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,TapCustomOperationImpl_147,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,DefaultConfig_260,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ViewOperationImpl_164,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,AbstractNodeLocationCase_271,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,BucketUpdateResponseHandler_219_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ResponseMessage_185_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,SASLConnectReconnect_428,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,NoDocsOperationImpl_153,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ResponseMessage_183_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,SerializingTranscoder_197_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationParserJSON_255_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ViewsOperationImpl_171,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,CacheConfig_248_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,arquivo diferente
+8644,BucketUpdateResponseHandler_220_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,RowWithDocs_162,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationParserJSON_257_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,WhalinTranscoder_204,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DefaultConfigFactory_263_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,TranscoderUtils_202_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ConfigurationParserJSON_258_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DocsOperationImpl_151_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ConfigurationProviderHTTP_230_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,Util_190,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,TranscoderUtils_201_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ReducedOperationImpl_159_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ResponseMessage_178,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,VBucketNodeLocator_243_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,DoLotsOfSets_316,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,RowNoDocs_160,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,ClientBaseCase_308,individual,unique/mei,0.1111111111111111,0.3333333333333333,arquivo diferente
+8644,NoDocsOperationImpl_155_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,ambos
+8644,ClientBaseCase_311_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,Node_268,individual,unique/mei,0.1111111111111111,0.3333333333333333,arquivo diferente
+8644,TapOpcode_189,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,Bucket_245_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,arquivo diferente
+8644,ConfigurationProviderHTTP_231_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,SASLConnectReconnect_430_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,BulkGetFuture_75_rev_2,recorrente,mei/final,0.7777777777777778,0.3333333333333333,ambos
+8644,ClientBaseCase_312_rev_2,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,BucketUpdateResponseHandler_218,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,SASLConnectReconnect_432_rev_1,individual,unique/mei,0.1111111111111111,0.3333333333333333,mesmo arquivo
+8644,IntegerTranscoder_202,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaIterator_370,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_140,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,KeyUtil_32,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewOperationImpl_176,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,NoDocsOperationImpl_506,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ProxyCallback_443,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseOperationFactory_91,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_536,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AddrUtil_344,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_123,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_483,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_588,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,Util_543,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_451,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ReducedOperationImpl_510,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,MutatorOperationImpl_488,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TranscoderUtils_211,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_238_rev_3,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,DoLotsOfSets_321,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,BucketMonitor_564,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_540,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_535,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_484,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,Util_200,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ProxyCallback_444,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketMonitorPipelineFactory_569,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SerializingTranscoder_550,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_109,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationParserJSON_260_rev_1,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SASLBaseOperationImpl_148,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Log4JLogger_414,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,AuthThread_398,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,SyncThread_410,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SASLConnectReconnect_780,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SASLBaseOperationImpl_493,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_193,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_534,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThreadMonitor_401,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,IntegerTranscoder_546,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_584,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewsOperationImpl_524,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,DefaultConfigFactory_273,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_196,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_272,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaIterator_25_rev_3,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SerializingTranscoder_205,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CASMutator_353,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewsOperationImpl_526,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ViewOperationImpl_175,recorrente,mei,0.4444444444444444,0.4444444444444444,ambos
+8644,ConfigurationParserJSON_263,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CacheConfig_255,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,SyncThread_408,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SyncThread_64,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_239_rev_2,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_107,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_617,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_482,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultKetamaNodeLocatorConfiguration_217,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BulkGetFuture_81,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ReducedOperationImpl_167,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,MultiGetOperationImpl_141,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_467,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_533,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_474,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SerializingTranscoder_549,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AddrUtil_1_rev_3,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,MultiOperationCallback_437,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ClientBaseCase_660,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationParserJSON_262,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationParserJSON_606,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,VBucketNodeLocator_593,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,MutatorOperationImpl_487,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_192,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TapOpcode_198,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AddrUtil_347,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_470,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_241,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseOperationFactory_435,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_245,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,BucketUpdateResponseHandler_227,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewsOperationImpl_181,recorrente,mei,0.4444444444444444,0.4444444444444444,mesmo arquivo
+8644,ViewsOperationImpl_180,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,HashAlgorithm_22_rev_3,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_454,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SerializingTranscoder_551,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,LongTranscoder_203,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CloseUtil_403,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_269,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_189,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_111,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaNodeLocator_30,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,SASLConnectReconnect_781,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,VBucketNodeLocator_249,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThread_54,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThreadMonitor_400,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,SASLConnectReconnect_779,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketUpdateResponseHandler_571,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MutatorOperationImpl_143,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_244,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaNodeLocator_374,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Util_199,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_240_rev_1,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CacheConfig_598,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,ViewsOperationImpl_525,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SASLBaseOperationImpl_149,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TapMessagePrinter_49,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SyncThread_63,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_106,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,NoDocsOperationImpl_164,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ResponseMessage_187_rev_3,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TapCustomOperationImpl_500,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,BucketMonitor_224,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ObserverToy_778,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewOperationImpl_518,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,NoDocsOperationImpl_508,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,RowWithDocs_515,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_121,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BulkGetFuture_425,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ReducedOperationImpl_512,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,BaseStoreOperationImpl_458,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ViewOperationImpl_520,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_465,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,NoDocsOperationImpl_162,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,DoLotsOfSets_665,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_481,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,HashAlgorithm_367,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_613,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketUpdateResponseHandler_572,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,VBucketNodeLocator_250,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiOperationCallback_93,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_127,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,NoDocsOperationImpl_163,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,Util_544,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_126,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KeyUtil_376,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_237_rev_3,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,WhalinTranscoder_558,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,AsciiMemcachedNodeImpl_447,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,TapOpcode_542,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CASMutator_351,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SunLogger_75,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewsOperationImpl_182,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,DefaultConfig_266,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_539,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_581,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SunLogger_74,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_455,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ClientBaseCase_659,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_122,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SyncThread_65,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThread_397,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,AsciiMemcachedNodeImpl_103,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,AuthThreadMonitor_57,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AsyncConnectionRequest_422,recorrente,mei/final,0.6666666666666666,0.4444444444444444,arquivo diferente
+8644,BinaryMemcachedNodeImpl_130,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_452,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SerializingTranscoder_206,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ClientBaseCase_316,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseOperationFactory_436,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_473,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,DefaultConfig_611,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,RowWithDocs_171,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_128,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SpyThread_62,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,ResponseMessage_532,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThread_51,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,AddrUtil_3,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_583,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DocsOperationImpl_503,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,SunLogger_417,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseStoreOperationImpl_115,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,StatsOperationImpl_151,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,AuthThread_399,recorrente,mei,0.3333333333333333,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_582,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketMonitor_221,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_538,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_587,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_453,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ReconfigurableObserver_246,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,ReducedOperationImpl_168,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ConfigurationParserJSON_603,recorrente,mei,0.4444444444444444,0.4444444444444444,mesmo arquivo
+8644,ClientBaseCase_313_rev_2,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,BucketMonitor_568,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,PlainCallbackHandler_58,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_270,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Bucket_252,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,SASLConnectReconnect_783,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_614,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_585,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ReducedOperationImpl_166,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ClientBaseCase_315_rev_1,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaIterator_26_rev_3,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TapDumpOperationImpl_157,recorrente,mei/final,0.6666666666666666,0.4444444444444444,ambos
+8644,AsyncConnectionRequest_78,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,DefaultKetamaNodeLocatorConfiguration_561,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_108,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseOperationFactory_92,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketMonitorPipelineFactory_225,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_464,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThread_52,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,TapCustomOperationImpl_156,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,MultiGetOperationImpl_139,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultConfig_267,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ConfigurationParserJSON_608,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_190,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SASLBaseOperationImpl_492,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_129,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,HashAlgorithm_366,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_531,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_612,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CloseUtil_59,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Node_275,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,ProxyCallback_99,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DocsOperationImpl_160,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,TapDumpOperationImpl_501,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,RowNoDocs_169,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DocsOperationImpl_159,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,DefaultConfigFactory_268_rev_1,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CASMutator_8_rev_3,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,Node_620,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultLogger_413,recorrente,mei,0.3333333333333333,0.4444444444444444,mesmo arquivo
+8644,ConfigurationParserJSON_259_rev_2,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SyncThread_66,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_191,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CacheConfig_254,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,WhalinTranscoder_214,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ProxyCallback_100,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TapMessagePrinter_393,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationParserJSON_264,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewOperationImpl_174,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,BucketUpdateResponseHandler_573,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TranscoderUtils_555,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_194,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_537,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseStoreOperationImpl_459,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,RowReduced_514,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ReconfigurableObserver_590,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,ConfigurationParserJSON_605,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CASMutator_7_rev_3,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,ConfigurationParserJSON_604,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationParserJSON_261,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SunLogger_419,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaIterator_371,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,TranscoderUtils_210,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,StatsOperationImpl_495,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultConfigFactory_616,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseStoreOperationImpl_457,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ReducedOperationImpl_511,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,NoDocsOperationImpl_507,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,DefaultConfig_610,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Bucket_596,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,TranscoderUtils_554,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaIterator_369,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketMonitor_220,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewOperationImpl_517,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AbstractNodeLocationCase_622,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,RowNoDocs_513,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AddrUtil_345,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,WhalinTranscoder_213,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketMonitor_565,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_471,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ViewOperationImpl_173,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MutatorOperationImpl_144,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_466,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SunLogger_73,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SunLogger_418,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Bucket_595,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_472,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketUpdateResponseHandler_228,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ConfigurationProviderHTTP_589,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ClientBaseCase_657,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,ConfigurationProviderHTTP_243,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Node_619,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,TapFlag_197,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_110,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KeyUtil_375,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Log4JLogger_70,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_485,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,ResponseMessage_195,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SerializingTranscoder_207,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ResponseMessage_188_rev_2,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SpyThread_406,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,AuthThread_396,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,DefaultLogger_69,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThread_55,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,PlainCallbackHandler_402,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BucketUpdateResponseHandler_229,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Node_276,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,CacheConfig_599,individual,unique/mei,0.1111111111111111,0.4444444444444444,arquivo diferente
+8644,CASMutator_352,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThread_395,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThreadMonitor_56,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KeyUtil_31_rev_3,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_137,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,LongTranscoder_547,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AuthThread_53,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,HashAlgorithm_23,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,OperationImpl_120,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseStoreOperationImpl_113,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseGetOpImpl_450,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,KetamaIterator_27,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ConfigurationParserJSON_607,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,RowReduced_170,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AddrUtil_346,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,Bucket_251,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,VBucketNodeLocator_594,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,TapFlag_541,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AddrUtil_2_rev_3,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,SyncThread_409,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseStoreOperationImpl_114,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,ViewOperationImpl_519,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,DocsOperationImpl_504,individual,unique/mei,0.1111111111111111,0.4444444444444444,ambos
+8644,CASMutator_9,recorrente,mei/final,0.6666666666666666,0.4444444444444444,mesmo arquivo
+8644,WhalinTranscoder_557,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,MultiGetOperationImpl_138,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,AbstractNodeLocationCase_278,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,SyncThread_407,individual,unique/mei,0.1111111111111111,0.4444444444444444,mesmo arquivo
+8644,BaseOperationFactory_93,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,KeyUtil_32_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ViewOperationImpl_176_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,Util_201,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,WhalinTranscoder_563,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_268,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_198,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,HashAlgorithm_372,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,OperationImpl_123_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,OperationImpl_473,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_480,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ReducedOperationImpl_170,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ReducedOperationImpl_516,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ConfigurationParserJSON_614,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseOperationFactory_441,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_459,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,OperationImpl_471,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ViewOperationImpl_178,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseOperationFactory_442,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_540_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_109_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,TapCustomOperationImpl_506,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,DefaultKetamaNodeLocatorConfiguration_219,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SerializingTranscoder_208,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_456,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Util_550,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Bucket_603,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_193_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketUpdateResponseHandler_230,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_131,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,TapOpcode_548,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SerializingTranscoder_555,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,TranscoderUtils_212,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MemcachedConnection_42,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SunLogger_77,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ViewsOperationImpl_530,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,OperationImpl_472,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,CacheConfig_259,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,ResponseMessage_196_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfigFactory_272_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ViewOperationImpl_175_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationProviderHTTP_593,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MutatorOperationImpl_493,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_460,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseStoreOperationImpl_116,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,KetamaIterator_375,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiGetOperationImpl_141_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiOperationCallback_443,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationProviderHTTP_592,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,RowNoDocs_519,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ReconfigurableObserver_250,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,NoDocsOperationImpl_512,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ResponseMessage_197,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,RowWithDocs_521,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,AddrUtil_350,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfigFactory_275,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_265,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_192_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_457,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationProviderHTTP_245_rev_4,individual,unique/mei,0.1111111111111111,0.5555555555555556,mesmo arquivo
+8644,TapMessagePrinter_51,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_612,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiGetOperationImpl_490,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ProxyCallback_102,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_113,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MutatorOperationImpl_494,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ProxyCallback_450,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,AddrUtil_348,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,KetamaIterator_374,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ReducedOperationImpl_518,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,TapCustomOperationImpl_158,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ResponseMessage_189_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_613,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,TranscoderUtils_561,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_111_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ClientBaseCase_319,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,NoDocsOperationImpl_166,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,KetamaIterator_28,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,VBucketNodeLocator_254,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ClientBaseCase_667,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SyncThread_67,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Node_279,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,SyncThread_415,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,LongTranscoder_553,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_616,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,IntegerTranscoder_204,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SunLogger_425,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BulkGetFuture_431,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationProviderHTTP_244_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfigFactory_624,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SerializingTranscoder_556,individual,unique/mei,0.1111111111111111,0.5555555555555556,mesmo arquivo
+8644,DocsOperationImpl_162,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,Bucket_256,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,NoDocsOperationImpl_164_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,OperationImpl_125,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_479,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,BucketUpdateResponseHandler_232,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_458,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketMonitor_227,recorrente,mei,0.3333333333333333,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_132,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,IntegerTranscoder_552,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ClientBaseCase_317,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,SunLogger_424,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ClientBaseCase_320,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,KeyUtil_33,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SyncThread_414,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SyncThread_413,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Node_628,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Node_280,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,LongTranscoder_205,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_615,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketUpdateResponseHandler_579,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SunLogger_75_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ViewsOperationImpl_182_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,KetamaIterator_376,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,TranscoderUtils_213,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_267,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_539_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfigFactory_623,individual,unique/mei,0.1111111111111111,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_542,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,HashAlgorithm_371,individual,unique/mei,0.1111111111111111,0.5555555555555556,mesmo arquivo
+8644,OperationImpl_122_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SyncThread_65_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_544,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ProxyCallback_449,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,WhalinTranscoder_215,individual,unique/mei,0.1111111111111111,0.5555555555555556,mesmo arquivo
+8644,TapOpcode_200,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_541,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,TranscoderUtils_560,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,KeyUtil_380,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SASLConnectReconnect_790,recorrente,mei,0.3333333333333333,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_130_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_543,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,TapFlag_547,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,RowNoDocs_171,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_545,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,CASMutator_355,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,RowReduced_520,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_128_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MutatorOperationImpl_146,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Bucket_255,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,NoDocsOperationImpl_514,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,CASMutator_356,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiGetOperationImpl_487,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfigFactory_276,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiOperationCallback_95,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseStoreOperationImpl_115_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SyncThread_416,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_538_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiGetOperationImpl_143,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ReducedOperationImpl_168_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,TapMessagePrinter_399,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_112,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,CASMutator_357,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketMonitorPipelineFactory_228,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ReconfigurableObserver_598,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,MutatorOperationImpl_145,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,KetamaIterator_26_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiGetOperationImpl_142,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ResponseMessage_546,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseStoreOperationImpl_463,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SunLogger_423,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Node_627,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,ProxyCallback_101,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_108_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ViewOperationImpl_526,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiGetOperationImpl_489,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseOperationFactory_94,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,MultiGetOperationImpl_139_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,HashAlgorithm_24,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SunLogger_76,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_190_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Util_202,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultKetamaNodeLocatorConfiguration_567,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketUpdateResponseHandler_578,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_129_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfig_619,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ClientBaseCase_668,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BulkGetFuture_83_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SyncThread_66_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_191_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseStoreOperationImpl_464,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,VBucketNodeLocator_602,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,OperationImpl_470,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,CacheConfig_607,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,ConfigurationParserJSON_266,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ConfigurationParserJSON_264_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_194_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_537_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,KeyUtil_381,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,OperationImpl_124,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfigFactory_620,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfig_271,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,BucketMonitorPipelineFactory_576,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_461,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SASLBaseOperationImpl_498,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SerializingTranscoder_557,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ViewOperationImpl_524,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,DefaultConfig_618,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DocsOperationImpl_510,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,CacheConfig_258,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,ObserverToy_788,recorrente,mei,0.3333333333333333,0.5555555555555556,mesmo arquivo
+8644,ViewsOperationImpl_184,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,Util_549,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SASLBaseOperationImpl_151,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_478,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SyncThread_68,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BaseGetOpImpl_110_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketUpdateResponseHandler_231,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SASLConnectReconnect_793,recorrente,mei,0.3333333333333333,0.5555555555555556,mesmo arquivo
+8644,SASLBaseOperationImpl_499,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,ResponseMessage_195_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SerializingTranscoder_207_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SASLConnectReconnect_789,recorrente,mei,0.3333333333333333,0.5555555555555556,mesmo arquivo
+8644,ViewOperationImpl_523,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,SASLConnectReconnect_791,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,CacheConfig_606,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,MultiGetOperationImpl_491,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,DefaultConfig_270,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,RowWithDocs_173,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketUpdateResponseHandler_580,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,TapFlag_199,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BucketMonitor_575,recorrente,mei,0.3333333333333333,0.5555555555555556,mesmo arquivo
+8644,SASLBaseOperationImpl_150,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_476,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,HashAlgorithm_23_rev_4,individual,unique/mei,0.1111111111111111,0.5555555555555556,mesmo arquivo
+8644,ClientBaseCase_665,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,SerializingTranscoder_209,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,ViewsOperationImpl_532,recorrente,mei/final,0.5555555555555556,0.5555555555555556,ambos
+8644,KetamaIterator_27_rev_4,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,RowReduced_172,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,BinaryMemcachedNodeImpl_477,recorrente,mei/final,0.5555555555555556,0.5555555555555556,mesmo arquivo
+8644,Bucket_604,recorrente,mei/final,0.5555555555555556,0.5555555555555556,arquivo diferente
+8644,MemcachedConnection_390,individual,unique/mei,0.1111111111111111,0.5555555555555556,mesmo arquivo
+8644,HashAlgorithm_371_rev_5,recorrente,mei/final,0.4444444444444444,0.6666666666666666,mesmo arquivo
+8644,HashAlgorithm_23_rev_5,individual,unique/mei,0.1111111111111111,0.6666666666666666,mesmo arquivo
+8644,DefaultLogger_71_rev_6,recorrente,mei/final,0.3333333333333333,0.7777777777777778,mesmo arquivo
+8644,AuthThread_57_rev_6,recorrente,mei/final,0.3333333333333333,0.7777777777777778,mesmo arquivo
+8644,AuthThread_405_rev_6,individual,unique/mei,0.1111111111111111,0.7777777777777778,mesmo arquivo
+8644,DefaultLogger_419_rev_6,individual,unique/mei,0.1111111111111111,0.7777777777777778,mesmo arquivo
+8644,ViewsOperationImpl_183_rev_7,recorrente,mei/final,0.2222222222222222,0.8888888888888888,mesmo arquivo
+8644,ObserverToy_789,recorrente,mei/final,0.2222222222222222,0.8888888888888888,mesmo arquivo
+8644,ConfigurationParserJSON_263_rev_7,recorrente,mei/final,0.2222222222222222,0.8888888888888888,mesmo arquivo
+8644,ViewsOperationImpl_531_rev_7,individual,unique/mei,0.1111111111111111,0.8888888888888888,mesmo arquivo
+8644,BucketMonitor_227_rev_7,recorrente,mei/final,0.2222222222222222,0.8888888888888888,mesmo arquivo
+8644,ConfigurationParserJSON_611_rev_7,individual,unique/mei,0.1111111111111111,0.8888888888888888,mesmo arquivo
+8644,ViewOperationImpl_177_rev_7,recorrente,mei/final,0.2222222222222222,0.8888888888888888,ambos
+8644,SASLConnectReconnect_793_rev_7,recorrente,mei/final,0.2222222222222222,0.8888888888888888,mesmo arquivo
+8644,ViewOperationImpl_525_rev_7,individual,unique/mei,0.1111111111111111,0.8888888888888888,ambos
+8644,BucketMonitor_575_rev_7,individual,unique/mei,0.1111111111111111,0.8888888888888888,mesmo arquivo
+8998,RowWithDocs_4,recorrente,ini/mei,0.5,0,arquivo diferente
+8998,RowNoDocs_0,individual,unique/ini,0.25,0,arquivo diferente
+8998,RowNoDocs_0_rev_1,individual,unique/mei,0.25,0.5,arquivo diferente
+9428,OperationImpl_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+9430,OperationImpl_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+9526,TapOperationImpl_0,individual,unique/mei,0.16666666666666666,0.5,mesmo arquivo
+11099,MemcachedConnection_1,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+13510,BaseMessage_0,recorrente,ini/mei/final,1.0,0,ambos
+13571,ResponseMessage_2,recorrente,mei,0.4,0.6,mesmo arquivo
+13571,ResponseMessage_2_rev_4,individual,unique/final,0.2,1.0,mesmo arquivo
+21323,StringUtils_0,recorrente,mei/final,0.5,0.6666666666666666,mesmo arquivo
+23486,ProtocolBaseCase_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+26151,MemcachedConnection_2,recorrente,mei/final,0.8571428571428571,0.2857142857142857,mesmo arquivo
+26151,MemcachedConnection_3,recorrente,mei/final,0.8571428571428571,0.2857142857142857,mesmo arquivo
+26151,MemcachedConnection_1,recorrente,mei/final,0.8571428571428571,0.2857142857142857,mesmo arquivo
+26712,ProtocolBaseCase_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30416,MemcachedConnection_5,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30416,MemcachedConnection_2,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30416,MemcachedConnection_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30416,MemcachedConnection_1,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30416,MemcachedConnection_7,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30417,MemcachedConnection_2,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30417,MemcachedConnection_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+30418,OperationImpl_0,individual,unique/ini,0.25,0,mesmo arquivo
+30418,OperationImpl_0_rev_1,recorrente,mei/final,0.75,0.5,mesmo arquivo
+33799,AsciiOperationFactory_2,recorrente,mei/final,0.8,0.4,mesmo arquivo
+34625,MemcachedConnection_0,individual,unique/final,0.3333333333333333,1.0,mesmo arquivo
+34852,MemcachedConnection_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+37724,MemcachedConnection_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+38359,OperationImpl_0,recorrente,ini/mei/final,1.0,0,mesmo arquivo
+47624,KetamaNodeLocator_7,recorrente,ini/mei,0.7142857142857143,0,mesmo arquivo
+47624,KetamaNodeLocator_7_rev_5,recorrente,mei/final,0.2857142857142857,0.8571428571428571,mesmo arquivo

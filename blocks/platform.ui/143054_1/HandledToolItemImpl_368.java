@@ -1,8 +1,0 @@
-			case MenuPackageImpl.HANDLED_ITEM__COMMAND:
-				return MenuPackageImpl.HANDLED_TOOL_ITEM__COMMAND;
-			case MenuPackageImpl.HANDLED_ITEM__WB_COMMAND:
-				return MenuPackageImpl.HANDLED_TOOL_ITEM__WB_COMMAND;
-			case MenuPackageImpl.HANDLED_ITEM__PARAMETERS:
-				return MenuPackageImpl.HANDLED_TOOL_ITEM__PARAMETERS;
-			default:
-				return -1;

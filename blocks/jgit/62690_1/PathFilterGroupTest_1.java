@@ -1,6 +1,0 @@
-		assertMatches(Sets.of("a")
-		assertMatches(Sets.of("b/c")
-		assertMatches(Sets.of("c/d/e")
-		assertMatches(Sets.of("c/d/f")
-		assertMatches(Sets.of("d/e/f/g")
-		assertMatches(Sets.of("d/e/f/g.x")

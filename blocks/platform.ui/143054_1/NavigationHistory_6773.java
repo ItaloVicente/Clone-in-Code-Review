@@ -1,9 +1,0 @@
-				if (partRef != null && partRef.getPart(false) instanceof IEditorPart) {
-					IEditorPart editor = (IEditorPart) partRef.getPart(false);
-					IEditorInput input = editor.getEditorInput();
-					String id = editor.getSite().getId();
-					Iterator e = editors.iterator();
-					NavigationHistoryEditorInfo info = null;
-					NavigationHistoryEditorInfo currentInfo = null;
-					NavigationHistoryEntry current = getEntry(activeEntry);
-					if (current != null) {

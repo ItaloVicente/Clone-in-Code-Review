@@ -1,6 +1,0 @@
-				PacketLineIn.delimiter(),
-				"want-ref refs/heads/three\n",
-				"deepen 3",
-				"shallow 0123012301230123012301230123012301230123",
-				"shallow " + two.getName() + '\n',
-				"done\n",

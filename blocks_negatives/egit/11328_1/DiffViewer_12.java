@@ -1,9 +1,0 @@
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffAddBackgroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffAddForegroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffHunkBackgroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffHunkForegroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffRemoveBackgroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffRemoveForegroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffHeadlineBackgroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffHeadlineForegroundColor;
-import static org.eclipse.egit.ui.UIPreferences.THEME_DiffHeadlineFont;

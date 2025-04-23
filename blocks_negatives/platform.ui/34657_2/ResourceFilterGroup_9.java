@@ -1,7 +1,0 @@
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.dnd.DragSourceListener#dragFinished(org.eclipse.swt
-		 * .dnd.DragSourceEvent)
-		 */

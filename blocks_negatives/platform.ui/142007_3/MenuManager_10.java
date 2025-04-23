@@ -1,6 +1,0 @@
-                handleAboutToShow();
-            }
-        });
-    }
-
-    @Override

@@ -1,6 +1,0 @@
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart,
-	 *      org.eclipse.jface.viewers.ISelection)
-	 */

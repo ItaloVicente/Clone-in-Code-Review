@@ -1,6 +1,0 @@
-    /**
-     * Returns all entries in the history.
-     *
-     * @return all entries in the history
-     */
-    public INavigationLocation[] getLocations();

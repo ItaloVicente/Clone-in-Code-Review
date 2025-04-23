@@ -1,7 +1,0 @@
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org
-		 * .eclipse.jface.util.PropertyChangeEvent)
-		 */
