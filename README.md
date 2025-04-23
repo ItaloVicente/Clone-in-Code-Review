@@ -9,4 +9,4 @@ The workflow is divided into distinct phases across two repositories:
    These phases cover clone extraction, treatment, manual validation, and lifecycle analysis.
 
 Each repository contains its own `README.md` with more detailed explanations of the respective phases and usage instructions.
-Rename all dics `git` for `.git` in repo `git_repos.`
+The `git_repos` repository can only be shared at a later stage to ensure anonymity.
